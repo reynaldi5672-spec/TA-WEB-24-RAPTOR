@@ -53,15 +53,14 @@ export default function DestinasiLampung() {
             onClick={(e) => handleScroll(e, 'destinasi')} 
             className="text-white border-b-2 border-[#ff4d4d] pb-1 cursor-pointer"
           >
-            About
+            Destinasi
           </a>
 
-          <Link href="/#kuliner" className="hover:text-[#ffcc00] transition-colors">
-            Kuliner
-          </Link>
-
-          <Link href="/#kontak" className="hover:text-[#ffcc00] transition-colors">
-            Kontak
+          <Link 
+            href="/kontak" 
+            className="hover:text-[#ffcc00] transition-colors cursor-pointer"
+          >
+            kontak
           </Link>
         </div>
       </nav>
