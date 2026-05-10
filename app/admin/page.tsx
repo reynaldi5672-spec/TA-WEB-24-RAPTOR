@@ -1,26 +1,30 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 import AdminDashboard from './AdminDashboard'; 
+import Swal from 'sweetalert2';
 
 export default function AdminAuth() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
-  // State untuk menampung input
+  const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({ username: '', password: '' });
 
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Mencegah browser melakukan GET request otomatis
+    e.preventDefault();
     setIsLoading(true);
 
-    // Endpoint tujuan sesuai mode
     const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
 
     try {
       const response = await fetch(endpoint, {
-        method: 'POST', // Memastikan metode pengiriman adalah POST
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
@@ -28,33 +32,62 @@ export default function AdminAuth() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(data.message);
+        // Gunakan await pada Swal.fire agar transisi halaman menunggu alert selesai/ditutup
+        await Swal.fire({
+          title: 'Success!',
+          text: data.message,
+          icon: 'success',
+          background: '#111',
+          color: '#fff',
+          confirmButtonColor: '#ffcc00',
+          confirmButtonText: 'Mantap!',
+          timer: 1500,
+          showConfirmButton: false // Biar lebih smooth, biarkan timer yang menutup
+        });
+
         if (isRegister) {
-          setIsRegister(false); // Balik ke form login setelah daftar sukses
-          setFormData({ username: '', password: '' }); // Reset form
+          setIsRegister(false);
+          setFormData({ username: '', password: '' });
         } else {
-          setIsLoggedIn(true); // Masuk ke Dashboard
+          // Hanya ganti state jika komponen masih terpasang
+          setIsLoggedIn(true);
         }
       } else {
-        // Menampilkan error dari database (misal: user sudah ada)
-        alert("Error: " + data.message);
+        Swal.fire({
+          title: 'Error!',
+          text: data.message || 'Ada yang salah nih!',
+          icon: 'error',
+          background: '#111',
+          color: '#fff',
+          confirmButtonColor: '#d33'
+        });
       }
     } catch (error) {
-      console.error("Connection Error:", error);
-      alert("Gagal konek ke API. Pastikan server & pgAdmin jalan!");
+      console.error(error);
+      Swal.fire({
+        title: 'Crash!',
+        text: 'Gagal konek ke server. Cek pgAdmin kamu!',
+        icon: 'warning',
+        background: '#111',
+        color: '#fff'
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Jika sudah login, tampilkan Dashboard
-  if (isLoggedIn) return <AdminDashboard />;
+  // Render logic guard
+  if (!mounted) return null;
+  
+  // Jika sudah login, langsung tampilkan dashboard tanpa merender form login lagi
+  if (isLoggedIn) {
+    return <AdminDashboard />;
+  }
 
   return (
-    <main className="min-h-screen bg-[#080808] flex items-center justify-center p-6 font-sans">
+    <main className="min-h-screen bg-[#080808] flex items-center justify-center p-6 font-sans text-left">
       <div className="w-full max-w-md bg-[#111] border border-white/10 p-10 rounded-[2.5rem] shadow-2xl">
         
-        {/* Header Section */}
         <div className="text-center mb-10">
           <div className="w-16 h-16 bg-[#ffcc00] rounded-2xl flex items-center justify-center text-black mx-auto mb-6 shadow-[0_0_30px_rgba(255,204,0,0.3)]">
             <Lock size={30} />
@@ -67,7 +100,6 @@ export default function AdminAuth() {
           </p>
         </div>
 
-        {/* Form Section */}
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Username</label>
@@ -109,15 +141,14 @@ export default function AdminAuth() {
             {isLoading ? (
               <Loader2 className="animate-spin" size={18} />
             ) : (
-              <>{isRegister ? 'Register' : 'Login'} <ArrowRight size={18} /></>
+              <>{isRegister ? 'Register Now' : 'Login'} <ArrowRight size={18} /></>
             )}
           </button>
         </form>
 
-        {/* Footer Toggle */}
         <div className="mt-8 text-center pt-6 border-t border-white/5">
           <button 
-            type="button" // Sangat penting agar tidak memicu form submit
+            type="button" 
             onClick={() => setIsRegister(!isRegister)}
             className="text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-[#ffcc00] transition-colors"
           >
