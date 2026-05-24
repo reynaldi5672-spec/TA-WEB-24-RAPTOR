@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import { Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 import AdminDashboard from './AdminDashboard'; 
@@ -11,9 +12,15 @@ export default function AdminAuth() {
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({ username: '', password: '' });
 
+  // Perbaikan Hydration via Asynchronous Animation Frame (Anti-Cascading Warning)
   useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
+    const animationFrameId = requestAnimationFrame(() => {
+      setMounted(true);
+    });
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      setMounted(false);
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,7 +39,7 @@ export default function AdminAuth() {
       const data = await response.json();
 
       if (response.ok) {
-        // Gunakan await pada Swal.fire agar transisi halaman menunggu alert selesai/ditutup
+        // Menunggu alert selesai/ditutup otomatis biar transisi mulus
         await Swal.fire({
           title: 'Success!',
           text: data.message,
@@ -42,14 +49,13 @@ export default function AdminAuth() {
           confirmButtonColor: '#ffcc00',
           confirmButtonText: 'Mantap!',
           timer: 1500,
-          showConfirmButton: false // Biar lebih smooth, biarkan timer yang menutup
+          showConfirmButton: false 
         });
 
         if (isRegister) {
           setIsRegister(false);
           setFormData({ username: '', password: '' });
         } else {
-          // Hanya ganti state jika komponen masih terpasang
           setIsLoggedIn(true);
         }
       } else {
@@ -76,21 +82,25 @@ export default function AdminAuth() {
     }
   };
 
-  // Render logic guard
   if (!mounted) return null;
   
-  // Jika sudah login, langsung tampilkan dashboard tanpa merender form login lagi
   if (isLoggedIn) {
     return <AdminDashboard />;
   }
 
   return (
-    <main className="min-h-screen bg-[#080808] flex items-center justify-center p-6 font-sans text-left">
-      <div className="w-full max-w-md bg-[#111] border border-white/10 p-10 rounded-[2.5rem] shadow-2xl">
+    <main className="min-h-screen bg-[#050505] flex items-center justify-center p-6 font-sans text-left relative overflow-hidden">
+      
+      {/* --- BACKGROUND DECORATION BIAR SERUPA DENGAN HALAMAN UTAMA --- */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 select-none z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+      </div>
+
+      <div className="w-full max-w-md bg-[#0d0d0d] border border-white/5 p-10 rounded-[2.5rem] shadow-2xl relative z-10">
         
         <div className="text-center mb-10">
-          <div className="w-16 h-16 bg-[#ffcc00] rounded-2xl flex items-center justify-center text-black mx-auto mb-6 shadow-[0_0_30px_rgba(255,204,0,0.3)]">
-            <Lock size={30} />
+          <div className="w-16 h-16 bg-[#ffcc00] rounded-2xl flex items-center justify-center text-black mx-auto mb-6 shadow-xl">
+            <Lock size={28} />
           </div>
           <h2 className="text-3xl font-black uppercase italic tracking-tighter text-white">
             {isRegister ? 'Create' : 'Admin'} <span className="text-[#ffcc00]">{isRegister ? 'Account' : 'Login'}</span>
@@ -102,9 +112,9 @@ export default function AdminAuth() {
 
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Username</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Username</label>
             <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={16} />
               <input 
                 type="text" 
                 required
@@ -112,15 +122,15 @@ export default function AdminAuth() {
                 value={formData.username}
                 onChange={(e) => setFormData({...formData, username: e.target.value})}
                 placeholder="AdminID" 
-                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 focus:outline-none focus:border-[#ffcc00]/50 text-white transition-all disabled:opacity-50" 
+                className="w-full bg-white/[0.02] border border-white/10 rounded-2xl py-4 pl-12 pr-6 text-xs font-bold outline-none focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white transition-all duration-300 disabled:opacity-50" 
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Password</label>
+            <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Password</label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={16} />
               <input 
                 type="password" 
                 required
@@ -128,7 +138,7 @@ export default function AdminAuth() {
                 value={formData.password}
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
                 placeholder="••••••••" 
-                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-6 focus:outline-none focus:border-[#ffcc00]/50 text-white transition-all disabled:opacity-50" 
+                className="w-full bg-white/[0.02] border border-white/10 rounded-2xl py-4 pl-12 pr-6 text-xs font-bold outline-none focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white transition-all duration-300 disabled:opacity-50" 
               />
             </div>
           </div>
@@ -136,12 +146,12 @@ export default function AdminAuth() {
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full bg-[#ffcc00] text-black py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.3em] flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-[#ffcc00]/10 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#ffcc00] text-black py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.3em] flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-95 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isLoading ? (
-              <Loader2 className="animate-spin" size={18} />
+              <Loader2 className="animate-spin" size={16} />
             ) : (
-              <>{isRegister ? 'Register Now' : 'Login'} <ArrowRight size={18} /></>
+              <>{isRegister ? 'Register Now' : 'Login Access'} <ArrowRight size={14} /></>
             )}
           </button>
         </form>
@@ -150,7 +160,7 @@ export default function AdminAuth() {
           <button 
             type="button" 
             onClick={() => setIsRegister(!isRegister)}
-            className="text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-[#ffcc00] transition-colors"
+            className="text-[9px] font-black uppercase tracking-widest text-gray-500 hover:text-[#ffcc00] transition-colors cursor-pointer"
           >
             {isRegister ? 'Already have an account? Login' : 'Need an account? Register'}
           </button>

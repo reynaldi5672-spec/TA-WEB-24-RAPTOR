@@ -2,18 +2,18 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Wajib buat deteksi halaman
+import { usePathname } from 'next/navigation'; 
 import { Sun, Moon } from 'lucide-react';
+// 1. IMPORT USETHME GLOBAL DARI CONTEXT
+import { useTheme } from '@/app/context/ThemeContext';
 
-interface NavbarProps {
-  isDarkMode: boolean;
-  setIsDarkMode: (val: boolean) => void;
-}
-
-export default function Navbar({ isDarkMode, setIsDarkMode }: NavbarProps) {
+export default function Navbar() {
   const pathname = usePathname();
+  
+  // 2. CONSUME STATE TEMA GLOBAL (Hapus interface NavbarProps di atas)
+  const { isDarkMode, setIsDarkMode } = useTheme();
 
-  // --- DEFINISI FUNGSI HANDLE CLICK (Taruh di sini) ---
+  // --- DEFINISI FUNGSI HANDLE CLICK ---
   const handleHomeClick = (e: React.MouseEvent) => {
     if (pathname === '/') {
       e.preventDefault();
@@ -24,12 +24,12 @@ export default function Navbar({ isDarkMode, setIsDarkMode }: NavbarProps) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
-    // Jika tidak di "/", dia bakal otomatis pindah ke "/" lewat href
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-[100] backdrop-blur-md flex justify-between items-center p-8 md:px-20 py-6 border-b transition-all duration-500 ${
-      isDarkMode ? 'bg-[#080808]/80 border-white/5' : 'bg-white/70 border-black/5 shadow-sm'
+    /* PERBAIKAN: z-'100' diubah menjadi z-50 standar utility bawaan Tailwind */
+    <nav className={`fixed top-0 left-0 w-full z-50 backdrop-blur-md flex justify-between items-center p-8 md:px-20 py-6 border-b transition-all duration-500 ${
+      isDarkMode ? 'bg-[#050505]/80 border-white/5' : 'bg-white/70 border-black/5 shadow-sm'
     }`}>
       
       {/* Logo */}
@@ -83,7 +83,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }: NavbarProps) {
         {/* Toggle Theme Button */}
         <button 
           onClick={() => setIsDarkMode(!isDarkMode)}
-          className={`p-3 rounded-xl border transition-all duration-300 ${
+          className={`p-3 rounded-xl border transition-all duration-300 cursor-pointer ${
             isDarkMode 
               ? 'bg-white/5 border-white/10 text-[#ffcc00] hover:bg-white/10' 
               : 'bg-black/5 border-black/5 text-[#e6b800] hover:bg-black/10'
