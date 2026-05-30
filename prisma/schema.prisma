@@ -39,3 +39,22 @@ model Destinasi {
   komentar    Komentar[]
 }
 
+model Komentar {
+  id            Int       @id @default(autoincrement())
+  destinasi     Destinasi @relation(fields: [destinasi_id], references: [id])
+  destinasi_id  Int
+  nama_user     String
+  isi_komentar  String
+  rating        Int
+  created_at    DateTime  @default(now())
+
+  @@index([destinasi_id])
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  username    String   @unique
+  password    String
+  role        Role     @default(admin)
+  created_at  DateTime @default(now())
+}
