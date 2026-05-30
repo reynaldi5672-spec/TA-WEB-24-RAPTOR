@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '@/app/components/Navbar'; 
+import { useTheme } from '@/app/context/ThemeContext';
 import { 
   Plane, Ship, ExternalLink, Mail, 
   Globe, Anchor, User, MessageSquare, Share2 
 } from 'lucide-react';
 
 export default function PariwisataLampung() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const { isDarkMode } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function PariwisataLampung() {
       </div>
       
       {/* Panggil Navbar Komponen */}
-      <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+      <Navbar />
 
       {/* --- HERO SECTION --- */}
       {/* SEBELUMNYA: max-w-1400px -> SEKARANG: max-w-7xl (Utility Standard) */}
