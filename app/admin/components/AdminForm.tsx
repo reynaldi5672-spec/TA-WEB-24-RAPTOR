@@ -80,9 +80,8 @@ export default function AdminForm({ theme, onClose, onSuccess, editData }: Admin
   };
 
   return (
-    /* PERBAIKAN: z-200 ilegal diubah ke z-50, bg transparan dan backdrop-blur disesuaikan standar */
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-      <div className={`w-full max-w-2xl rounded-[2.5rem] border p-8 md:p-10 relative transition-colors ${
+      <div className={`w-full max-w-2xl rounded-[2.5rem] border p-8 md:p-10 relative transition-colors max-h-[95vh] overflow-y-auto global-scrollbar ${
         theme === 'dark' ? 'bg-[#0d0d0d] border-white/5 text-white' : 'bg-white border-black/[0.04] text-black shadow-xl'
       }`}>
         
@@ -124,7 +123,8 @@ export default function AdminForm({ theme, onClose, onSuccess, editData }: Admin
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 items-start">
+            {/* --- REVISI: INPUT URL GAMBAR MULTIPLE UNTUK CAROUSEL SLIDER --- */}
             <div className="space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">URL Gambar Wisata</label>
               <input 
@@ -135,12 +135,17 @@ export default function AdminForm({ theme, onClose, onSuccess, editData }: Admin
                 className={`w-full border rounded-xl py-3 px-4 text-sm focus:border-[#ffcc00]/50 outline-none transition-all ${
                   theme === 'dark' ? 'bg-white/[0.02] border-white/10 text-white' : 'bg-gray-50 border-black/5 text-black shadow-inner'
                 }`} 
-                placeholder="https://images.unsplash.com/..." 
+                placeholder="Contoh: https://link1.jpg, https://link2.jpg" 
               />
+              {/* Petunjuk Operasional Pengisian Data Gambar */}
+              <p className="text-[9px] font-medium text-gray-500 italic leading-relaxed mt-1">
+                * Link pertama otomatis jadi **Foto Utama/Cover depan**. Pisahkan link berikutnya dengan <span className="text-[#ffcc00] font-black underline">tanda koma (,)</span> untuk mengaktifkan efek **Slider Carousel** di detail modal klien.
+              </p>
             </div>
+            
             <div className="space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Rating Wisata ({Number(form.rating).toFixed(1)})</label>
-              <input type="range" min="1.0" max="5.0" step="0.1" value={form.rating} onChange={(e) => setForm({...form, rating: parseFloat(e.target.value)})} className="w-full accent-[#ffcc00] mt-2 cursor-pointer" />
+              <input type="range" min="1.0" max="5.0" step="0.1" value={form.rating} onChange={(e) => setForm({...form, rating: parseFloat(e.target.value)})} className="w-full accent-[#ffcc00] mt-4 cursor-pointer" />
             </div>
           </div>
 
@@ -158,7 +163,6 @@ export default function AdminForm({ theme, onClose, onSuccess, editData }: Admin
             />
           </div>
 
-          {/* --- INPUT SELECT DROPDOWN KATEGORI --- */}
           <div className="space-y-2">
             <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Kategori Wisata</label>
             <select 
@@ -174,10 +178,9 @@ export default function AdminForm({ theme, onClose, onSuccess, editData }: Admin
             </select>
           </div>
 
-          {/* --- INPUT CHECKBOX VIRAL --- */}
-          <div className={`flex items-center gap-3 p-4 rounded-xl border transition-colors ${
+          <div className="flex items-center gap-3 p-4 rounded-xl border transition-colors ${
             theme === 'dark' ? 'bg-white/[0.01] border-white/5' : 'bg-gray-50 border-black/5'
-          }`}>
+          }">
             <input 
               type="checkbox" 
               id="is_viral"

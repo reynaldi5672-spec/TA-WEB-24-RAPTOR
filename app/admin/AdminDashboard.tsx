@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Plus, LogOut, LayoutDashboard, Map } from 'lucide-react';
+import { Sun, Moon, Plus, LogOut, LayoutDashboard, MessageSquare } from 'lucide-react'; // <-- Ganti Map jadi MessageSquare
 import AdminTable from './components/AdminTable';
 import AdminForm from './components/AdminForm';
-// 1. IMPORT USETHME GLOBAL DARI CONTEXT
+import AdminCommentsTable from './components/AdminCommentsTable'; // <-- 1. IMPORT TABEL KOMENTAR BARU
 import { useTheme } from '@/app/context/ThemeContext';
 
-// SINKRONISASI INTERFACE AGAR LENGKAP
 interface Destinasi {
   id: number;
   nama: string;
@@ -20,18 +19,17 @@ interface Destinasi {
 }
 
 export default function AdminDashboard() {
-  // 2. KONSUMSI DATA TEMA GLOBAL (Ganti state theme lokal lama)
   const { isDarkMode, setIsDarkMode } = useTheme();
-  
-  // Ubah sebutan variabel biar kompatibel dengan kodingan bawah kamu
   const theme = isDarkMode ? 'dark' : 'light';
+
+  // <-- 2. TAMBAH STATE UNTUK NAVIGASI TAB HALAMAN ADMIN
+  const [activeTab, setActiveTab] = useState<'destinasi' | 'komentar'>('destinasi');
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editData, setEditData] = useState<Destinasi | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Hydration guard modern anti-warning cascading renders
   useEffect(() => {
     const animationFrameId = requestAnimationFrame(() => {
       setMounted(true);
@@ -40,23 +38,22 @@ export default function AdminDashboard() {
   }, []);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
-
   const handleRefresh = () => setRefreshTrigger(!refreshTrigger);
 
   const handleOpenCreateForm = () => {
-    setEditData(null); // Reset form agar kosong
+    setEditData(null);
     setIsFormOpen(true);
   };
 
   const handleOpenEditForm = (item: Destinasi) => {
-    setEditData(item); // Isi form dengan data destinasi yang dipilih
+    setEditData(item);
     setIsFormOpen(true);
   };
 
   const handleFormSuccess = () => {
     setIsFormOpen(false);
     setEditData(null);
-    handleRefresh(); // Refresh isi tabel otomatis
+    handleRefresh();
   };
 
   if (!mounted) return null;
@@ -83,16 +80,31 @@ export default function AdminDashboard() {
         </div>
 
         <div className="flex-1 px-4 space-y-2 relative z-10">
-          <div className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${
-            theme === 'dark' ? 'bg-white/5 text-[#ffcc00]' : 'bg-gray-100 text-blue-600'
-          }`}>
+          {/* BUTTON TAB 1: KELOLA DESTINASI WISATA */}
+          <button 
+            onClick={() => setActiveTab('destinasi')}
+            className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all cursor-pointer ${
+              activeTab === 'destinasi'
+                ? (theme === 'dark' ? 'bg-white/5 text-[#ffcc00]' : 'bg-gray-100 text-blue-600')
+                : 'text-gray-500 hover:text-[#ffcc00]'
+            }`}
+          >
             <LayoutDashboard size={20} />
-            <span className="text-[10px] font-black uppercase tracking-widest hidden md:block">Dashboard</span>
-          </div>
-          <div className="flex items-center gap-4 p-4 rounded-2xl text-gray-500 hover:text-[#ffcc00] cursor-not-allowed transition-colors">
-            <Map size={20} />
-            <span className="text-[10px] font-black uppercase tracking-widest hidden md:block">Settings</span>
-          </div>
+            <span className="text-[10px] font-black uppercase tracking-widest hidden md:block">Destinations</span>
+          </button>
+
+          {/* BUTTON TAB 2: REVISI MANAGE KOMENTAR PUBLIK */}
+          <button 
+            onClick={() => setActiveTab('komentar')}
+            className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all cursor-pointer ${
+              activeTab === 'komentar'
+                ? (theme === 'dark' ? 'bg-white/5 text-[#ffcc00]' : 'bg-gray-100 text-blue-600')
+                : 'text-gray-500 hover:text-[#ffcc00]'
+            }`}
+          >
+            <MessageSquare size={20} />
+            <span className="text-[10px] font-black uppercase tracking-widest hidden md:block">Comments Center</span>
+          </button>
         </div>
 
         <div className="p-8 space-y-4 relative z-10">
@@ -115,36 +127,59 @@ export default function AdminDashboard() {
 
       {/* --- MAIN CONTENT --- */}
       <main className="pl-20 md:pl-64 p-8 md:p-16 relative z-10">
-        {/* PERBAIKAN: max-w-1200px -> max-w-7xl (Standard Utility) */}
         <div className="max-w-7xl mx-auto">
           
-          <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
-            <div className="text-left">
-              <h4 className={`text-[9px] font-black uppercase tracking-[0.4em] mb-3 ${theme === 'dark' ? 'text-[#ffcc00]' : 'text-blue-600'}`}>
-                Control Center // Region: BDL
-              </h4>
-              <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
-                Kelola <br /> <span className="opacity-25">Wisata Lampung</span>
-              </h2>
-            </div>
-            
-            <button 
-              onClick={handleOpenCreateForm}
-              className="bg-[#ffcc00] text-black px-8 py-4.5 rounded-xl font-black uppercase text-[10px] tracking-[0.3em] flex items-center gap-2 hover:scale-[1.02] transition-transform shadow-lg cursor-pointer"
-            >
-              <Plus size={18} /> Tambah Destinasi
-            </button>
-          </header>
+          {/* CONDITION RENDERING BERDASARKAN TAB YANG AKTIF */}
+          {activeTab === 'destinasi' ? (
+            <>
+              {/* TAMPILAN HALAMAN UTAMA KELOLA WISATA */}
+              <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
+                <div className="text-left">
+                  <h4 className={`text-[9px] font-black uppercase tracking-[0.4em] mb-3 ${theme === 'dark' ? 'text-[#ffcc00]' : 'text-blue-600'}`}>
+                    Control Center // Region: BDL
+                  </h4>
+                  <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
+                    Kelola <br /> <span className="opacity-25">Wisata Lampung</span>
+                  </h2>
+                </div>
+                
+                <button 
+                  onClick={handleOpenCreateForm}
+                  className="bg-[#ffcc00] text-black px-8 py-4.5 rounded-xl font-black uppercase text-[10px] tracking-[0.3em] flex items-center gap-2 hover:scale-[1.02] transition-transform shadow-lg cursor-pointer"
+                >
+                  <Plus size={18} /> Tambah Destinasi
+                </button>
+              </header>
 
-          {/* TABLE COMPONENT */}
-          <AdminTable 
-            theme={theme} 
-            onEdit={handleOpenEditForm} 
-            refreshTrigger={refreshTrigger} 
-            onRefresh={handleRefresh} 
-          />
+              <AdminTable 
+                theme={theme} 
+                onEdit={handleOpenEditForm} 
+                refreshTrigger={refreshTrigger} 
+                onRefresh={handleRefresh} 
+              />
+            </>
+          ) : (
+            <>
+              {/* TAMPILAN REVISI KELOLA KOMENTAR TOXIC */}
+              <header className="text-left mb-16">
+                <h4 className="text-[9px] font-black uppercase tracking-[0.4em] mb-3 text-red-500">
+                  Security Gate // Anti-Spam & Hate Speech
+                </h4>
+                <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
+                  Moderasi <br /> <span className="opacity-25">Komentar Publik</span>
+                </h2>
+              </header>
 
-          {/* MODAL FORM */}
+              {/* RENDER KOMPONEN TABEL MANAGE KOMENTAR */}
+              <AdminCommentsTable 
+                theme={theme}
+                refreshTrigger={refreshTrigger}
+                onRefresh={handleRefresh}
+              />
+            </>
+          )}
+
+          {/* MODAL FORM INPUT WISATA */}
           {isFormOpen && (
             <AdminForm 
               theme={theme} 

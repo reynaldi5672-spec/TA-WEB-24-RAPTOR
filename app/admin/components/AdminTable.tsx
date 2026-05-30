@@ -129,7 +129,8 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
                 <td className="p-4">
                   <div className="flex items-center gap-4">
                     <img 
-                      src={item.gambar_url || 'https://via.placeholder.com/150'} 
+                      // Dipotong berdasarkan koma, ambil indeks ke-0 (foto pertama)
+                      src={item.gambar_url ? item.gambar_url.split(',')[0].trim() : 'https://via.placeholder.com/150?text=No+Image'} 
                       alt="" 
                       className="w-12 h-12 object-cover rounded-xl border border-white/5 bg-gray-900" 
                     />

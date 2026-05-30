@@ -185,8 +185,9 @@ export default function DestinasiPage() {
               >
                 {/* Image Wrap */}
                 <div className="h-72 w-full relative overflow-hidden bg-gray-900">
+                  {/* --- REVISI UTAMA: AMBIL LINK GAMBAR PERTAMA DI SINI --- */}
                   <img 
-                    src={item.gambar_url || 'https://via.placeholder.com/800x600?text=No+Image'} 
+                    src={item.gambar_url ? item.gambar_url.split(',')[0].trim() : 'https://via.placeholder.com/800x600?text=No+Image'} 
                     alt={item.nama}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
@@ -261,7 +262,6 @@ export default function DestinasiPage() {
         {selectedDestinasi && (
           <DetailModal 
             item={selectedDestinasi} 
-            isDarkMode={isDarkMode} 
             onClose={() => setSelectedDestinasi(null)} 
           />
         )}
