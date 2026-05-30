@@ -1,22 +1,32 @@
 import { NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
 
+    if (!username || !password) {
+      return NextResponse.json({ message: 'Username dan password wajib diisi!' }, { status: 400 });
+    }
+
     // Cek apakah username sudah ada
-    const existingUser = await query('SELECT * FROM users WHERE username = $1', [username]);
-    if (existingUser.rows.length > 0) {
+    const existingUser = await prisma.user.findUnique({
+      where: { username },
+    });
+
+    if (existingUser) {
       return NextResponse.json({ message: 'Username sudah terdaftar' }, { status: 400 });
     }
 
     // Simpan user baru (Role default: admin)
-    // Tips: Untuk joki pro, idealnya password di-hash dulu pakai bcrypt
-    await query(
-      'INSERT INTO users (username, password, role) VALUES ($1, $2, $3)',
-      [username, password, 'admin']
-    );
+    // TODO: Hash password dengan bcrypt sebelum menyimpan
+    await prisma.user.create({
+      data: {
+        username,
+        password,
+        role: 'admin',
+      },
+    });
 
     return NextResponse.json({ message: 'Registrasi Berhasil' }, { status: 201 });
   } catch (error: unknown) {

@@ -1,15 +1,21 @@
 // app/api/auth/login/route.ts
 import { NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
-    const res = await query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
 
-    if (res.rows.length > 0) {
-      // Pastikan statusnya 200
-      return NextResponse.json({ message: 'Login Berhasil', user: res.rows[0] }, { status: 200 });
+    if (!username || !password) {
+      return NextResponse.json({ message: 'Username dan password wajib diisi!' }, { status: 400 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
+
+    if (user && user.password === password) {
+      return NextResponse.json({ message: 'Login Berhasil', user }, { status: 200 });
     } else {
       return NextResponse.json({ message: 'Username atau Password salah' }, { status: 401 });
     }
