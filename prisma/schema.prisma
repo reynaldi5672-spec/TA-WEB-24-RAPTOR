@@ -10,3 +10,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum DestinasiKategori {
+  pantai
+  wisata_alam
+  wisata_kota
+  heritage
+  kuliner
+  adventure
+}
+
+enum Role {
+  admin
+  editor
+  guest
+}
+
