@@ -1,0 +1,12 @@
+// Prisma schema for website informasi wisata hits Bandar Lampung.
+// Model ini cocok untuk data destinasi, komentar pengunjung, dan admin.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
