@@ -59,7 +59,6 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
       cancelButtonColor: theme === 'dark' ? '#222' : '#aaa',
       confirmButtonText: 'Ya, Hapus!',
       cancelButtonText: 'Batal',
-      confirmButtonText: 'Ya, Hapus!'
     });
 
     if (confirm.isConfirmed) {
