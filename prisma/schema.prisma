@@ -25,3 +25,17 @@ enum Role {
   guest
 }
 
+model Destinasi {
+  id          Int                 @id @default(autoincrement())
+  nama        String
+  lokasi      String
+  deskripsi   String
+  gambar_url  String?
+  rating      Float               @default(0)
+  is_viral    Boolean             @default(false)
+  kategori    DestinasiKategori   @default(pantai)
+  created_at  DateTime            @default(now())
+  updated_at  DateTime            @updatedAt
+  komentar    Komentar[]
+}
+
