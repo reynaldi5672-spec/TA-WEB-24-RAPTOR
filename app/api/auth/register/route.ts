@@ -1,22 +1,27 @@
 import { NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import { prisma } from '@/lib/prisma'; // Import instance Prisma global kita jirr
 
 export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
 
-    // Cek apakah username sudah ada
-    const existingUser = await query('SELECT * FROM users WHERE username = $1', [username]);
-    if (existingUser.rows.length > 0) {
+    // 1. Cek apakah username sudah ada pake findUnique
+    const existingUser = await prisma.users.findUnique({
+      where: { username: username },
+    });
+
+    if (existingUser) {
       return NextResponse.json({ message: 'Username sudah terdaftar' }, { status: 400 });
     }
 
-    // Simpan user baru (Role default: admin)
-    // Tips: Untuk joki pro, idealnya password di-hash dulu pakai bcrypt
-    await query(
-      'INSERT INTO users (username, password, role) VALUES ($1, $2, $3)',
-      [username, password, 'admin']
-    );
+    // 2. Simpan user baru (Role default: admin, auto-handle sesuai default di skema atau taruh sini)
+    await prisma.users.create({
+      data: {
+        username,
+        password, // Tips lamo tetep berlaku: next time idealnya di-hash pake bcrypt jirr :v
+        role: 'admin',
+      },
+    });
 
     return NextResponse.json({ message: 'Registrasi Berhasil' }, { status: 201 });
   } catch (error: unknown) {
