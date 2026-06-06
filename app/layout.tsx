@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VisitBDL - Destinasi Wisata Lampung",
+  title: "WISATA BANDAR LAMPUNG - Destinasi Wisata Lampung",
   description: "Eksplorasi petualangan bahari dan pariwisata urban terbaik di Bandar Lampung",
 };
 
