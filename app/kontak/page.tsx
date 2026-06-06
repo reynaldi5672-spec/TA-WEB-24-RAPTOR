@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '@/app/components/Navbar';
 // IMPORT THEME GLOBAL
 import { useTheme } from '@/app/context/ThemeContext';
-import { Mail, Phone, MapPin, Send, MessageSquare, Loader2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Loader2, Compass } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 export default function KontakPage() {
@@ -75,46 +75,97 @@ export default function KontakPage() {
         
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           
-          {/* --- LEFT SIDE: INFO & SOSMED --- */}
-          <section className="text-left space-y-6">
-            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
-              isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#e6b800]'
-            }`}>
-              <MessageSquare size={12} className="animate-pulse" /> Get In Touch
-            </div>
-            
-            <h1 className="text-6xl md:text-7xl font-black leading-[0.85] uppercase italic tracking-tighter">
-              Hubungi <br /> 
-              <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.25)]">Kami</span>
-            </h1>
+          {/* --- SISI KIRI: KARTU GLASSMORPHISM UTAMA "HUBUNGI KAMI" --- */}
+<section className="lg:col-span-5 space-y-6">
+  
+  {/* Link Google Font untuk Gaya Huruf Petualangan/Brush */}
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet" />
 
-            <p className={`text-xs md:text-sm font-medium leading-relaxed max-w-md pb-4 ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-500'
-            }`}>
-              Punya pertanyaan seputar wisata di Bandar Lampung? Atau mau kerja sama bareng VisitBDL? Langsung aja drop pesan di samping ya!
-            </p>
+  {/* KARTU UTAMA DENGAN BACKGROUND GUNUNG */}
+  <div 
+    className={`p-8 rounded-[2rem] border backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500 ${
+      isDarkMode 
+        ? 'bg-black/30 border-white/10 shadow-black/40' 
+        : 'bg-white/40 border-black/5 shadow-slate-200/40'
+    }`}
+    style={{
+      backgroundImage: `linear-gradient(${
+        isDarkMode ? 'rgba(0,0,0,0.65), rgba(0,0,0,0.75)' : 'rgba(255,255,255,0.6), rgba(255,255,255,0.7)'
+      }), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}
+  >
+    {/* Badge Get In Touch */}
+    <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-md shadow-sm mb-6 transition-all duration-500 ${
+      isDarkMode ? 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#ffcc00]' : 'bg-[#ffcc00]/20 border-[#ffcc00]/40 text-[#bf9600]'
+    }`}>
+      <Compass size={13} className="animate-[spin_8s_linear_infinite]" /> Get In Touch
+    </div>
+    
+    {/* Judul Utama dengan Font Kaushan Script (Gaya Tulis Tangan Wisata) */}
+    <div className="space-y-1 mb-6">
+      <h1 
+        className="text-5xl md:text-6xl font-normal leading-none tracking-wide text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]"
+        style={{ fontFamily: "'Kaushan Script', cursive" }}
+      >
+        Hubungi
+      </h1>
+      <h1 
+        className="text-6xl md:text-7xl font-normal leading-none tracking-wide text-[#ffcc00] drop-shadow-[0_4px_12px_rgba(255,204,0,0.3)]"
+        style={{ fontFamily: "'Kaushan Script', cursive" }}
+      >
+        Kami
+      </h1>
+    </div>
 
-            {/* Contact Details Cards */}
-            <div className="space-y-6 pt-4">
-              {[
-                { icon: Mail, label: 'Email Resmi', value: 'hello@visitbdl.com', color: 'text-blue-400' },
-                { icon: Phone, label: 'WhatsApp Bisnis', value: '+62 812 3456 7890', color: 'text-green-400' },
-                { icon: MapPin, label: 'Kantor Pusat', value: 'Bandar Lampung, Indonesia', color: 'text-red-400' },
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-5 group">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 ${
-                    isDarkMode ? 'bg-white/[0.02] border-white/5 text-white' : 'bg-white border-black/5 shadow-sm text-black'
-                  }`}>
-                    <item.icon size={22} className={item.color} />
-                  </div>
-                  <div>
-                    <div className="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">{item.label}</div>
-                    <div className="text-lg font-black tracking-tight">{item.value}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+    {/* Deskripsi Teks */}
+    <p className={`text-sm font-medium leading-relaxed ${
+      isDarkMode ? 'text-gray-200' : 'text-slate-800'
+    }`}>
+      Punya pertanyaan seputar destinasi wisata alam eksotis di Bandar Lampung? Atau tertarik berkolaborasi bersama VisitBDL? Drop pesan Anda di samping ya!
+    </p>
+  </div>
+
+  {/* --- KARTU KONTAK BAWAH (EMAIL, WA, MAPS) DENGAN EFEK GLOW BLUE DI TEPI --- */}
+  <div className={`p-4 rounded-[2rem] border backdrop-blur-xl transition-all duration-500 space-y-3 ${
+    isDarkMode 
+      ? 'bg-black/20 border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.1)]' 
+      : 'bg-white/30 border-blue-400/20 shadow-sm'
+  }`}>
+    {[
+      { icon: Mail, label: 'Email Resmi', value: 'hello@visitbdl.com', iconColor: 'text-blue-400' },
+      { icon: Phone, label: 'WhatsApp Bisnis', value: '+62 812 3456 7890', iconColor: 'text-emerald-400' },
+      { icon: MapPin, label: 'Kantor Pusat', value: 'Bandar Lampung, Indonesia', iconColor: 'text-rose-400', hasMapIcon: true },
+    ].map((item, idx) => (
+      <div 
+        key={idx} 
+        className={`flex items-center justify-between p-3 rounded-xl border transition-all duration-300 group ${
+          isDarkMode ? 'border-white/[0.02] hover:bg-white/5' : 'border-black/[0.02] hover:bg-black/5'
+        }`}
+      >
+        <div className="flex items-center gap-4">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
+            isDarkMode ? 'bg-black/30 border-white/5' : 'bg-white border-black/5 shadow-sm'
+          } group-hover:scale-105 transition-transform`}>
+            <item.icon size={18} className={item.iconColor} />
+          </div>
+          <div>
+            <div className="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">{item.label}</div>
+            <div className="text-sm font-bold tracking-tight">{item.value}</div>
+          </div>
+        </div>
+        
+        {/* Penambahan Icon Peta Mini di Sebelah Kanan Sesuai Gambar Rujukan */}
+        {item.hasMapIcon && (
+          <div className="text-amber-400 p-2 bg-amber-400/10 rounded-lg border border-amber-400/20">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</section>
 
           {/* --- RIGHT SIDE: FORM BLOCK --- */}
           <section>
