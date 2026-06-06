@@ -56,11 +56,17 @@ export default function KontakPage() {
       isDarkMode ? 'bg-[#050505] text-white' : 'bg-[#f8f9fa] text-[#1a1a1a]'
     }`}>
       
-      {/* --- BACKGROUND VECTOR DECORATION --- */}
-      <div className="absolute top-0 inset-x-0 h-125 pointer-events-none opacity-40 select-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-        <div className={`absolute bottom-0 h-40 w-full bg-gradient-to-t ${isDarkMode ? 'from-[#050505]' : 'from-[#f8f9fa]'} to-transparent`}></div>
-      </div>
+     {/* ---  BACKGROUND & OVERLAY --- */}
+<div 
+  className="absolute inset-0 bg-cover bg-center transition-all duration-700 z-0"
+  style={{
+    backgroundImage: `linear-gradient(${
+      isDarkMode 
+        ? 'rgba(5, 7, 10, 0.85), rgba(5, 10, 15, 0.92)' 
+        : 'rgba(248, 249, 250, 0.80), rgba(240, 244, 248, 0.90)'
+    }), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')`
+  }}
+/>
       
       <Navbar />
 
