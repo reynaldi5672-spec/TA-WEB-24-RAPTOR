@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // Import instance Prisma Client global kita jirr
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma'; // Import instance Prisma Client global kita jirr
 
 // ==========================================
 // 1. READ: Ambil Komentar (GET)
@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma"; // Import instance Prisma Client global k
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const destinasiId = searchParams.get("destinasi_id");
+    const destinasiId = searchParams.get('destinasi_id');
 
     let komentar;
 
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       // Ambil komentar berdasarkan destinasi_id tertentu
       komentar = await prisma.komentar.findMany({
         where: { destinasi_id: Number(destinasiId) },
-        orderBy: { created_at: "desc" },
+        orderBy: { created_at: 'desc' },
       });
     } else {
       // Trik JOIN Prisma: Ambil semua komentar + nama destinasi-nya
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
             select: { nama: true }, // Cuma ambil kolom 'nama' dari tabel destinasi
           },
         },
-        orderBy: { created_at: "desc" },
+        orderBy: { created_at: 'desc' },
       });
 
       // Format ulang datanya biar strukturnya mirip kodingan lamo (k.nama_destinasi)
@@ -36,14 +36,13 @@ export async function GET(request: Request) {
         isi_komentar: k.isi_komentar,
         rating: k.rating,
         created_at: k.created_at,
-        nama_destinasi: k.destinasi?.nama || "Destinasi Tidak Diketahui",
+        nama_destinasi: k.destinasi?.nama || 'Destinasi Tidak Diketahui',
       }));
     }
 
     return NextResponse.json(komentar, { status: 200 });
   } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Gagal mengambil komentar";
+    const errorMessage = error instanceof Error ? error.message : 'Gagal mengambil komentar';
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
@@ -57,29 +56,22 @@ export async function POST(request: Request) {
     const { destinasi_id, nama_user, isi_komentar, rating } = body;
 
     if (!destinasi_id || !nama_user || !isi_komentar || !rating) {
-      return NextResponse.json(
-        { message: "Semua data wajib diisi!" },
-        { status: 400 },
-      );
+      return NextResponse.json({ message: 'Semua data wajib diisi!' }, { status: 400 });
     }
 
     // Pakai Prisma create untuk masukin review/rating baru
     const newKomentar = await prisma.komentar.create({
       data: {
         destinasi_id: Number(destinasi_id), // Pastikan Int
-        nama_user: nama_user || "Anonim",
+        nama_user: nama_user || 'Anonim',
         isi_komentar,
         rating: Number(rating), // Pastikan Int
       },
     });
 
-    return NextResponse.json(
-      { message: "Komentar berhasil dikirim!", data: newKomentar },
-      { status: 201 },
-    );
+    return NextResponse.json({ message: 'Komentar berhasil dikirim!', data: newKomentar }, { status: 201 });
   } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Terjadi kesalahan sistem";
+    const errorMessage = error instanceof Error ? error.message : 'Terjadi kesalahan sistem';
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
@@ -90,13 +82,10 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
+    const id = searchParams.get('id');
 
     if (!id) {
-      return NextResponse.json(
-        { message: "ID Komentar diperlukan!" },
-        { status: 400 },
-      );
+      return NextResponse.json({ message: 'ID Komentar diperlukan!' }, { status: 400 });
     }
 
     // Eksekusi delete pakai Prisma berdasarkan ID komentar
@@ -104,13 +93,9 @@ export async function DELETE(request: Request) {
       where: { id: Number(id) },
     });
 
-    return NextResponse.json(
-      { message: "Komentar toxic berhasil dimusnahkan!" },
-      { status: 200 },
-    );
+    return NextResponse.json({ message: 'Komentar toxic berhasil dimusnahkan!' }, { status: 200 });
   } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Terjadi kesalahan sistem";
+    const errorMessage = error instanceof Error ? error.message : 'Terjadi kesalahan sistem';
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }

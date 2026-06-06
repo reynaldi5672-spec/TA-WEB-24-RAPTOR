@@ -37,3 +37,5 @@ model users {
   role       String?   @default("admin") @db.VarChar(20)
   created_at DateTime? @default(now()) @db.Timestamp(6)
 }
+
+
