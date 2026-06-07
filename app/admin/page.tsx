@@ -12,7 +12,7 @@ export default function AdminAuth() {
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   // login admin
-  const [formData, setFormData] = useState({ username: 'admin', password: '123' });
+  const [formData, setFormData] = useState({ username: 'saya', password: '567' });
 
   // Perbaikan Hydration via Asynchronous Animation Frame (Anti-Cascading Warning)
   useEffect(() => {
