@@ -4,13 +4,38 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '@/app/components/Navbar'; 
 import { 
-  Plane, Ship, ExternalLink, Mail, 
-  Globe, Anchor, User, MessageSquare, Share2 
+  ExternalLink, Mail, Globe, Anchor, 
+  User, MessageSquare, Share2, ChevronLeft, ChevronRight 
 } from 'lucide-react';
+
+// Data Foto Slide Destinasi Lampung (Silakan ganti URL gambarnya sesuai kebutuhan Anda)
+const DESTINASI_SLIDES = [
+  {
+    id: 1,
+    title: "Pulau Pahawang",
+    category: "Bahari",
+    image: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 2,
+    title: "Gigi Hiu",
+    category: "Pantai Eksotis",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 3,
+    title: "Taman Nasional Way Kambas",
+    category: "Konservasi",
+    image: "https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&w=800&q=80"
+  },
+];
 
 export default function PariwisataLampung() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [mounted, setMounted] = useState(false);
+  
+  // State untuk melacak index foto yang sedang aktif
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const animationFrameId = requestAnimationFrame(() => {
@@ -19,178 +44,196 @@ export default function PariwisataLampung() {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
+  // Fungsi Navigasi Slider
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev === DESTINASI_SLIDES.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? DESTINASI_SLIDES.length - 1 : prev - 1));
+  };
+
   if (!mounted) return null;
 
   return (
-    <main id="home" className={`min-h-screen transition-colors duration-700 relative overflow-hidden ${
-      isDarkMode ? 'bg-[#050505] text-white' : 'bg-[#f8f9fa] text-[#1a1a1a]'
-    } selection:bg-[#ffcc00]/30`}>
+    <main 
+      id="home" 
+      className={`min-h-screen transition-colors duration-700 relative overflow-hidden font-sans ${
+        isDarkMode ? 'bg-[#050505] text-white' : 'bg-[#f8f9fa] text-[#1a1a1a]'
+      } selection:bg-[#ffcc00]/30`}
+    >
       
       {/* --- BACKGROUND VECTOR DECORATION --- */}
-      <div className="absolute top-0 inset-x-0 h-125 pointer-events-none opacity-40 select-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+      <div className="absolute top-0 inset-x-0 h-[500px] pointer-events-none opacity-40 select-none z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         <div className={`absolute bottom-0 h-40 w-full bg-gradient-to-t ${isDarkMode ? 'from-[#050505]' : 'from-[#f8f9fa]'} to-transparent`}></div>
       </div>
       
-      {/* Panggil Navbar Komponen */}
+      {/* Navbar Komponen */}
       <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
 
       {/* --- HERO SECTION --- */}
-      {/* SEBELUMNYA: max-w-1400px -> SEKARANG: max-w-7xl (Utility Standard) */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 pt-44 pb-24 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-40 pb-24 relative z-10">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* LEFT CONTENT */}
-          <section className="text-left space-y-6">
-            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
-              isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#e6b800]'
+          {/* LEFT CONTENT (6 Columns) */}
+          <section className="lg:col-span-6 text-left space-y-8">
+            {/* Tag Badge */}
+            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-md shadow-sm transition-all duration-500 ${
+              isDarkMode 
+                ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' 
+                : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#b38f00]'
             }`}>
               <Globe size={12} className="animate-pulse" /> The Gateway of Sumatra
             </div>
             
-            <h1 className="text-6xl md:text-8xl font-black leading-[0.85] uppercase italic tracking-tighter">
-              Bandar <br /> 
-              <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.25)]">Lampung</span>
-            </h1>
-            
-            <div className="flex items-center gap-3">
-              <h2 className={`text-xl md:text-2xl font-light tracking-wide transition-colors duration-500 ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>Explore Urban Tourism</h2>
-              <span className="h-6 w-0.5 bg-[#ffcc00] animate-pulse"></span>
+            {/* Main Heading */}
+            <div className="space-y-2">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] uppercase tracking-tighter">
+                Bandar <br /> 
+                <span className="bg-gradient-to-r from-[#ffcc00] to-[#ffb300] bg-clip-text text-transparent drop-shadow-[0_10px_30px_rgba(255,204,0,0.15)]">
+                  Lampung
+                </span>
+              </h1>
             </div>
             
-            <p className={`max-w-lg leading-relaxed text-xs md:text-sm font-medium transition-colors duration-500 ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            {/* Sub-heading */}
+            <div className="flex items-center gap-3">
+              <span className="h-6 w-1 bg-[#ffcc00] rounded-full"></span>
+              <h2 className={`text-lg md:text-xl font-medium tracking-wide transition-colors duration-500 ${
+                isDarkMode ? 'text-gray-300' : 'text-gray-700'
+              }`}>
+                Explore Urban Tourism
+              </h2>
+            </div>
+            
+            {/* Description */}
+            <p className={`max-w-xl leading-relaxed text-sm md:text-base font-normal transition-colors duration-500 ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
             }`}>
-              Rasakan perpaduan sempurna antara petualangan bahari yang eksotis dan gaya hidup urban yang hits di jantung kota Lampung.
+              Rasakan perpaduan sempurna antara petualangan bahari yang eksotis dan gaya hidup urban yang dinamis tepat di jantung gerbang pulau Sumatra.
             </p>
 
-            {/* Buttons Group */}
-            <div className="flex flex-wrap gap-4 pt-4">
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-4 pt-2">
               <Link href="/destinasi">
-                <button className={`px-8 py-4 rounded-2xl flex items-center gap-2.5 border transition-all duration-300 font-black text-[10px] uppercase tracking-wider cursor-pointer ${
+                <button className={`px-8 py-4 rounded-xl flex items-center gap-2.5 border transition-all duration-300 font-bold text-xs uppercase tracking-wider cursor-pointer hover:-translate-y-0.5 ${
                   isDarkMode 
-                  ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white shadow-inner' 
-                  : 'bg-white border-black/10 hover:bg-gray-50 shadow-md text-[#1a1a1a]'
+                    ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white hover:border-white/20' 
+                    : 'bg-white border-black/10 hover:bg-gray-50 shadow-sm text-[#1a1a1a] hover:border-black/20'
                 }`}>
                   Lihat Destinasi <ExternalLink size={14} />
                 </button>
               </Link>
-              <button className="bg-[#0055ff] hover:bg-[#0044cc] px-8 py-4 rounded-2xl flex items-center gap-2.5 text-white font-black text-[10px] uppercase tracking-wider shadow-lg shadow-[#0055ff]/20 hover:scale-105 transition-all cursor-pointer">
+              
+              <button className="bg-[#0055ff] hover:bg-[#0044cc] px-8 py-4 rounded-xl flex items-center gap-2.5 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#0055ff]/15 hover:shadow-[#0055ff]/25 hover:-translate-y-0.5 transition-all cursor-pointer">
                 Booking <Mail size={14} />
               </button>
             </div>
 
-            {/* Sosmed Icons */}
-            <div className={`flex gap-6 pt-6 transition-colors duration-500 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>
-              <User className="hover:text-[#ffcc00] cursor-pointer transition-colors" size={20} />
-              <MessageSquare className="hover:text-[#ffcc00] cursor-pointer transition-colors" size={20} />
-              <Share2 className="hover:text-[#ffcc00] cursor-pointer transition-colors" size={20} />
+            {/* Social Media Links */}
+            <div className="pt-4 space-y-3">
+              <span className={`text-[10px] font-bold uppercase tracking-widest block ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>Connect With Us</span>
+              <div className={`flex gap-5 transition-colors duration-500 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                <User className="hover:text-[#ffcc00] cursor-pointer transition-all hover:scale-110" size={18} />
+                <MessageSquare className="hover:text-[#ffcc00] cursor-pointer transition-all hover:scale-110" size={18} />
+                <Share2 className="hover:text-[#ffcc00] cursor-pointer transition-all hover:scale-110" size={18} />
+              </div>
             </div>
           </section>
 
-          {/* RIGHT VISUAL INTERFACE */}
-          <section className="relative">
-            <div className={`absolute -inset-10 blur-[120px] rounded-full transition-all duration-700 pointer-events-none ${
-              isDarkMode ? 'bg-[#ffcc00]/5' : 'bg-[#ffcc00]/15'
+          {/* RIGHT VISUAL INTERFACE (6 Columns - Digandeng untuk Slider Luas) */}
+          <section className="lg:col-span-6 relative mt-8 lg:mt-0">
+            {/* Glow Aura Background Effect */}
+            <div className={`absolute -inset-4 blur-[100px] rounded-full transition-all duration-700 pointer-events-none z-0 ${
+              isDarkMode ? 'bg-[#ffcc00]/5' : 'bg-[#ffcc00]/10'
             }`}></div>
             
-            <div className={`relative border rounded-[2.5rem] p-6 md:p-10 transition-all duration-500 ${
-              isDarkMode ? 'bg-[#0d0d0d] border-white/5 shadow-2xl' : 'bg-white border-black/[0.04] shadow-md'
+            {/* Main Card Terminal Container */}
+            <div className={`relative border rounded-[2rem] p-6 md:p-8 transition-all duration-500 z-10 ${
+              isDarkMode ? 'bg-[#0d0d0d]/90 border-white/5 shadow-2xl' : 'bg-white border-black/[0.05] shadow-xl'
             }`}>
-              <div className="flex justify-between items-center mb-8">
-                  <div className="flex items-center gap-3">
-                      <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></div>
-                      <span className="text-[9px] uppercase tracking-[0.4em] text-gray-500 'font-mono' font-black">System Live</span>
-                  </div>
-                  <div className={`text-[9px] font-mono tracking-widest ${isDarkMode ? 'text-gray-700' : 'text-gray-400'}`}>REGION: BDL // 5.42S 105.26E</div>
+              
+              {/* Card Header Title */}
+              <div className="flex justify-between items-center mb-5">
+                <h3 className={`text-sm font-bold uppercase tracking-widest ${isDarkMode ? 'text-gray-300' : 'text-gray-800'}`}>
+                  Pilih Tempat Anda
+                </h3>
+                <div className={`text-[9px] font-mono tracking-wider ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>
+                  SLIDE // {currentSlide + 1} OF {DESTINASI_SLIDES.length}
+                </div>
               </div>
 
-              {/* --- MAP CONTAINER DENGAN BACKGROUND EDITAN MAP REALISTIS & JANGKAR MATI NYALA --- */}
-              {/* SEBELUMNYA: min-h-350px -> SEKARANG: min-h-80 (Utility Class Standard) */}
-              <div className={`rounded-[2rem] p-8 border min-h-80 relative overflow-hidden transition-colors duration-500 ${
-                isDarkMode ? 'bg-black/60 border-white/5' : 'bg-[#fcfcfc] border-black/5 shadow-inner'
-              }`}>
-                  
-                  {/* Pola Garis Kontur Geografis / Peta Topografi */}
-                  <div className="absolute inset-0 pointer-events-none opacity-20">
-                      <div className="absolute inset-0 bg-[radial-gradient(#80808015_1.5px,transparent_1.5px)] bg-[size:24px_24px]"></div>
-                      <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                        <path 
-                          d="M-100,200 Q100,100 300,250 T700,150 T1100,300" 
-                          fill="none" 
-                          stroke={isDarkMode ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.04)"} 
-                          strokeWidth="2" 
-                          strokeDasharray="5,5"
-                        />
-                        <path 
-                          d="M-50,280 Q200,180 450,320 T900,200 T1300,350" 
-                          fill="none" 
-                          stroke={isDarkMode ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.02)"} 
-                          strokeWidth="3" 
-                        />
-                        <path 
-                          d="M100,50 Q400,200 600,100 T1200,220" 
-                          fill="none" 
-                          stroke={isDarkMode ? "rgba(255,204,0,0.03)" : "rgba(255,204,0,0.08)"} 
-                          strokeWidth="1.5" 
-                        />
-                      </svg>
-                  </div>
+              {/* --- IMAGE SLIDER CONTAINER --- */}
+              <div className="relative h-80 rounded-2xl overflow-hidden group shadow-inner">
+                {/* Image Rendering */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={DESTINASI_SLIDES[currentSlide].image} 
+                  alt={DESTINASI_SLIDES[currentSlide].title}
+                  className="w-full h-full object-cover transition-all duration-750 scale-100 group-hover:scale-105" 
+                />
 
-                  <div className="flex gap-2 mb-8 relative z-10">
-                      <div className="w-12 h-1.5 bg-[#ffcc00] rounded-full"></div>
-                      <div className={`w-6 h-1.5 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}></div>
-                  </div>
-                  
-                  {/* Floating Cards - Airport (Stabil Kokoh) */}
-                  <div className={`absolute top-10 right-6 border p-4 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-500 hover:scale-[1.02] relative z-10 ${
-                    isDarkMode ? 'bg-[#1a1a1a]/90 backdrop-blur-md border-white/10 text-white' : 'bg-white/90 backdrop-blur-md border-black/5 text-[#1a1a1a]'
-                  }`}>
-                      <div className="p-2.5 bg-blue-500/10 rounded-xl"><Plane size={18} className="text-blue-400" /></div>
-                      <div className="text-left">
-                        <div className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">Airport</div>
-                        <div className="text-xs font-black">Radin Inten II</div>
-                      </div>
-                  </div>
+                {/* Gradient Overlay Teks di Atas Foto */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6 text-left">
+                  <span className="text-[9px] font-black uppercase bg-[#ffcc00] text-black px-2 py-0.5 rounded w-max mb-1.5 tracking-wider">
+                    {DESTINASI_SLIDES[currentSlide].category}
+                  </span>
+                  <h4 className="text-xl font-black text-white uppercase tracking-tight">
+                    {DESTINASI_SLIDES[currentSlide].title}
+                  </h4>
+                </div>
 
-                  {/* Floating Cards - Harbor (Stabil Kokoh) */}
-                  <div className={`absolute bottom-12 left-6 border p-4 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-500 hover:scale-[1.02] relative z-10 ${
-                    isDarkMode ? 'bg-[#1a1a1a]/90 backdrop-blur-md border-white/10 text-white' : 'bg-white/90 backdrop-blur-md border-black/5 text-[#1a1a1a]'
-                  }`}>
-                      <div className="p-2.5 bg-green-500/10 rounded-xl"><Ship size={18} className="text-green-400" /></div>
-                      <div className="text-left">
-                        <div className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">Harbor</div>
-                        <div className="text-xs font-black">Bakauheni</div>
-                      </div>
-                  </div>
+                {/* Tombol Geser Kiri (Prev) */}
+                <button 
+                  onClick={prevSlide}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-black/40 hover:bg-black/70 border border-white/10 text-white flex items-center justify-center backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                >
+                  <ChevronLeft size={18} />
+                </button>
 
-                  {/* SIMBOL JANGKAR MATI NYALA (PULSE RADAR EFFECT) */}
-                  <div className="absolute bottom-10 right-10 animate-pulse [animation-duration:2.5s] pointer-events-none select-none">
-                    <Anchor 
-                      size={130} 
-                      className={`transition-colors duration-500 ${
-                        isDarkMode 
-                          ? 'text-white/[0.04] drop-shadow-[0_0_15px_rgba(255,255,255,0.02)]' 
-                          : 'text-black/[0.03] drop-shadow-[0_0_10px_rgba(0,0,0,0.01)]'
-                      }`} 
+                {/* Tombol Geser Kanan (Next) */}
+                <button 
+                  onClick={nextSlide}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-black/40 hover:bg-black/70 border border-white/10 text-white flex items-center justify-center backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+
+              {/* --- SLIDER NAVIGATION & ACTIONS CONTROLS --- */}
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+                
+                {/* Dots Indicators */}
+                <div className="flex gap-2">
+                  {DESTINASI_SLIDES.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`h-2 rounded-full transition-all cursor-pointer ${
+                        currentSlide === index ? 'w-6 bg-[#ffcc00]' : 'w-2 bg-gray-500/40'
+                      }`}
                     />
+                  ))}
+                </div>
+
+                {/* Detail Information Footer */}
+                <div className="flex items-center gap-3 text-left">
+                  <div className={`w-10 h-10 rounded-xl border flex items-center justify-center ${
+                    isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#b38f00]'
+                  }`}>
+                    <Anchor size={16} className="animate-pulse" />
                   </div>
+                  <div>
+                    <div className="text-[8px] text-gray-400 uppercase font-bold tracking-[0.15em]">Tourism Hub</div>
+                    <Link href="/destinasi" className={`text-xs font-bold tracking-tight hover:underline flex items-center gap-1 ${isDarkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>
+                      View Detail <ExternalLink size={10} />
+                    </Link>
+                  </div>
+                </div>
+
               </div>
 
-              {/* Tourism Hub Footer Info */}
-              <div className="mt-8 flex items-center justify-between text-left">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-[#ffcc00]/10 border border-[#ffcc00]/20 flex items-center justify-center text-[#ffcc00] animate-spin [animation-duration:15s]">
-                      <Anchor size={20} />
-                    </div>
-                    <div>
-                      <div className="text-[9px] text-gray-500 uppercase font-bold tracking-[0.2em]">Tourism Hub</div>
-                      <div className={`text-sm font-bold tracking-tight ${isDarkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>Bandar Lampung</div>
-                    </div>
-                  </div>
-              </div>
             </div>
           </section>
         </div>
