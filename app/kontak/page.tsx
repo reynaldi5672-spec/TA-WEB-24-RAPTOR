@@ -1,27 +1,25 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import Navbar from '@/app/components/Navbar';
-// IMPORT THEME GLOBAL
-import { useTheme } from '@/app/context/ThemeContext';
-import { Mail, Phone, MapPin, Send, MessageSquare, Loader2 } from 'lucide-react';
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from "react";
+import Navbar from "@/app/components/Navbar";
+import { useTheme } from "@/app/context/ThemeContext";
+import { Mail, MapPin, Send, Loader2, Compass } from "lucide-react"; 
+import { FaTiktok, FaYoutube } from "react-icons/fa"; 
+import Swal from "sweetalert2";
 
 export default function KontakPage() {
-  // Ambil state tema global dari Context Provider
   const { isDarkMode } = useTheme();
-  
+
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
-  // Gunakan requestAnimationFrame agar hydration aman dan anti warning linter
   useEffect(() => {
     const animationFrameId = requestAnimationFrame(() => {
       setMounted(true);
@@ -33,164 +31,291 @@ export default function KontakPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulasi pengiriman pesan
-    setTimeout(() => {
-      setIsLoading(false);
-      Swal.fire({
-        title: 'Pesan Terkirim!',
-        text: 'Terima kasih sudah menghubungi VisitBDL. Kami akan segera membalasnya.',
-        icon: 'success',
-        background: isDarkMode ? '#111' : '#fff',
-        color: isDarkMode ? '#fff' : '#000',
-        confirmButtonColor: '#ffcc00',
-        confirmButtonText: 'Oke Sip!'
+    try {
+      const res = await fetch("/api/komentar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nama_user: formData.name,
+          email: formData.email,
+          subjek: formData.subject,
+          isi_komentar: formData.message,
+        }),
       });
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 1500);
+
+      if (res.ok) {
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Pesan sudah masuk ke dashboard admin.",
+          icon: "success",
+          background: isDarkMode ? "#111" : "#fff",
+          color: isDarkMode ? "#fff" : "#000",
+          confirmButtonColor: "#ffcc00",
+          confirmButtonText: "Oke Sip!",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        throw new Error("Gagal mengirim pesan");
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Gagal!",
+        text: "Terjadi kesalahan sistem.",
+        icon: "error",
+        background: isDarkMode ? "#111" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+        confirmButtonColor: "#ef4444",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!mounted) return null;
 
   return (
-    <main className={`min-h-screen transition-colors duration-700 relative overflow-hidden ${
-      isDarkMode ? 'bg-[#050505] text-white' : 'bg-[#f8f9fa] text-[#1a1a1a]'
-    }`}>
-      
-      {/* --- BACKGROUND VECTOR DECORATION --- */}
-      <div className="absolute top-0 inset-x-0 h-125 pointer-events-none opacity-40 select-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(#80808012_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-        <div className={`absolute bottom-0 h-40 w-full bg-gradient-to-t ${isDarkMode ? 'from-[#050505]' : 'from-[#f8f9fa]'} to-transparent`}></div>
-      </div>
-      
+    <main
+      className={`min-h-screen transition-colors duration-700 relative overflow-hidden ${
+        isDarkMode ? "bg-[#050505] text-white" : "bg-[#f8f9fa] text-[#1a1a1a]"
+      }`}
+    >
+      {/* --- BACKGROUND & OVERLAY --- */}
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-all duration-700 z-0"
+        style={{
+          backgroundImage: `linear-gradient(${
+            isDarkMode
+              ? "rgba(5, 7, 10, 0.85), rgba(5, 10, 15, 0.92)"
+              : "rgba(248, 249, 250, 0.80), rgba(240, 244, 248, 0.90)"
+          }), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')`,
+        }}
+      />
+
       <Navbar />
 
-      {/* SEBELUMNYA: max-w-[1400px] -> SEKARANG: max-w-7xl (Utility Class Standard Tailwind) */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 pt-44 pb-24 relative z-10">
-        
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          
-          {/* --- LEFT SIDE: INFO & SOSMED --- */}
-          <section className="text-left space-y-6">
-            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
-              isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#e6b800]'
-            }`}>
-              <MessageSquare size={12} className="animate-pulse" /> Get In Touch
+      {/* --- LAYOUT GRID --- */}
+      <div className="max-w-7xl w-full mx-auto px-6 md:px-16 pt-36 pb-16 relative z-10 my-auto">
+        <link
+          href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
+          rel="stylesheet"
+        />
+
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          <section className="lg:col-span-5 space-y-4">
+            {/* KARTU ATAS: HUBUNGI KAMI */}
+            <div
+              className={`p-8 rounded-[2rem] border backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500 ${
+                isDarkMode
+                  ? "bg-black/30 border-white/10 shadow-black/40"
+                  : "bg-white/40 border-black/5 shadow-slate-200/40"
+              }`}
+              style={{
+                backgroundImage: `linear-gradient(${
+                  isDarkMode
+                    ? "rgba(0,0,0,0.65), rgba(0,0,0,0.75)"
+                    : "rgba(255,255,255,0.6), rgba(255,255,255,0.7)"
+                }), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div
+                className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-md shadow-sm mb-6 ${
+                  isDarkMode
+                    ? "bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#ffcc00]"
+                    : "bg-[#ffcc00]/20 border-[#ffcc00]/40 text-[#bf9600]"
+                }`}
+              >
+                <Compass
+                  size={13}
+                  className="animate-[spin_8s_linear_infinite]"
+                />{" "}
+                Get In Touch
+              </div>
+
+              <div className="space-y-1 mb-6">
+                <h1
+                  className="text-5xl md:text-6xl font-normal leading-none tracking-wide text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]"
+                  style={{ fontFamily: "'Kaushan Script', cursive" }}
+                >
+                  Hubungi
+                </h1>
+                <h1
+                  className="text-6xl md:text-7xl font-normal leading-none tracking-wide text-[#ffcc00] drop-shadow-[0_4px_12px_rgba(255,204,0,0.3)]"
+                  style={{ fontFamily: "'Kaushan Script', cursive" }}
+                >
+                  Kami
+                </h1>
+              </div>
+
+              <p
+                className={`text-sm font-medium leading-relaxed ${
+                  isDarkMode ? "text-gray-200" : "text-slate-800"
+                }`}
+              >
+                Punya pertanyaan seputar wisata di Bandar Lampung? Atau mau
+                kerja sama bareng VisitBDL? Langsung aja drop pesan di samping
+                ya!
+              </p>
             </div>
-            
-            <h1 className="text-6xl md:text-7xl font-black leading-[0.85] uppercase italic tracking-tighter">
-              Hubungi <br /> 
-              <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.25)]">Kami</span>
-            </h1>
 
-            <p className={`text-xs md:text-sm font-medium leading-relaxed max-w-md pb-4 ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-500'
-            }`}>
-              Punya pertanyaan seputar wisata di Bandar Lampung? Atau mau kerja sama bareng VisitBDL? Langsung aja drop pesan di samping ya!
-            </p>
-
-            {/* Contact Details Cards */}
-            <div className="space-y-6 pt-4">
+            {/* INFO ALAMAT & SOSMED */}
+            <div
+              className={`p-4 rounded-[2rem] border backdrop-blur-xl transition-all duration-500 space-y-2.5 ${
+                isDarkMode
+                  ? "bg-black/20 border-blue-500/30 shadow-[0_0_25px_rgba(59,130,246,0.15)]"
+                  : "bg-white/30 border-blue-400/20 shadow-sm"
+              }`}
+            >
               {[
-                { icon: Mail, label: 'Email Resmi', value: 'hello@visitbdl.com', color: 'text-blue-400' },
-                { icon: Phone, label: 'WhatsApp Bisnis', value: '+62 812 3456 7890', color: 'text-green-400' },
-                { icon: MapPin, label: 'Kantor Pusat', value: 'Bandar Lampung, Indonesia', color: 'text-red-400' },
+                {
+                  icon: Mail,
+                  label: "Email Resmi",
+                  value: "@wisata_bandar_lampung",
+                  iconColor: "text-blue-400",
+                },
+                {
+                  icon: FaTiktok,
+                  label: "Tiktok",
+                  value: "wisata_bandar_lampung",
+                  iconColor: "text-emerald-400",
+                },
+                {
+                  icon: FaYoutube,
+                  label: "Youtube",
+                  value: "Wisata Bandar Lampung",
+                  iconColor: "text-rose-400",
+                  hasMapIcon: true,
+                },
               ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-5 group">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 ${
-                    isDarkMode ? 'bg-white/[0.02] border-white/5 text-white' : 'bg-white border-black/5 shadow-sm text-black'
-                  }`}>
-                    <item.icon size={22} className={item.color} />
+                <div
+                  key={idx}
+                  className={`flex items-center justify-between p-3 rounded-xl border transition-all duration-300 ${
+                    isDarkMode
+                      ? "border-white/[0.02] hover:bg-white/5"
+                      : "border-black/[0.02] hover:bg-black/5"
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
+                        isDarkMode
+                          ? "bg-black/30 border-white/5"
+                          : "bg-white border-black/5 shadow-sm"
+                      }`}
+                    >
+                      <item.icon size={18} className={item.iconColor} />
+                    </div>
+                    <div>
+                      <div className="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">
+                        {item.label}
+                      </div>
+                      <div className="text-sm font-bold tracking-tight">
+                        {item.value}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">{item.label}</div>
-                    <div className="text-lg font-black tracking-tight">{item.value}</div>
-                  </div>
+                  {item.hasMapIcon && (
+                    <div className="text-amber-400 p-2 bg-amber-400/10 rounded-lg border border-amber-400/20">
+                      <MapPin size={16} />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </section>
 
-          {/* --- RIGHT SIDE: FORM BLOCK --- */}
-          <section>
-            <div className={`relative p-8 md:p-12 rounded-[2.5rem] border transition-all duration-500 ${
-              isDarkMode ? 'bg-[#0d0d0d] border-white/5 shadow-2xl' : 'bg-white border-black/[0.04] shadow-xl'
-            }`}>
-              <form onSubmit={handleSubmit} className="space-y-6 text-left">
-                <div className="grid md:grid-cols-2 gap-6">
+          {/* ================= RIGHT SIDE: FORM BLOCK ================= */}
+          <div className="lg:col-span-7">
+            <div className="h-full rounded-[2.5rem] border border-white/10 bg-[#11161a]/60 backdrop-blur-xl p-8 md:p-10 shadow-2xl flex flex-col justify-center transition-all duration-500 hover:border-white/15">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Row 1: Nama & Email */}
+                <div className="grid md:grid-cols-2 gap-5">
                   <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Nama Lengkap</label>
-                    <input 
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 ml-1">
+                      Nama Lengkap
+                    </label>
+                    <input
                       type="text"
                       required
+                      placeholder="Masukkan nama lengkap Anda"
                       value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className={`w-full border rounded-2xl py-4 px-6 text-xs font-bold outline-none transition-all duration-300 ${
-                        isDarkMode 
-                          ? 'bg-white/[0.02] border-white/10 focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white' 
-                          : 'bg-gray-50 border-black/5 focus:border-[#ffcc00] focus:bg-white text-black shadow-inner'
-                      }`}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      className="w-full bg-[#090d10]/60 border border-white/10 focus:border-[#ffcc00]/40 rounded-xl py-3.5 px-5 text-xs font-medium text-white placeholder-gray-600 outline-none transition-all duration-300 focus:bg-[#090d10]/90 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
                     />
                   </div>
+
                   <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Email Address</label>
-                    <input 
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 ml-1">
+                      Email Address
+                    </label>
+                    <input
                       type="email"
                       required
+                      placeholder="nama@email.com"
                       value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className={`w-full border rounded-2xl py-4 px-6 text-xs font-bold outline-none transition-all duration-300 ${
-                        isDarkMode 
-                          ? 'bg-white/[0.02] border-white/10 focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white' 
-                          : 'bg-gray-50 border-black/5 focus:border-[#ffcc00] focus:bg-white text-black shadow-inner'
-                      }`}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      className="w-full bg-[#090d10]/60 border border-white/10 focus:border-[#ffcc00]/40 rounded-xl py-3.5 px-5 text-xs font-medium text-white placeholder-gray-600 outline-none transition-all duration-300 focus:bg-[#090d10]/90 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
                     />
                   </div>
                 </div>
 
+                {/* Row 2: Subjek */}
                 <div className="space-y-2">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Subjek Pesan</label>
-                  <input 
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 ml-1">
+                    Subjek Pesan
+                  </label>
+                  <input
                     type="text"
                     required
+                    placeholder="Apa yang ingin Anda tanyakan?"
                     value={formData.subject}
-                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                    className={`w-full border rounded-2xl py-4 px-6 text-xs font-bold outline-none transition-all duration-300 ${
-                      isDarkMode 
-                        ? 'bg-white/[0.02] border-white/10 focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white' 
-                        : 'bg-gray-50 border-black/5 focus:border-[#ffcc00] focus:bg-white text-black shadow-inner'
-                    }`}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
+                    className="w-full bg-[#090d10]/60 border border-white/10 focus:border-[#ffcc00]/40 rounded-xl py-3.5 px-5 text-xs font-medium text-white placeholder-gray-600 outline-none transition-all duration-300 focus:bg-[#090d10]/90 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
                   />
                 </div>
 
+                {/* Row 3: Isi Pesan */}
                 <div className="space-y-2">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-gray-500 ml-1">Isi Pesan</label>
-                  <textarea 
-                    rows={4}
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 ml-1">
+                    Isi Pesan
+                  </label>
+                  <textarea
+                    rows={5}
                     required
+                    placeholder="Tulis detail pesan Anda di sini..."
                     value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    className={`w-full border rounded-2xl py-4 px-6 text-xs font-medium outline-none transition-all duration-300 resize-none ${
-                      isDarkMode 
-                        ? 'bg-white/[0.02] border-white/10 focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white' 
-                        : 'bg-gray-50 border-black/5 focus:border-[#ffcc00] focus:bg-white text-black shadow-inner'
-                    }`}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
+                    className="w-full bg-[#090d10]/60 border border-white/10 focus:border-[#ffcc00]/40 rounded-xl py-3.5 px-5 text-xs font-medium text-white placeholder-gray-600 outline-none transition-all duration-300 resize-none focus:bg-[#090d10]/90 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
                   />
                 </div>
 
-                <button 
+                {/* Submit Button Neon Glow */}
+                <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-[#ffcc00] text-black py-4.5 rounded-xl font-black uppercase text-[10px] tracking-[0.3em] flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-95 transition-all shadow-xl shadow-[#ffcc00]/10 disabled:opacity-50 cursor-pointer"
+                  className="w-full bg-[#ffcc00] hover:bg-[#e6b800] text-black py-4 rounded-xl font-bold uppercase text-[11px] tracking-[0.2em] flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_4px_20px_rgba(255,204,0,0.15)] hover:shadow-[0_4px_25px_rgba(255,204,0,0.35)] active:scale-[0.99] disabled:opacity-50 cursor-pointer"
                 >
                   {isLoading ? (
                     <Loader2 className="animate-spin" size={16} />
                   ) : (
-                    <>Kirim Pesan Sekarang <Send size={14} /></>
+                    <>
+                      Kirim Pesan Sekarang{" "}
+                      <Send size={12} className="fill-current" />
+                    </>
                   )}
                 </button>
               </form>
             </div>
-          </section>
+          </div>
         </div>
       </div>
     </main>

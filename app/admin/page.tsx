@@ -5,12 +5,14 @@ import { Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 import AdminDashboard from './AdminDashboard'; 
 import Swal from 'sweetalert2';
 
+
 export default function AdminAuth() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [formData, setFormData] = useState({ username: '', password: '' });
+  // login admin
+  const [formData, setFormData] = useState({ username: 'saya', password: '567' });
 
   // Perbaikan Hydration via Asynchronous Animation Frame (Anti-Cascading Warning)
   useEffect(() => {

@@ -99,7 +99,7 @@ export default function DestinasiPage() {
             <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
               isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#e6b800]'
             }`}>
-              <Compass size={11} className="animate-spin [animation-duration:15s]" /> Selamat Datang di VisitBDL
+              <Compass size={11} className="animate-spin [animation-duration:15s]" /> Selamat Datang di WISATA BANDAR LAMPUMNG
             </div>
             <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
               Jelajahi <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.15)]">Destinasi Terbaik</span> Lampung
@@ -218,7 +218,7 @@ export default function DestinasiPage() {
                       <span className={`text-[8px] font-black font-mono uppercase tracking-[0.15em] px-2.5 py-1 rounded-md border ${
                         isDarkMode ? 'bg-white/5 border-white/5 text-gray-400' : 'bg-gray-50 border-black/5 text-gray-500'
                       }`}>
-                        // {item.kategori}
+                        {/* // {item.kategori} */}
                       </span>
                     </div>
                     
