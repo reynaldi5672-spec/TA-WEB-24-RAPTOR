@@ -9,6 +9,31 @@ import {
   Globe, Anchor, User, MessageSquare, Share2 
 } from 'lucide-react';
 
+// Data Foto Slide Destinasi Lampung
+const DESTINASI_SLIDES = [
+  {
+    id: 1,
+    title: "Pulau Pahawang",
+    category: "Bahari",
+    image:
+      "https://awsimages.detik.net.id/community/media/visual/2023/05/11/pulau-pahawang-lampung_169.jpeg?w=1200",
+  },
+  {
+    id: 2,
+    title: "Gigi Hiu",
+    category: "Pantai Eksotis",
+    image:
+      "https://www.batiqa.com/upload/news/l/lampung-pantai-gigi-hiu_3mnwt.jpg",
+  },
+  {
+    id: 3,
+    title: "Taman Nasional Way Kambas",
+    category: "Konservasi",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaqyaLEfNgSUuxvLpZ_iFfdRy6PAXuJnGQ_Q&s",
+  },
+];
+
 export default function PariwisataLampung() {
   const { isDarkMode } = useTheme();
   const [mounted, setMounted] = useState(false);
