@@ -30,6 +30,7 @@ export default function DestinasiPage() {
   const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan">("all");
   const [showOnlyViral, setShowOnlyViral] = useState(false);
   const [selectedDestinasi, setSelectedDestinasi] = useState<Destinasi | null>(null);
+  const [sortBy, setSortBy] = useState<"default" | "rating-desc" | "rating-asc" | "name-asc" | "name-desc">("default");
 
   const fetchDestinasi = async () => {
     try {
@@ -71,6 +72,22 @@ export default function DestinasiPage() {
     const matchesCategory = activeCategory === "all" || item.kategori === activeCategory;
     const matchesViral = !showOnlyViral || item.is_viral === true;
     return matchesSearch && matchesCategory && matchesViral;
+  });
+
+  const sortedDestinasi = [...filteredDestinasi].sort((a, b) => {
+    if (sortBy === "rating-desc") {
+      return Number(b.rating) - Number(a.rating);
+    }
+    if (sortBy === "rating-asc") {
+      return Number(a.rating) - Number(b.rating);
+    }
+    if (sortBy === "name-asc") {
+      return a.nama.localeCompare(b.nama);
+    }
+    if (sortBy === "name-desc") {
+      return b.nama.localeCompare(a.nama);
+    }
+    return 0;
   });
 
   if (!mounted) return null;
@@ -153,17 +170,36 @@ export default function DestinasiPage() {
             ))}
           </div>
 
-          {/* Tombol Cepat Filter Viral */}
-          <button
-            onClick={() => setShowOnlyViral(!showOnlyViral)}
-            className={`px-6 py-3.5 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-2 border cursor-pointer ${
-              showOnlyViral
-                ? 'bg-red-600 border-red-500 text-white shadow-xl scale-105'
-                : (isDarkMode ? 'bg-white/[0.01] border-white/10 text-gray-500 hover:text-white hover:border-white/30' : 'bg-transparent border-black/10 text-gray-400 hover:text-black hover:border-black/30')
-            }`}
-          >
-            <Flame size={12} className={showOnlyViral ? 'animate-bounce' : ''} /> Tren Viral {showOnlyViral ? 'ON' : 'OFF'}
-          </button>
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Dropdown Urutan */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+              className={`px-4 py-3.5 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] outline-none border transition-all duration-300 cursor-pointer ${
+                isDarkMode
+                  ? 'bg-white/[0.01] border-white/10 text-gray-400 focus:border-[#ffcc00] focus:text-white'
+                  : 'bg-transparent border-black/10 text-gray-500 focus:border-[#ffcc00] focus:text-black'
+              }`}
+            >
+              <option value="default" className={isDarkMode ? 'bg-[#111]' : 'bg-white'}>🔄 Urutan: Default</option>
+              <option value="rating-desc" className={isDarkMode ? 'bg-[#111]' : 'bg-white'}>⭐ Rating: Tertinggi</option>
+              <option value="rating-asc" className={isDarkMode ? 'bg-[#111]' : 'bg-white'}>⭐ Rating: Terendah</option>
+              <option value="name-asc" className={isDarkMode ? 'bg-[#111]' : 'bg-white'}>🔤 Nama: A - Z</option>
+              <option value="name-desc" className={isDarkMode ? 'bg-[#111]' : 'bg-white'}>🔤 Nama: Z - A</option>
+            </select>
+
+            {/* Tombol Cepat Filter Viral */}
+            <button
+              onClick={() => setShowOnlyViral(!showOnlyViral)}
+              className={`px-6 py-3.5 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-2 border cursor-pointer ${
+                showOnlyViral
+                  ? 'bg-red-600 border-red-500 text-white shadow-xl scale-105'
+                  : (isDarkMode ? 'bg-white/[0.01] border-white/10 text-gray-500 hover:text-white hover:border-white/30' : 'bg-transparent border-black/10 text-gray-400 hover:text-black hover:border-black/30')
+              }`}
+            >
+              <Flame size={12} className={showOnlyViral ? 'animate-bounce' : ''} /> Tren Viral {showOnlyViral ? 'ON' : 'OFF'}
+            </button>
+          </div>
         </div>
 
         {/* --- CONTENT AREA GRID --- */}
@@ -172,9 +208,9 @@ export default function DestinasiPage() {
             <Loader2 className="animate-spin text-[#ffcc00] mb-4" size={40} />
             <p className="font-black tracking-[0.4em] text-[9px] uppercase text-gray-500 font-mono">Menghubungkan ke Database...</p>
           </div>
-        ) : filteredDestinasi.length > 0 ? (
+        ) : sortedDestinasi.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {filteredDestinasi.map((item) => (
+            {sortedDestinasi.map((item) => (
               <div 
                 key={item.id}
                 className={`group rounded-[2.5rem] overflow-hidden border transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between ${
