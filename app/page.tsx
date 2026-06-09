@@ -100,7 +100,7 @@ export default function PariwisataLampung() {
                   ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white shadow-inner' 
                   : 'bg-white border-black/10 hover:bg-gray-50 shadow-md text-[#1a1a1a]'
                 }`}>
-                  Lihat Destinasi <ExternalLink size={14} />
+                  DESTINASI LAMPUNG <ExternalLink size={14} />
                 </button>
               </Link>
               <button className="bg-[#0055ff] hover:bg-[#0044cc] px-8 py-4 rounded-2xl flex items-center gap-2.5 text-white font-black text-[10px] uppercase tracking-wider shadow-lg shadow-[#0055ff]/20 hover:scale-105 transition-all cursor-pointer">
