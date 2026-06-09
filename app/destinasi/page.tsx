@@ -5,7 +5,7 @@ import Navbar from '@/app/components/Navbar';
 import DetailModal from '@/app/components/DetailModal'; 
 // 1. IMPORT USETHEME GLOBAL DARI CONTEXT
 import { useTheme } from '@/app/context/ThemeContext';
-import { MapPin, Star, ArrowRight, Loader2, Search, Compass, Flame } from 'lucide-react';
+import { MapPin, Star, ArrowRight, Loader2, Search, Compass, Flame, Heart } from 'lucide-react';
 
 interface Destinasi {
   id: number;
@@ -27,10 +27,11 @@ export default function DestinasiPage() {
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   
-  const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan">("all");
+  const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan" | "favorit">("all");
   const [showOnlyViral, setShowOnlyViral] = useState(false);
   const [selectedDestinasi, setSelectedDestinasi] = useState<Destinasi | null>(null);
   const [sortBy, setSortBy] = useState<"default" | "rating-desc" | "rating-asc" | "name-asc" | "name-desc">("default");
+  const [favorites, setFavorites] = useState<number[]>([]);
 
   const fetchDestinasi = async () => {
     try {
@@ -56,6 +57,17 @@ export default function DestinasiPage() {
     });
   
     fetchDestinasi();
+
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("visitbdl_favorites");
+      if (stored) {
+        try {
+          setFavorites(JSON.parse(stored));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
   
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -63,13 +75,25 @@ export default function DestinasiPage() {
     };
   }, []);
 
+  const toggleFavorite = (id: number) => {
+    let updated: number[];
+    if (favorites.includes(id)) {
+      updated = favorites.filter((favId) => favId !== id);
+    } else {
+      updated = [...favorites, id];
+    }
+    setFavorites(updated);
+    localStorage.setItem("visitbdl_favorites", JSON.stringify(updated));
+  };
+
   const totalWisata = destinasi.length;
   const totalViral = destinasi.filter(item => item.is_viral).length;
 
   const filteredDestinasi = destinasi.filter(item => {
     const matchesSearch = item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.lokasi?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = activeCategory === "all" || item.kategori === activeCategory;
+    const matchesCategory = activeCategory === "all" || 
+                            (activeCategory === "favorit" ? favorites.includes(item.id) : item.kategori === activeCategory);
     const matchesViral = !showOnlyViral || item.is_viral === true;
     return matchesSearch && matchesCategory && matchesViral;
   });
@@ -154,7 +178,8 @@ export default function DestinasiPage() {
               { id: 'all', label: '✨ Semua' },
               { id: 'terpopuler', label: '⭐ Terpopuler' },
               { id: 'pantai', label: '🌊 Pantai' },
-              { id: 'pemandangan', label: '⛰️ Pemandangan' }
+              { id: 'pemandangan', label: '⛰️ Pemandangan' },
+              { id: 'favorit', label: '❤️ Favorit Saya' }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -234,9 +259,24 @@ export default function DestinasiPage() {
                     <Star size={13} fill="#ffcc00" /> {Number(item.rating).toFixed(1)}
                   </div>
 
+                  {/* Bookmark Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(item.id);
+                    }}
+                    className="absolute top-6 left-6 z-20 p-2.5 rounded-xl bg-black/50 text-white hover:bg-red-500 hover:text-white hover:scale-105 active:scale-95 transition-all backdrop-blur-sm cursor-pointer border border-white/10 shadow-lg"
+                  >
+                    <Heart
+                      size={14}
+                      fill={favorites.includes(item.id) ? "#ef4444" : "none"}
+                      className={favorites.includes(item.id) ? "text-red-500" : "text-white"}
+                    />
+                  </button>
+
                   {/* Badge Viral */}
                   {item.is_viral && (
-                    <div className="absolute top-6 left-6 bg-red-600 text-white px-3.5 py-1.5 rounded-xl text-[8px] font-black uppercase tracking-[0.15em] border border-red-500 animate-pulse shadow-md">
+                    <div className="absolute bottom-6 left-6 z-20 bg-red-600 text-white px-3.5 py-1.5 rounded-xl text-[8px] font-black uppercase tracking-[0.15em] border border-red-500 animate-pulse shadow-md">
                       🔥 VIRAL
                     </div>
                   )}
