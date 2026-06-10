@@ -82,6 +82,9 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   }, [item.id]);
 
   // Handler Share Modal
+  /**
+   * Triggers native device share sheet fallback or copies clipboard links
+   */
   const handleShareModal = () => {
     const shareUrl = `${window.location.origin}/destinasi?id=${item.id}`;
     const shareText = `Yuk kunjungi destinasi seru "${item.nama}" di ${item.lokasi}!`;
