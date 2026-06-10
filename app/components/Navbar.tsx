@@ -89,13 +89,18 @@ export default function Navbar() {
 
           <Link 
             href="/destinasi" 
-            className={`pb-1 hover:text-[#ffcc00] transition-all border-b-2 ${
+            className={`pb-1 hover:text-[#ffcc00] transition-all border-b-2 flex items-center gap-1.5 ${
               pathname === '/destinasi' 
               ? (isDarkMode ? 'text-white border-[#ffcc00]' : 'text-[#1a1a1a] border-[#ffcc00]') 
               : 'border-transparent'
             }`}
           >
             Destinasi
+            {favoritesCount > 0 && (
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[9px] font-black text-white animate-pulse">
+                {favoritesCount}
+              </span>
+            )}
           </Link>
 
           <Link 
