@@ -159,6 +159,9 @@ export default function DestinasiPage() {
     }
   }, [mounted, destinasi]);
 
+  /**
+   * Shares individual destination web URLs via Native Share API
+   */
   const handleShare = (item: Destinasi) => {
     const shareUrl = `${window.location.origin}/destinasi?id=${item.id}`;
     const shareText = `Yuk kunjungi destinasi seru "${item.nama}" di ${item.lokasi}!`;
