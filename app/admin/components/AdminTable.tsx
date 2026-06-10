@@ -22,6 +22,9 @@ interface AdminTableProps {
   onRefresh: () => void;
 }
 
+/**
+ * AdminTable displays destination records in a customizable table.
+ */
 export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }: AdminTableProps) {
   const [destinasi, setDestinasi] = useState<Destinasi[]>([]);
   const [isLoading, setIsLoading] = useState(true);
