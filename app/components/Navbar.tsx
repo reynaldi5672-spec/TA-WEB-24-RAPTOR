@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'; 
 import { Sun, Moon } from 'lucide-react';
@@ -12,6 +12,36 @@ export default function Navbar() {
   
   // 2. CONSUME STATE TEMA GLOBAL (Hapus interface NavbarProps di atas)
   const { isDarkMode, setIsDarkMode } = useTheme();
+
+  // State untuk jumlah favorit
+  const [favoritesCount, setFavoritesCount] = useState(0);
+
+  useEffect(() => {
+    const updateFavoritesCount = () => {
+      if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("visitbdl_favorites");
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed)) {
+              setFavoritesCount(parsed.length);
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        } else {
+          setFavoritesCount(0);
+        }
+      }
+    };
+
+    updateFavoritesCount();
+
+    window.addEventListener('favorites-updated', updateFavoritesCount);
+    return () => {
+      window.removeEventListener('favorites-updated', updateFavoritesCount);
+    };
+  }, []);
 
   // --- DEFINISI FUNGSI HANDLE CLICK ---
   const handleHomeClick = (e: React.MouseEvent) => {
