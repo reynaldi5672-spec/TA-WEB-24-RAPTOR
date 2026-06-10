@@ -26,7 +26,7 @@ interface AdminTableProps {
  * AdminTable displays destination records in a customizable table.
  */
 export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }: AdminTableProps) {
-  const [destinasi, setDestinasi] = useState<Destinasi[]>([]);
+  const [destinasi, setDestinasi] = useState<Destinasi[]>([]); // Destinations array state fetched from database queries
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
