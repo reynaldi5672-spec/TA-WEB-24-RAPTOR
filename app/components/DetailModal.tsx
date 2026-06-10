@@ -46,7 +46,7 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
 
   // State untuk Data Komentar dari DB
   const [listKomentar, setListKomentar] = useState<Komentar[]>([]); // User feedback entries list state
-  const [isCommentsLoading, setIsCommentsLoading] = useState(true);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(true); // Reviews section load control indicator
 
   // State untuk Form Input Review Baru
   const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 });
