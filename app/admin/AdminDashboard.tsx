@@ -28,7 +28,7 @@ export default function AdminDashboard() {
   // <-- 2. TAMBAH STATE UNTUK NAVIGASI TAB HALAMAN ADMIN
   const [activeTab, setActiveTab] = useState<'destinasi' | 'komentar'>('destinasi'); // Tracks active visible panel tab content selection
 
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false); // Controls insert/update modal dialog visibility
   const [editData, setEditData] = useState<Destinasi | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [mounted, setMounted] = useState(false);
