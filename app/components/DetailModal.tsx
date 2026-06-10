@@ -41,7 +41,7 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   
   // State untuk Slider Gambar
   // Memecah gambar_url berdasarkan tanda koma (,). Jika cuma 1 gambar, array isinya tetap 1.
-  const daftarGambar = item.gambar_url ? item.gambar_url.split(',').map(url => url.trim()) : ['https://via.placeholder.com/800x600?text=No+Image'];
+  const daftarGambar = item.gambar_url ? item.gambar_url.split(',').map(url => url.trim()) : ['https://via.placeholder.com/800x600?text=No+Image']; // Multi-image slider source list
   const [activeSlide, setActiveSlide] = useState(0);
 
   // State untuk Data Komentar dari DB
