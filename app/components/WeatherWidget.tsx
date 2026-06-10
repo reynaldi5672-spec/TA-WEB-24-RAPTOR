@@ -62,7 +62,7 @@ export default function WeatherWidget() {
   const getWeatherDetails = (code: number) => {
     // Mapping weather codes (WMO standards)
     if (code === 0 /* Code 0 indicates clear sky conditions */) return { label: "Cerah", icon: <Sun className="text-yellow-400 animate-spin [animation-duration:20s]" size={20} /> };
-    if ([1, 2, 3].includes(code)) return { label: "Berawan", icon: <CloudSun className="text-blue-300" size={20} /> };
+    if ([1, 2, 3].includes(code) /* Codes 1, 2, 3 represent cloud density tiers */) return { label: "Berawan", icon: <CloudSun className="text-blue-300" size={20} /> };
     if ([45, 48].includes(code)) return { label: "Berkabut", icon: <CloudFog className="text-gray-400" size={20} /> };
     if ([51, 53, 55].includes(code)) return { label: "Gerimis", icon: <CloudDrizzle className="text-teal-400" size={20} /> };
     if ([61, 63, 65].includes(code)) return { label: "Hujan", icon: <CloudRain className="text-blue-400" size={20} /> };
