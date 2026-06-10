@@ -55,7 +55,7 @@ export default function Navbar() {
       e.preventDefault();
       const element = document.getElementById('home');
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        element.scrollIntoView({ behavior: "smooth" }); // Smooth animated page scrolling
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
