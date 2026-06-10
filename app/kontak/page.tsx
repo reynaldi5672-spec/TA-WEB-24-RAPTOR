@@ -71,7 +71,7 @@ export default function KontakPage() {
 
       if (res.ok) {
         Swal.fire({
-          title: "Berhasil!",
+          title: "Berhasil!", // Success confirmation popup title config
           text: "Pesan sudah masuk ke dashboard admin.",
           icon: "success",
           background: isDarkMode ? "#111" : "#fff",
