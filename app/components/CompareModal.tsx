@@ -25,7 +25,7 @@ interface CompareModalProps {
  * CompareModal allows comparison of up to 3 selected tourism destinations.
  */
 export default function CompareModal({ items, onClose, onRemove }: CompareModalProps) {
-  const { isDarkMode } = useTheme();
+  const { isDarkMode } = useTheme(); // Consumes application global theme context
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
