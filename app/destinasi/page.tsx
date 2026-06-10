@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/app/components/Navbar'; 
 import DetailModal from '@/app/components/DetailModal'; 
+import CompareModal from '@/app/components/CompareModal';
 // 1. IMPORT USETHEME GLOBAL DARI CONTEXT
 import { useTheme } from '@/app/context/ThemeContext';
-import { MapPin, Star, ArrowRight, Loader2, Search, Compass, Flame, Heart, Share2 } from 'lucide-react';
+import { MapPin, Star, ArrowRight, Loader2, Search, Compass, Flame, Heart, Share2, GitCompare } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 interface Destinasi {
@@ -33,6 +34,31 @@ export default function DestinasiPage() {
   const [selectedDestinasi, setSelectedDestinasi] = useState<Destinasi | null>(null);
   const [sortBy, setSortBy] = useState<"default" | "rating-desc" | "rating-asc" | "name-asc" | "name-desc">("default");
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [compareList, setCompareList] = useState<Destinasi[]>([]);
+  const [showCompareModal, setShowCompareModal] = useState(false);
+
+  const toggleCompare = (item: Destinasi) => {
+    if (compareList.some((c) => c.id === item.id)) {
+      setCompareList(compareList.filter((c) => c.id !== item.id));
+    } else {
+      if (compareList.length >= 3) {
+        Swal.fire({
+          title: "Batas Maksimal!",
+          text: "Anda hanya dapat membandingkan maksimal 3 destinasi sekaligus.",
+          icon: "warning",
+          background: isDarkMode ? "#111" : "#fff",
+          color: isDarkMode ? "#fff" : "#000",
+          confirmButtonColor: "#ffcc00",
+        });
+        return;
+      }
+      setCompareList([...compareList, item]);
+    }
+  };
+
+  const removeFromCompare = (id: number) => {
+    setCompareList(compareList.filter((c) => c.id !== id));
+  };
 
   const fetchDestinasi = async () => {
     try {
@@ -365,16 +391,34 @@ export default function DestinasiPage() {
                   </div>
                   
                   {/* Action Interactive Button */}
-                  <button 
-                    onClick={() => setSelectedDestinasi(item)}
-                    className={`w-full py-4 rounded-xl font-black text-[9px] uppercase tracking-[0.25em] flex items-center justify-center gap-2.5 transition-all duration-300 cursor-pointer ${
-                      isDarkMode 
-                      ? 'bg-white/5 hover:bg-[#ffcc00] hover:text-black border border-white/5 shadow-inner' 
-                      : 'bg-[#1a1a1a] text-white hover:bg-[#ffcc00] hover:text-black shadow-md hover:shadow-xl'
-                    }`}
-                  >
-                    Lihat Detail <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                  </button>
+                  <div className="flex gap-3">
+                    <button 
+                      onClick={() => setSelectedDestinasi(item)}
+                      className={`flex-1 py-4 rounded-xl font-black text-[9px] uppercase tracking-[0.25em] flex items-center justify-center gap-2.5 transition-all duration-300 cursor-pointer ${
+                        isDarkMode 
+                        ? 'bg-white/5 hover:bg-[#ffcc00] hover:text-black border border-white/5 shadow-inner' 
+                        : 'bg-[#1a1a1a] text-white hover:bg-[#ffcc00] hover:text-black shadow-md hover:shadow-xl'
+                      }`}
+                    >
+                      Lihat Detail <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleCompare(item);
+                      }}
+                      className={`px-4 rounded-xl border transition-all duration-300 cursor-pointer flex items-center justify-center ${
+                        compareList.some((c) => c.id === item.id)
+                          ? 'bg-[#ffcc00] border-[#ffcc00] text-black font-black shadow-lg shadow-[#ffcc00]/25'
+                          : (isDarkMode
+                              ? 'bg-white/5 border-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                              : 'bg-white border-black/10 text-gray-600 hover:bg-gray-50 hover:text-black')
+                      }`}
+                      title={compareList.some((c) => c.id === item.id) ? "Batal Bandingkan" : "Bandingkan"}
+                    >
+                      <GitCompare size={14} className={compareList.some((c) => c.id === item.id) ? "animate-pulse" : ""} />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -395,6 +439,66 @@ export default function DestinasiPage() {
           <DetailModal 
             item={selectedDestinasi} 
             onClose={() => setSelectedDestinasi(null)} 
+          />
+        )}
+
+        {/* --- FLOATING COMPARE DRAWER --- */}
+        {compareList.length > 0 && (
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-2rem)] max-w-lg transition-all duration-500 animate-in slide-in-from-bottom-12">
+            <div className={`border p-4 rounded-[2rem] shadow-2xl flex items-center justify-between gap-4 backdrop-blur-md ${
+              isDarkMode 
+                ? 'bg-black/80 border-white/10 text-white shadow-black/80' 
+                : 'bg-white/95 border-black/5 text-[#1a1a1a] shadow-slate-200/80'
+            }`}>
+              <div className="flex items-center gap-3">
+                <div className="text-left">
+                  <div className="text-[8px] text-gray-500 font-bold uppercase tracking-wider">Perbandingan</div>
+                  <div className="text-xs font-black">{compareList.length} Destinasi Terpilih</div>
+                </div>
+                {/* Thumbnails */}
+                <div className="flex -space-x-2.5 overflow-hidden">
+                  {compareList.map((item) => {
+                    const img = item.gambar_url ? item.gambar_url.split(',')[0].trim() : '';
+                    return (
+                      <img 
+                        key={item.id}
+                        src={img} 
+                        alt={item.nama}
+                        className="inline-block h-8 w-8 rounded-full ring-2 ring-[#ffcc00] object-cover"
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setCompareList([])}
+                  className={`px-3 py-2.5 rounded-xl font-bold text-[8px] uppercase tracking-wider transition-all cursor-pointer ${
+                    isDarkMode 
+                      ? 'bg-white/5 border border-white/10 hover:bg-white/10 text-white' 
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                  }`}
+                >
+                  Reset
+                </button>
+                <button
+                  onClick={() => setShowCompareModal(true)}
+                  className="bg-[#ffcc00] hover:scale-105 active:scale-95 transition-all text-black font-black text-[8px] uppercase tracking-widest px-4 py-2.5 rounded-xl cursor-pointer shadow-lg shadow-[#ffcc00]/25"
+                >
+                  Bandingkan
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* --- COMPARE MODAL --- */}
+        {showCompareModal && (
+          <CompareModal
+            items={compareList}
+            onClose={() => setShowCompareModal(false)}
+            onRemove={removeFromCompare}
           />
         )}
 
