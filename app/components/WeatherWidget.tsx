@@ -56,6 +56,9 @@ export default function WeatherWidget() {
     return () => clearInterval(interval);
   }, []);
 
+  /**
+   * Maps World Meteorological Organization weather codes to custom icons and labels
+   */
   const getWeatherDetails = (code: number) => {
     // Mapping weather codes (WMO standards)
     if (code === 0) return { label: "Cerah", icon: <Sun className="text-yellow-400 animate-spin [animation-duration:20s]" size={20} /> };
