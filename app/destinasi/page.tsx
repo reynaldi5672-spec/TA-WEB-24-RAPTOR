@@ -27,7 +27,7 @@ export default function DestinasiPage() {
   // 2. GANTI STATE LOKAL LAMA DENGAN CONSUME THEME CONTEXT GLOBAL
   const { isDarkMode } = useTheme();
   
-  const [destinasi, setDestinasi] = useState<Destinasi[]>([]);
+  const [destinasi, setDestinasi] = useState<Destinasi[]>([]); // Primary data array from DB
   const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
