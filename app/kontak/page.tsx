@@ -85,7 +85,7 @@ export default function KontakPage() {
       }
     } catch (error) {
       Swal.fire({
-        title: "Gagal!",
+        title: "Gagal!", // Error notification configuration configs
         text: "Terjadi kesalahan sistem.",
         icon: "error",
         background: isDarkMode ? "#111" : "#fff",
