@@ -96,7 +96,7 @@ export default function Navbar() {
           <Link 
             href="/destinasi" 
             className={`pb-1 hover:text-[#ffcc00] transition-all border-b-2 flex items-center gap-1.5 ${
-              pathname === '/destinasi' 
+              pathname === '/destinasi' /* Check if currently on the destinations page */ 
               ? (isDarkMode ? 'text-white border-[#ffcc00]' : 'text-[#1a1a1a] border-[#ffcc00]') 
               : 'border-transparent'
             }`}
