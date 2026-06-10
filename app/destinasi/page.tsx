@@ -28,7 +28,7 @@ export default function DestinasiPage() {
   const { isDarkMode } = useTheme();
   
   const [destinasi, setDestinasi] = useState<Destinasi[]>([]); // Primary data array from DB
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Hydration loading spinner logic toggle
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
