@@ -52,7 +52,7 @@ export default function WeatherWidget() {
   useEffect(() => {
     fetchWeather();
     // Refresh weather every 10 minutes
-    const interval = setInterval(fetchWeather, 10 * 60 * 1000);
+    const interval = setInterval(fetchWeather, 10 * 60 * 1000); // Trigger fetch reload every 10 min
     return () => clearInterval(interval);
   }, []);
 
