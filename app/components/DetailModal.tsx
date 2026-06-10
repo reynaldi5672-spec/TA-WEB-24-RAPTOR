@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { X, MapPin, Star, Flame, Compass, ChevronLeft, ChevronRight, Send, Loader2, MessageSquare } from 'lucide-react';
+import { X, MapPin, Star, Flame, Compass, ChevronLeft, ChevronRight, Send, Loader2, MessageSquare, Share2 } from 'lucide-react';
 import { useTheme } from '@/app/context/ThemeContext';
 import Swal from 'sweetalert2';
 
@@ -63,6 +63,37 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   useEffect(() => {
     fetchKomentar();
   }, [item.id]);
+
+  // Handler Share Modal
+  const handleShareModal = () => {
+    const shareUrl = `${window.location.origin}/destinasi?id=${item.id}`;
+    const shareText = `Yuk kunjungi destinasi seru "${item.nama}" di ${item.lokasi}!`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: item.nama,
+        text: shareText,
+        url: shareUrl,
+      }).catch((err) => console.log(err));
+    } else {
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+          Swal.fire({
+            title: "Link Tersalin!",
+            text: `Link untuk "${item.nama}" telah disalin ke papan klip.`,
+            icon: "success",
+            background: isDarkMode ? "#111" : "#fff",
+            color: isDarkMode ? "#fff" : "#000",
+            confirmButtonColor: "#ffcc00",
+            timer: 2000,
+            showConfirmButton: false
+          });
+        })
+        .catch((err) => {
+          console.error("Gagal menyalin link:", err);
+        });
+    }
+  };
 
   // Handler Navigasi Slider Gambar
   const nextSlide = () => {
@@ -186,9 +217,17 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
                   </span>
                 )}
               </div>
-              <h2 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter drop-shadow-md">
-                {item.nama}
-              </h2>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mt-2">
+                <h2 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter drop-shadow-md flex-1">
+                  {item.nama}
+                </h2>
+                <button
+                  onClick={handleShareModal}
+                  className="px-4 py-2.5 rounded-xl bg-[#ffcc00] text-black hover:scale-105 active:scale-95 transition-all cursor-pointer font-black text-[9px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-lg hover:shadow-[#ffcc00]/20 max-w-max self-start md:self-auto"
+                >
+                  <Share2 size={13} /> Bagikan
+                </button>
+              </div>
             </div>
           </div>
 

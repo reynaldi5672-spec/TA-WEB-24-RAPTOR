@@ -5,7 +5,8 @@ import Navbar from '@/app/components/Navbar';
 import DetailModal from '@/app/components/DetailModal'; 
 // 1. IMPORT USETHEME GLOBAL DARI CONTEXT
 import { useTheme } from '@/app/context/ThemeContext';
-import { MapPin, Star, ArrowRight, Loader2, Search, Compass, Flame, Heart } from 'lucide-react';
+import { MapPin, Star, ArrowRight, Loader2, Search, Compass, Flame, Heart, Share2 } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 interface Destinasi {
   id: number;
@@ -84,6 +85,49 @@ export default function DestinasiPage() {
     }
     setFavorites(updated);
     localStorage.setItem("visitbdl_favorites", JSON.stringify(updated));
+  };
+
+  useEffect(() => {
+    if (mounted && destinasi.length > 0) {
+      const params = new URLSearchParams(window.location.search);
+      const urlId = params.get('id');
+      if (urlId) {
+        const found = destinasi.find(item => item.id === parseInt(urlId));
+        if (found) {
+          setSelectedDestinasi(found);
+        }
+      }
+    }
+  }, [mounted, destinasi]);
+
+  const handleShare = (item: Destinasi) => {
+    const shareUrl = `${window.location.origin}/destinasi?id=${item.id}`;
+    const shareText = `Yuk kunjungi destinasi seru "${item.nama}" di ${item.lokasi}!`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: item.nama,
+        text: shareText,
+        url: shareUrl,
+      }).catch((err) => console.log(err));
+    } else {
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+          Swal.fire({
+            title: "Link Tersalin!",
+            text: `Link untuk "${item.nama}" telah disalin ke papan klip.`,
+            icon: "success",
+            background: isDarkMode ? "#111" : "#fff",
+            color: isDarkMode ? "#fff" : "#000",
+            confirmButtonColor: "#ffcc00",
+            timer: 2000,
+            showConfirmButton: false
+          });
+        })
+        .catch((err) => {
+          console.error("Gagal menyalin link:", err);
+        });
+    }
   };
 
   const totalWisata = destinasi.length;
@@ -272,6 +316,18 @@ export default function DestinasiPage() {
                       fill={favorites.includes(item.id) ? "#ef4444" : "none"}
                       className={favorites.includes(item.id) ? "text-red-500" : "text-white"}
                     />
+                  </button>
+
+                  {/* Share Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleShare(item);
+                    }}
+                    className="absolute top-6 right-24 z-20 p-2.5 rounded-xl bg-black/50 text-white hover:bg-[#ffcc00] hover:text-black hover:scale-105 active:scale-95 transition-all backdrop-blur-sm cursor-pointer border border-white/10 shadow-lg"
+                    title="Bagikan"
+                  >
+                    <Share2 size={14} />
                   </button>
 
                   {/* Badge Viral */}
