@@ -21,6 +21,9 @@ interface CompareModalProps {
   onRemove: (id: number) => void;
 }
 
+/**
+ * CompareModal allows comparison of up to 3 selected tourism destinations.
+ */
 export default function CompareModal({ items, onClose, onRemove }: CompareModalProps) {
   const { isDarkMode } = useTheme();
 
