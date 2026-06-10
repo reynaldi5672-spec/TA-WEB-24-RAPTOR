@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { Sun, CloudSun, Cloud, CloudFog, CloudDrizzle, CloudRain, CloudRainWind, CloudLightning, HelpCircle, Wind, Droplets, RefreshCw } from 'lucide-react';
 import { useTheme } from '@/app/context/ThemeContext';
 
+/**
+ * Represents parsed meteorological parameters from Open-Meteo
+ */
 interface WeatherData {
   temperature: number;
   humidity: number;
