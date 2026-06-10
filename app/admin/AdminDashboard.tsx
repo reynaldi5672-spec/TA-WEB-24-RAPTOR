@@ -18,6 +18,9 @@ interface Destinasi {
   kategori: string;
 }
 
+/**
+ * AdminDashboard manages administrative views, including lists of comments and destinations.
+ */
 export default function AdminDashboard() {
   const { isDarkMode, setIsDarkMode } = useTheme();
   const theme = isDarkMode ? 'dark' : 'light';
