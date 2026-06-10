@@ -23,6 +23,9 @@ export default function WeatherWidget() {
   const [loading, setLoading] = useState<boolean>(true); // Spinner visibility control state
   const [error, setError] = useState<boolean>(false); // Connection fault visual feedback state
 
+  /**
+   * Queries open-meteo REST endpoint for Bandar Lampung coordinates
+   */
   const fetchWeather = async () => {
     setLoading(true);
     setError(false);
