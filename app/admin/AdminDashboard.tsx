@@ -41,6 +41,9 @@ export default function AdminDashboard() {
   }, []);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
+  /**
+   * Helper callback to toggle refresh indicator state and reload records
+   */
   const handleRefresh = () => setRefreshTrigger(!refreshTrigger);
 
   const handleOpenCreateForm = () => {
