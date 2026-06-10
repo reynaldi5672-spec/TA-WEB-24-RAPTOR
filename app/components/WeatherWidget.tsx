@@ -19,7 +19,7 @@ interface WeatherData {
  */
 export default function WeatherWidget() {
   const { isDarkMode } = useTheme();
-  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null); // Meteorological telemetry data state
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
 
