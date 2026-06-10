@@ -131,7 +131,7 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
             </tr>
           </thead>
           <tbody className={`divide-y font-medium ${theme === 'dark' ? 'divide-white/5' : 'divide-black/5'}`}>
-            {destinasi.map((item) => (
+            {destinasi.map((item) => ( /* Maps individual records as customized table row indices elements */
               <tr key={item.id} className={theme === 'dark' ? 'hover:bg-white/[0.01]' : 'hover:bg-gray-50/50'}>
                 <td className="p-4 pl-8 font-mono text-gray-500">{item.id}</td>
                 <td className="p-4">
