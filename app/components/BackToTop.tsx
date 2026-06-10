@@ -27,6 +27,9 @@ export default function BackToTop() {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
+  /**
+   * Performs smooth navigation back to the top of the body viewport
+   */
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
