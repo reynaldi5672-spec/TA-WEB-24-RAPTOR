@@ -87,7 +87,7 @@ export default function AdminAuth() {
   if (!mounted) return null;
   
   if (isLoggedIn) {
-    return <AdminDashboard />;
+    return <AdminDashboard /> /* Render Dashboard panels inside client container wrappers */;
   }
 
   return (
