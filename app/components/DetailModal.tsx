@@ -116,6 +116,9 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   };
 
   // Handler Navigasi Slider Gambar
+  /**
+   * Shifts slide view viewport forward to next visual image index
+   */
   const nextSlide = () => {
     setActiveSlide((prev) => (prev === daftarGambar.length - 1 ? 0 : prev + 1));
   };
