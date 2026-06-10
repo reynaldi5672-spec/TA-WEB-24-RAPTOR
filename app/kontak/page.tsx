@@ -33,7 +33,7 @@ export default function KontakPage() {
   const { isDarkMode } = useTheme();
 
   const [mounted, setMounted] = useState(false); // Client hydration lock state indicator
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Contact form submit button loading tracker
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const [formData, setFormData] = useState({
