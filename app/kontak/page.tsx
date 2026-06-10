@@ -50,6 +50,9 @@ export default function KontakPage() {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
+  /**
+   * Dispatches user message payload details to database API handler via POST method requests
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
