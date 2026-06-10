@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '@/app/components/Navbar'; 
 import { useTheme } from '@/app/context/ThemeContext';
+import WeatherWidget from '@/app/components/WeatherWidget';
 import { 
   Plane, Ship, ExternalLink, Mail, 
   Globe, Anchor, User, MessageSquare, Share2 
@@ -206,7 +207,7 @@ export default function PariwisataLampung() {
               </div>
 
               {/* Tourism Hub Footer Info */}
-              <div className="mt-8 flex items-center justify-between text-left">
+              <div className="mt-8 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-[#ffcc00]/10 border border-[#ffcc00]/20 flex items-center justify-center text-[#ffcc00] animate-spin [animation-duration:15s]">
                       <Anchor size={20} />
@@ -215,6 +216,9 @@ export default function PariwisataLampung() {
                       <div className="text-[9px] text-gray-500 uppercase font-bold tracking-[0.2em]">Tourism Hub</div>
                       <div className={`text-sm font-bold tracking-tight ${isDarkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>Bandar Lampung</div>
                     </div>
+                  </div>
+                  <div className="flex-1 md:max-w-xs w-full">
+                    <WeatherWidget />
                   </div>
               </div>
             </div>
