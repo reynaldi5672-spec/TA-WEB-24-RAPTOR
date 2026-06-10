@@ -124,6 +124,22 @@ export default function DestinasiPage() {
     window.dispatchEvent(new Event('favorites-updated'));
   };
 
+  const handleSaveSearch = (term: string) => {
+    const trimmed = term.trim();
+    if (!trimmed) return;
+    setRecentSearches((prev) => {
+      const filtered = prev.filter((t) => t !== trimmed);
+      const updated = [trimmed, ...filtered].slice(0, 5);
+      localStorage.setItem("visitbdl_recent_searches", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const handleClearSearches = () => {
+    setRecentSearches([]);
+    localStorage.removeItem("visitbdl_recent_searches");
+  };
+
   useEffect(() => {
     if (mounted && destinasi.length > 0) {
       const params = new URLSearchParams(window.location.search);
