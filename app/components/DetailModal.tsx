@@ -123,6 +123,9 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
     setActiveSlide((prev) => (prev === daftarGambar.length - 1 ? 0 : prev + 1));
   };
 
+  /**
+   * Shifts slide view viewport backward to previous visual image index
+   */
   const prevSlide = () => {
     setActiveSlide((prev) => (prev === 0 ? daftarGambar.length - 1 : prev - 1));
   };
