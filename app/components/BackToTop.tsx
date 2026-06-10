@@ -9,7 +9,7 @@ import { useTheme } from '@/app/context/ThemeContext';
  */
 export default function BackToTop() {
   const { isDarkMode } = useTheme();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false); // Controls button visibility trigger state
 
   useEffect(() => {
     const toggleVisibility = () => {
