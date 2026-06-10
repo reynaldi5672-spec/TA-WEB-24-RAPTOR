@@ -26,6 +26,9 @@ const FAQ_ITEMS = [
   }
 ];
 
+/**
+ * KontakPage enables visitors to submit feedback and view FAQs.
+ */
 export default function KontakPage() {
   const { isDarkMode } = useTheme();
 
