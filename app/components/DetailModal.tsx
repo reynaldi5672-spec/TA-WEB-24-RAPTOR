@@ -30,6 +30,9 @@ interface DetailModalProps {
   onClose: () => void;
 }
 
+/**
+ * DetailModal displays detail view for a specific selected location.
+ */
 export default function DetailModal({ item, onClose }: DetailModalProps) {
   const { isDarkMode } = useTheme();
   
