@@ -49,7 +49,7 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   const [isCommentsLoading, setIsCommentsLoading] = useState(true); // Reviews section load control indicator
 
   // State untuk Form Input Review Baru
-  const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 });
+  const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 }); // New review details form model state
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   // URL sharing sosial media
