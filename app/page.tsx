@@ -70,7 +70,7 @@ export default function PariwisataLampung() {
       </div>
       
       {/* Navbar Komponen */}
-      <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+      <Navbar />
 
       {/* --- HERO SECTION --- */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-40 pb-24 relative z-10">
