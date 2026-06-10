@@ -21,7 +21,7 @@ export default function WeatherWidget() {
   const { isDarkMode } = useTheme();
   const [weather, setWeather] = useState<WeatherData | null>(null); // Meteorological telemetry data state
   const [loading, setLoading] = useState<boolean>(true); // Spinner visibility control state
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false); // Connection fault visual feedback state
 
   const fetchWeather = async () => {
     setLoading(true);
