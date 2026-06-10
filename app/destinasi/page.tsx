@@ -111,6 +111,7 @@ export default function DestinasiPage() {
     }
     setFavorites(updated);
     localStorage.setItem("visitbdl_favorites", JSON.stringify(updated));
+    window.dispatchEvent(new Event('favorites-updated'));
   };
 
   useEffect(() => {
