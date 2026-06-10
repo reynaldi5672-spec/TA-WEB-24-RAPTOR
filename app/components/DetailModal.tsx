@@ -131,6 +131,9 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   };
 
   // Handler Submit Review (Public Guest)
+  /**
+   * Sends structured comment schema to database via POST request endpoints
+   */
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formReview.nama_user.trim() || !formReview.isi_komentar.trim()) {
