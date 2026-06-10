@@ -47,7 +47,7 @@ export default function BackToTop() {
           ? 'bg-black/60 border-white/10 text-[#ffcc00] hover:bg-[#ffcc00] hover:text-black shadow-black/50'
           : 'bg-white/80 border-black/5 text-[#e6b800] hover:bg-[#ffcc00] hover:text-black shadow-slate-300/50'
       }`}
-      aria-label="Kembali ke atas"
+      aria-label="Kembali ke atas" /* Screenreader support for accessibility */
     >
       <ArrowUp size={18} className="animate-pulse" />
     </button>
