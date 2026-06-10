@@ -7,6 +7,9 @@ import { Sun, Moon } from 'lucide-react';
 // 1. IMPORT USETHME GLOBAL DARI CONTEXT
 import { useTheme } from '@/app/context/ThemeContext';
 
+/**
+ * Navbar component handles global site navigation, links mapping, and the theme switcher toggle.
+ */
 export default function Navbar() {
   const pathname = usePathname();
   
