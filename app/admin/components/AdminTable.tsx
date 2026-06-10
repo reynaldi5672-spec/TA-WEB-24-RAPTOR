@@ -53,6 +53,9 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
     fetchData();
   }, [refreshTrigger]);
 
+  /**
+   * Dispatches DELETE queries to backend endpoint routes for given document indexes
+   */
   const handleDelete = async (id: number) => {
     const confirm = await Swal.fire({
       title: 'Yakin mau hapus?',
