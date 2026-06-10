@@ -34,7 +34,7 @@ export default function DestinasiPage() {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   
   const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan" | "favorit">("all"); // Tracks currently filtered category tab
-  const [showOnlyViral, setShowOnlyViral] = useState(false);
+  const [showOnlyViral, setShowOnlyViral] = useState(false); // Filter toggle status for viral list only
   const [selectedDestinasi, setSelectedDestinasi] = useState<Destinasi | null>(null);
   const [sortBy, setSortBy] = useState<"default" | "rating-desc" | "rating-asc" | "name-asc" | "name-desc">("default");
   const [favorites, setFavorites] = useState<number[]>([]);
