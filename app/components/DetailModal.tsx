@@ -60,6 +60,9 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
 
   // Fetch komentar khusus destinasi ini saat modal terbuka
+  /**
+   * Queries backend REST endpoints for user comments corresponding to this destination
+   */
   const fetchKomentar = async () => {
     try {
       const res = await fetch(`/api/komentar?destinasi_id=${item.id}`);
