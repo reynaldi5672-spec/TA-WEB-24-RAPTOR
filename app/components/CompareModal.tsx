@@ -103,7 +103,7 @@ export default function CompareModal({ items, onClose, onRemove }: CompareModalP
                           alt={item.nama}
                           className="w-full h-full object-cover"
                         />
-                        {item.is_viral && (
+                        {item.is_viral && ( /* Renders visual warning highlight badge if destination is viral */
                           <div className="absolute bottom-3 left-3 bg-red-600 text-white px-2 py-0.5 rounded-lg text-[7px] font-black uppercase tracking-[0.1em] border border-red-500">
                             🔥 VIRAL
                           </div>
