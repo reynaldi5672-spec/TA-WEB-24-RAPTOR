@@ -14,6 +14,9 @@ interface WeatherData {
   weatherCode: number;
 }
 
+/**
+ * WeatherWidget displays real-time weather details for Bandar Lampung
+ */
 export default function WeatherWidget() {
   const { isDarkMode } = useTheme();
   const [weather, setWeather] = useState<WeatherData | null>(null);
