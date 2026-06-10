@@ -31,7 +31,7 @@ export default function CompareModal({ items, onClose, onRemove }: CompareModalP
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
       {/* Backdrop */}
       <div 
-        onClick={onClose}
+        onClick={onClose} /* Triggers drawer dismiss on overlay click events */
         className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-300"
       />
 
