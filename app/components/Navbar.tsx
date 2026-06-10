@@ -40,7 +40,7 @@ export default function Navbar() {
 
     updateFavoritesCount(); // Sync favorites count state immediately on mount
 
-    window.addEventListener('favorites-updated', updateFavoritesCount);
+    window.addEventListener('favorites-updated', updateFavoritesCount); // Watch for global favorite updates
     return () => {
       window.removeEventListener('favorites-updated', updateFavoritesCount);
     };
