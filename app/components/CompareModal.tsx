@@ -69,7 +69,7 @@ export default function CompareModal({ items, onClose, onRemove }: CompareModalP
 
         {/* Scrollable Comparison Table/Grid */}
         <div className="flex-1 overflow-y-auto p-6 md:p-8">
-          {items.length === 0 ? (
+          {items.length === 0 /* Validation checker for empty items array list */ ? (
             <div className="text-center py-16">
               <p className="text-gray-500 italic uppercase tracking-[0.2em] text-[10px] font-bold">
                 Tidak ada destinasi untuk dibandingkan. Silakan pilih destinasi terlebih dahulu.
