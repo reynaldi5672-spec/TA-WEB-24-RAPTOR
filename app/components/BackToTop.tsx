@@ -23,7 +23,7 @@ export default function BackToTop() {
       }
     };
 
-    window.addEventListener('scroll', toggleVisibility);
+    window.addEventListener('scroll', toggleVisibility); // Bind scroll toggle function
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
