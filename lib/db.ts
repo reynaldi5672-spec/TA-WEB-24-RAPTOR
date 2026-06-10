@@ -1,5 +1,5 @@
 // lib/db.ts
-import { Pool } from 'pg';
+import { Pool } from 'pg':
 
 // Menggunakan global variable agar tidak membuat pool baru setiap hot-reload di development
 const pool = new Pool({
