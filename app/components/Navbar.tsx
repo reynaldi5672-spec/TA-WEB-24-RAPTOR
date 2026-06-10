@@ -47,6 +47,9 @@ export default function Navbar() {
   }, []);
 
   // --- DEFINISI FUNGSI HANDLE CLICK ---
+  /**
+   * Handles scroll to top / landing zone redirect when clicking home
+   */
   const handleHomeClick = (e: React.MouseEvent) => {
     if (pathname === '/') {
       e.preventDefault();
