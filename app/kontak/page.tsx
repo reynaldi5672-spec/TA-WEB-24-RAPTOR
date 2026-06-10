@@ -7,11 +7,31 @@ import { Mail, MapPin, Send, Loader2, Compass } from "lucide-react";
 import { FaTiktok, FaYoutube } from "react-icons/fa"; 
 import Swal from "sweetalert2";
 
+const FAQ_ITEMS = [
+  {
+    question: "Kapan waktu terbaik untuk berkunjung ke Bandar Lampung?",
+    answer: "Waktu terbaik berkunjung adalah di musim kemarau antara bulan Mei hingga September. Cuacanya bersahabat, sangat cocok untuk menjelajahi pantai eksotis seperti Pahawang, Gigi Hiu, maupun melihat gajah di Way Kambas."
+  },
+  {
+    question: "Bagaimana cara menuju Bandar Lampung dari Jakarta?",
+    answer: "Anda bisa menggunakan jalur udara (penerbangan ±45 menit dari Soekarno-Hatta ke Bandara Radin Inten II BDL) atau jalur darat + laut (mobil/bus travel melewati Tol Trans-Sumatra dan menyeberang via kapal feri dari Pelabuhan Merak ke Bakauheni)."
+  },
+  {
+    question: "Apakah destinasi wisata pantai di Lampung aman untuk keluarga?",
+    answer: "Sebagian besar pantai di Teluk Lampung seperti Pahawang, Mutun, dan Sari Ringgung berarus tenang dan sangat aman untuk keluarga & anak-anak. Namun, untuk beberapa pantai lepas seperti Gigi Hiu atau Tanjung Setia, ombaknya cenderung besar dan lebih disarankan untuk fotografi atau berselancar."
+  },
+  {
+    question: "Apakah situs ini menyediakan pemesanan tiket / booking akomodasi secara langsung?",
+    answer: "Untuk saat ini, VisitBDL berfungsi sebagai media pemandu wisata dan pusat informasi destinasi Lampung secara live. Untuk pemesanan tiket resmi atau akomodasi, Anda akan diarahkan ke partner resmi kami melalui tombol booking di portal detail destinasi."
+  }
+];
+
 export default function KontakPage() {
   const { isDarkMode } = useTheme();
 
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -317,6 +337,61 @@ export default function KontakPage() {
             </div>
           </div>
         </div>
+
+        {/* ================= BOTTOM SIDE: FAQ SECTION ================= */}
+        <section className="mt-20 space-y-10">
+          <div className="text-center space-y-3">
+            <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter">
+              Pertanyaan <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.15)]">Sering Diajukan</span>
+            </h2>
+            <p className={`text-xs md:text-sm max-w-xl mx-auto leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              Temukan jawaban atas berbagai pertanyaan umum dari para pelancong mengenai destinasi pariwisata di Bandar Lampung.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto space-y-4">
+            {FAQ_ITEMS.map((faq, index) => {
+              const isOpen = openFaq === index;
+              return (
+                <div 
+                  key={index}
+                  className={`rounded-2xl border transition-all duration-300 ${
+                    isOpen 
+                      ? (isDarkMode ? 'bg-white/[0.03] border-white/10' : 'bg-white border-black/10 shadow-lg') 
+                      : (isDarkMode ? 'bg-black/20 border-white/5 hover:border-white/10' : 'bg-white/40 border-black/5 hover:bg-white/60')
+                  }`}
+                >
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : index)}
+                    className="w-full px-6 py-5 flex items-center justify-between text-left cursor-pointer outline-none"
+                  >
+                    <span className="text-xs md:text-sm font-black uppercase tracking-wider">
+                      {faq.question}
+                    </span>
+                    <span className={`text-[#ffcc00] transition-transform duration-300 ${
+                      isOpen ? 'rotate-180' : ''
+                    }`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                  </button>
+
+                  <div className={`overflow-hidden transition-all duration-300 ${
+                    isOpen ? 'max-h-60 border-t' : 'max-h-0'
+                  } ${isDarkMode ? 'border-white/5' : 'border-black/5'}`}>
+                    <p className={`p-6 text-xs md:text-sm leading-relaxed font-medium ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>
+                      {faq.answer}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
       </div>
     </main>
   );
