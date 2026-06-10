@@ -45,7 +45,7 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   const [activeSlide, setActiveSlide] = useState(0); // Tracks current visible slide index
 
   // State untuk Data Komentar dari DB
-  const [listKomentar, setListKomentar] = useState<Komentar[]>([]);
+  const [listKomentar, setListKomentar] = useState<Komentar[]>([]); // User feedback entries list state
   const [isCommentsLoading, setIsCommentsLoading] = useState(true);
 
   // State untuk Form Input Review Baru
