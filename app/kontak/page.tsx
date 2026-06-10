@@ -34,7 +34,7 @@ export default function KontakPage() {
 
   const [mounted, setMounted] = useState(false); // Client hydration lock state indicator
   const [isLoading, setIsLoading] = useState(false); // Contact form submit button loading tracker
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null); // Stores currently active expanded FAQ index
 
   const [formData, setFormData] = useState({
     name: "",
