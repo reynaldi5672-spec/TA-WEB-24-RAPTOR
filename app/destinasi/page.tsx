@@ -20,6 +20,9 @@ interface Destinasi {
   kategori: string;
 }
 
+/**
+ * DestinasiPage renders search inputs, filters, sort dropdowns, and results grid.
+ */
 export default function DestinasiPage() {
   // 2. GANTI STATE LOKAL LAMA DENGAN CONSUME THEME CONTEXT GLOBAL
   const { isDarkMode } = useTheme();
