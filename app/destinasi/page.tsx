@@ -204,7 +204,7 @@ export default function DestinasiPage() {
     return matchesSearch && matchesCategory && matchesViral;
   });
 
-  const sortedDestinasi = [...filteredDestinasi].sort((a, b) => {
+  const sortedDestinasi = [...filteredDestinasi].sort((a, b) => { // Sort destinations dynamically based on active key selection
     if (sortBy === "rating-desc") {
       return Number(b.rating) - Number(a.rating);
     }
