@@ -28,6 +28,7 @@ export default function DestinasiPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   
   const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan" | "favorit">("all");
   const [showOnlyViral, setShowOnlyViral] = useState(false);
@@ -90,6 +91,15 @@ export default function DestinasiPage() {
       if (stored) {
         try {
           setFavorites(JSON.parse(stored));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      const storedSearches = localStorage.getItem("visitbdl_recent_searches");
+      if (storedSearches) {
+        try {
+          setRecentSearches(JSON.parse(storedSearches));
         } catch (e) {
           console.error(e);
         }
