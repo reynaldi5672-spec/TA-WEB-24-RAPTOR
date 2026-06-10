@@ -30,7 +30,7 @@ export default function AdminDashboard() {
 
   const [isFormOpen, setIsFormOpen] = useState(false); // Controls insert/update modal dialog visibility
   const [editData, setEditData] = useState<Destinasi | null>(null); // Holds details model for update edit actions
-  const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(false); // State toggle switch to reload data rows
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
