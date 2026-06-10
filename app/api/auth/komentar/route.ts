@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       });
 
       // Format ulang datanya biar strukturnya mirip kodingan lamo (k.nama_destinasi)
-      komentar = result.map((k) => ({
+      komentar = result.map((k: any) => ({
         id: k.id,
         destinasi_id: k.destinasi_id,
         nama_user: k.nama_user,

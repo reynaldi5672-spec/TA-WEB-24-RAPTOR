@@ -11,7 +11,7 @@ export async function GET() {
       orderBy: { created_at: "desc" },
     });
 
-    const formatPesan = semuaPesan.map((p) => {
+    const formatPesan = semuaPesan.map((p: any) => {
       let email = "-";
       let subject = "-";
       let message = p.isi_komentar;
