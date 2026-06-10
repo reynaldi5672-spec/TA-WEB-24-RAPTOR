@@ -50,7 +50,7 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
 
   // State untuk Form Input Review Baru
   const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 }); // New review details form model state
-  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false); // Review submit loading indicator state
 
   // URL sharing sosial media
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/destinasi?id=${item.id}` : "";
