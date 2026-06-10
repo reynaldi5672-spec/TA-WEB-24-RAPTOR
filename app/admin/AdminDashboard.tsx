@@ -26,7 +26,7 @@ export default function AdminDashboard() {
   const theme = isDarkMode ? 'dark' : 'light';
 
   // <-- 2. TAMBAH STATE UNTUK NAVIGASI TAB HALAMAN ADMIN
-  const [activeTab, setActiveTab] = useState<'destinasi' | 'komentar'>('destinasi');
+  const [activeTab, setActiveTab] = useState<'destinasi' | 'komentar'>('destinasi'); // Tracks active visible panel tab content selection
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editData, setEditData] = useState<Destinasi | null>(null);
