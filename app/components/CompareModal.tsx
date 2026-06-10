@@ -78,7 +78,7 @@ export default function CompareModal({ items, onClose, onRemove }: CompareModalP
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
               {items.map((item) => { /* Iterates and maps compared destinations info */
-                const coverImage = item.gambar_url ? item.gambar_url.split(',')[0].trim() : 'https://via.placeholder.com/800x600?text=No+Image';
+                const coverImage = item.gambar_url ? item.gambar_url.split(',')[0].trim() : 'https://via.placeholder.com/800x600?text=No+Image'; // Extract primary image source link
                 return (
                   <div 
                     key={item.id}
