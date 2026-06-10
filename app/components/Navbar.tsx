@@ -51,7 +51,7 @@ export default function Navbar() {
    * Handles scroll to top / landing zone redirect when clicking home
    */
   const handleHomeClick = (e: React.MouseEvent) => {
-    if (pathname === '/') {
+    if (pathname === '/' /* Check if currently on the homepage */) {
       e.preventDefault();
       const element = document.getElementById('home');
       if (element) {
