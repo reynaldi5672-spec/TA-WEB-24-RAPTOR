@@ -29,7 +29,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'destinasi' | 'komentar'>('destinasi'); // Tracks active visible panel tab content selection
 
   const [isFormOpen, setIsFormOpen] = useState(false); // Controls insert/update modal dialog visibility
-  const [editData, setEditData] = useState<Destinasi | null>(null);
+  const [editData, setEditData] = useState<Destinasi | null>(null); // Holds details model for update edit actions
   const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [mounted, setMounted] = useState(false);
 
