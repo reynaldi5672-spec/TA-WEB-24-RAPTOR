@@ -36,7 +36,7 @@ export default function DestinasiPage() {
   const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan" | "favorit">("all"); // Tracks currently filtered category tab
   const [showOnlyViral, setShowOnlyViral] = useState(false); // Filter toggle status for viral list only
   const [selectedDestinasi, setSelectedDestinasi] = useState<Destinasi | null>(null); // Holds current focused item for detail modal display
-  const [sortBy, setSortBy] = useState<"default" | "rating-desc" | "rating-asc" | "name-asc" | "name-desc">("default");
+  const [sortBy, setSortBy] = useState<"default" | "rating-desc" | "rating-asc" | "name-asc" | "name-desc">("default"); // Active alphabetical or numerical sorting model
   const [favorites, setFavorites] = useState<number[]>([]);
   const [compareList, setCompareList] = useState<Destinasi[]>([]);
   const [showCompareModal, setShowCompareModal] = useState(false);
