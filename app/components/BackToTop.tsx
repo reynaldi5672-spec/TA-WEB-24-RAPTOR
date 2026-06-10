@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
 import { useTheme } from '@/app/context/ThemeContext';
 
+/**
+ * BackToTop component displays an animated scroll to top arrow button.
+ */
 export default function BackToTop() {
   const { isDarkMode } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
