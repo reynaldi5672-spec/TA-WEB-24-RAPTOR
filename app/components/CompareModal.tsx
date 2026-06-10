@@ -132,7 +132,7 @@ export default function CompareModal({ items, onClose, onRemove }: CompareModalP
                         <div className="flex justify-between items-center">
                           <span className="text-gray-500 text-[10px] uppercase">Rating</span>
                           <span className="text-[#ffcc00] flex items-center gap-1 font-mono">
-                            <Star size={12} fill="#ffcc00" /> {Number(item.rating).toFixed(1)} / 5.0
+                            <Star size={12} fill="#ffcc00" /> {Number(item.rating).toFixed(1) /* Formats rating decimal count display to 1 fraction */} / 5.0
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
