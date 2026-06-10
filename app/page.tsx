@@ -5,9 +5,10 @@ import Link from 'next/link';
 import Navbar from '@/app/components/Navbar'; 
 import { useTheme } from '@/app/context/ThemeContext';
 import WeatherWidget from '@/app/components/WeatherWidget';
+import DetailModal from '@/app/components/DetailModal';
 import { 
   Plane, Ship, ExternalLink, Mail, 
-  Globe, Anchor, User, MessageSquare, Share2 
+  Globe, Anchor, User, MessageSquare, Share2, Sparkles 
 } from 'lucide-react';
 
 // Data Foto Slide Destinasi Lampung
@@ -38,13 +39,36 @@ const DESTINASI_SLIDES = [
 export default function PariwisataLampung() {
   const { isDarkMode } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [destinasiList, setDestinasiList] = useState<any[]>([]);
+  const [randomDestinasi, setRandomDestinasi] = useState<any | null>(null);
+  const [isSpinning, setIsSpinning] = useState(false);
 
   useEffect(() => {
     const animationFrameId = requestAnimationFrame(() => {
       setMounted(true);
     });
+
+    fetch('/api/destinasi')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setDestinasiList(data);
+        }
+      })
+      .catch(err => console.error("Gagal fetch destinasi:", err));
+
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
+
+  const handleRandomInspirasi = () => {
+    if (destinasiList.length === 0) return;
+    setIsSpinning(true);
+    setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * destinasiList.length);
+      setRandomDestinasi(destinasiList[randomIndex]);
+      setIsSpinning(false);
+    }, 1200);
+  };
 
   if (!mounted) return null;
 
@@ -104,6 +128,12 @@ export default function PariwisataLampung() {
                   DESTINASI LAMPUNG <ExternalLink size={14} />
                 </button>
               </Link>
+              <button 
+                onClick={handleRandomInspirasi}
+                className="bg-[#ffcc00] hover:bg-[#e6b800] px-8 py-4 rounded-2xl flex items-center gap-2.5 text-black font-black text-[10px] uppercase tracking-wider shadow-lg shadow-[#ffcc00]/25 hover:scale-105 transition-all cursor-pointer"
+              >
+                Cari Inspirasi <Sparkles size={14} />
+              </button>
               <button className="bg-[#0055ff] hover:bg-[#0044cc] px-8 py-4 rounded-2xl flex items-center gap-2.5 text-white font-black text-[10px] uppercase tracking-wider shadow-lg shadow-[#0055ff]/20 hover:scale-105 transition-all cursor-pointer">
                 Booking <Mail size={14} />
               </button>
@@ -225,6 +255,29 @@ export default function PariwisataLampung() {
           </section>
         </div>
       </div>
+
+      {/* --- POPUP MODAL RANDOM DETAIL --- */}
+      {randomDestinasi && (
+        <DetailModal 
+          item={randomDestinasi} 
+          onClose={() => setRandomDestinasi(null)} 
+        />
+      )}
+
+      {/* --- SPINNING OVERLAY --- */}
+      {isSpinning && (
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-300">
+          <div className="flex flex-col items-center gap-4 animate-bounce">
+            <div className="w-16 h-16 rounded-3xl bg-[#ffcc00] flex items-center justify-center text-black shadow-2xl shadow-[#ffcc00]/30">
+              <Sparkles size={32} className="animate-spin [animation-duration:3s]" />
+            </div>
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-[#ffcc00]">
+              Mencari Petualangan Anda...
+            </p>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
