@@ -88,7 +88,7 @@ export default function CompareModal({ items, onClose, onRemove }: CompareModalP
                   >
                     {/* Remove button */}
                     <button
-                      onClick={() => onRemove(item.id)}
+                      onClick={() => onRemove(item.id)} /* Triggers deletion event from comparison indices */
                       className="absolute top-8 right-8 z-10 p-1.5 rounded-lg bg-black/60 text-white hover:bg-red-500 hover:text-white hover:scale-105 active:scale-95 transition-all cursor-pointer border border-white/10"
                       title="Hapus dari perbandingan"
                     >
