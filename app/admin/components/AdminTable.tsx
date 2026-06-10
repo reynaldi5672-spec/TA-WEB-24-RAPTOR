@@ -27,7 +27,7 @@ interface AdminTableProps {
  */
 export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }: AdminTableProps) {
   const [destinasi, setDestinasi] = useState<Destinasi[]>([]); // Destinations array state fetched from database queries
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Controls local tables loading overlay trigger state
 
   const fetchData = async () => {
     try {
