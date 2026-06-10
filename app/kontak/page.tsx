@@ -36,7 +36,7 @@ export default function KontakPage() {
   const [isLoading, setIsLoading] = useState(false); // Contact form submit button loading tracker
   const [openFaq, setOpenFaq] = useState<number | null>(null); // Stores currently active expanded FAQ index
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ // Forms binding states
     name: "",
     email: "",
     subject: "",
