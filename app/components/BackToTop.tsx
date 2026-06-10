@@ -12,7 +12,10 @@ export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false); // Controls button visibility trigger state
 
   useEffect(() => {
-    const toggleVisibility = () => {
+    /**
+   * Toggles visibility trigger state depending on current scroll position
+   */
+  const toggleVisibility = () => {
       if (window.scrollY > 300) {
         setIsVisible(true);
       } else {
