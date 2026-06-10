@@ -46,6 +46,9 @@ export default function AdminDashboard() {
    */
   const handleRefresh = () => setRefreshTrigger(!refreshTrigger);
 
+  /**
+   * Sets state parameters for creating new destination records and triggers modal visibility
+   */
   const handleOpenCreateForm = () => {
     setEditData(null);
     setIsFormOpen(true);
