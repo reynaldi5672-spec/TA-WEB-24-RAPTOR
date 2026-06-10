@@ -192,7 +192,7 @@ export default function DestinasiPage() {
     }
   };
 
-  const totalWisata = destinasi.length;
+  const totalWisata = destinasi.length; // Total locations count statistic value
   const totalViral = destinasi.filter(item => item.is_viral).length;
 
   const filteredDestinasi = destinasi.filter(item => {
