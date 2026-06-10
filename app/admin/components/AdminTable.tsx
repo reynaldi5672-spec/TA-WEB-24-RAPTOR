@@ -29,6 +29,9 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
   const [destinasi, setDestinasi] = useState<Destinasi[]>([]); // Destinations array state fetched from database queries
   const [isLoading, setIsLoading] = useState(true); // Controls local tables loading overlay trigger state
 
+  /**
+   * Requests backend GET routes to retrieve all active destination documents
+   */
   const fetchData = async () => {
     try {
       const res = await fetch('/api/destinasi');
