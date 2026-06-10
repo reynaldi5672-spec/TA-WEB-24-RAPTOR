@@ -17,7 +17,7 @@ export default function Navbar() {
   const { isDarkMode, setIsDarkMode } = useTheme();
 
   // State untuk jumlah favorit
-  const [favoritesCount, setFavoritesCount] = useState(0);
+  const [favoritesCount, setFavoritesCount] = useState(0); // Tracks favorite locations locally
 
   useEffect(() => {
     const updateFavoritesCount = () => {
