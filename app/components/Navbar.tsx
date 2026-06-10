@@ -14,7 +14,7 @@ export default function Navbar() {
   const pathname = usePathname(); // Retrieves the current window location path
   
   // 2. CONSUME STATE TEMA GLOBAL (Hapus interface NavbarProps di atas)
-  const { isDarkMode, setIsDarkMode } = useTheme();
+  const { isDarkMode, setIsDarkMode } = useTheme(); // Consumes the shared theme context
 
   // State untuk jumlah favorit
   const [favoritesCount, setFavoritesCount] = useState(0); // Tracks favorite locations locally
