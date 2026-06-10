@@ -54,6 +54,9 @@ export default function AdminDashboard() {
     setIsFormOpen(true);
   };
 
+  /**
+   * Binds data parameters from destination indices for update forms editing action
+   */
   const handleOpenEditForm = (item: Destinasi) => {
     setEditData(item);
     setIsFormOpen(true);
