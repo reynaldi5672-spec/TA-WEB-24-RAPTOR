@@ -64,6 +64,9 @@ export default function DestinasiPage() {
     setCompareList(compareList.filter((c) => c.id !== id));
   };
 
+  /**
+   * Queries backend APIs for all tourism records stored in database
+   */
   const fetchDestinasi = async () => {
     try {
       const response = await fetch('/api/destinasi');
