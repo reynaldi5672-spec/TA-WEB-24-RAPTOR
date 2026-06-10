@@ -49,6 +49,13 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 });
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
+  // URL sharing sosial media
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/destinasi?id=${item.id}` : "";
+  const shareText = `Yuk kunjungi destinasi seru "${item.nama}" di ${item.lokasi}!`;
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
+  const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+
   // Fetch komentar khusus destinasi ini saat modal terbuka
   const fetchKomentar = async () => {
     try {
@@ -242,24 +249,33 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
                       >
                         ✕
                       </button>
-                      <button
-                        className="p-2.5 rounded-xl bg-green-500 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2.5 rounded-xl bg-green-500 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center animate-fadeIn"
                         title="Share ke WhatsApp"
                       >
                         <FaWhatsapp size={14} />
-                      </button>
-                      <button
-                        className="p-2.5 rounded-xl bg-blue-400 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
+                      </a>
+                      <a
+                        href={twitterUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2.5 rounded-xl bg-blue-400 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center animate-fadeIn"
                         title="Share ke Twitter/X"
                       >
                         <FaTwitter size={14} />
-                      </button>
-                      <button
-                        className="p-2.5 rounded-xl bg-blue-500 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
+                      </a>
+                      <a
+                        href={telegramUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2.5 rounded-xl bg-blue-500 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center animate-fadeIn"
                         title="Share ke Telegram"
                       >
                         <FaTelegramPlane size={14} />
-                      </button>
+                      </a>
                       <button
                         onClick={handleShareModal}
                         className="p-2.5 rounded-xl bg-[#ffcc00] text-black hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
