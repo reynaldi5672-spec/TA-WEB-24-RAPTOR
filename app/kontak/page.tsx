@@ -356,7 +356,7 @@ export default function KontakPage() {
           </div>
 
           <div className="max-w-4xl mx-auto space-y-4">
-            {FAQ_ITEMS.map((faq, index) => {
+            {FAQ_ITEMS.map((faq, index) => { /* Maps global Accordion FAQ items layout elements */
               const isOpen = openFaq === index;
               return (
                 <div 
