@@ -33,7 +33,7 @@ export default function DestinasiPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   
-  const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan" | "favorit">("all");
+  const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan" | "favorit">("all"); // Tracks currently filtered category tab
   const [showOnlyViral, setShowOnlyViral] = useState(false);
   const [selectedDestinasi, setSelectedDestinasi] = useState<Destinasi | null>(null);
   const [sortBy, setSortBy] = useState<"default" | "rating-desc" | "rating-asc" | "name-asc" | "name-desc">("default");
