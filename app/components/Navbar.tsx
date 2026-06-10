@@ -11,7 +11,7 @@ import { useTheme } from '@/app/context/ThemeContext';
  * Navbar component handles global site navigation, links mapping, and the theme switcher toggle.
  */
 export default function Navbar() {
-  const pathname = usePathname();
+  const pathname = usePathname(); // Retrieves the current window location path
   
   // 2. CONSUME STATE TEMA GLOBAL (Hapus interface NavbarProps di atas)
   const { isDarkMode, setIsDarkMode } = useTheme();
