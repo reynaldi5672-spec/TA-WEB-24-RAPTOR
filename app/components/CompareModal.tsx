@@ -149,7 +149,7 @@ export default function CompareModal({ items, onClose, onRemove }: CompareModalP
                         <p className={`text-xs leading-relaxed font-medium line-clamp-6 ${
                           isDarkMode ? 'text-gray-400' : 'text-gray-500'
                         }`}>
-                          {item.deskripsi}
+                          {item.deskripsi /* Renders complete summary description text block */}
                         </p>
                       </div>
                     </div>
