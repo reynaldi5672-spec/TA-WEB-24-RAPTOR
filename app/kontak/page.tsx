@@ -32,7 +32,7 @@ const FAQ_ITEMS = [
 export default function KontakPage() {
   const { isDarkMode } = useTheme();
 
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false); // Client hydration lock state indicator
   const [isLoading, setIsLoading] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
