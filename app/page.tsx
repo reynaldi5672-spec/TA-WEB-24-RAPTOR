@@ -61,7 +61,7 @@ const TESTIMONIALS = [
     id: 2,
     name: "Aura Salsabila",
     role: "Travel Blogger",
-    comment: "Gigi Hiu sangat epik untuk fotografi landscape. Website pariwisata VisitBDL ini sangat membantu saya dalam membandingkan destinasi dengan akurat!",
+    comment: "Gigi Hiu sangat epik untuk fotografi landscape. Website pariwisata Wisata Bandar Lampung ini sangat membantu saya dalam membandingkan destinasi dengan akurat!",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
   },

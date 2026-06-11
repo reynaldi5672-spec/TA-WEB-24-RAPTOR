@@ -111,8 +111,8 @@ export default function Footer() {
               <div className="w-10 h-10 bg-[#ffcc00] rounded-xl flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,204,0,0.3)]">
                 L
               </div>
-              <span className={`font-black tracking-tighter text-2xl uppercase italic ${isDarkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>
-                Visit<span className="text-[#ffcc00]">BDL</span>
+              <span className={`font-black tracking-tighter text-lg md:text-2xl uppercase italic ${isDarkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>
+                Wisata<span className="text-[#ffcc00]"> Bandar Lampung</span>
               </span>
             </Link>
             
@@ -279,7 +279,7 @@ export default function Footer() {
           
           <div className="space-y-1">
             <p className="text-[11px] font-bold uppercase tracking-wider">
-              © {new Date().getFullYear()} VisitBDL. Hak Cipta Dilindungi Undang-Undang.
+              © {new Date().getFullYear()} Wisata Bandar Lampung. Hak Cipta Dilindungi Undang-Undang.
             </p>
             <p className="text-[9px] font-semibold text-gray-500 flex items-center justify-center md:justify-start gap-1">
               <MapPin size={10} className="text-red-500" /> Jl. Jend. Sudirman No. 1, Bandar Lampung, Lampung, Indonesia

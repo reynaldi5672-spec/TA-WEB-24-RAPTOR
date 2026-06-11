@@ -73,8 +73,8 @@ export default function Navbar() {
         <div className="w-10 h-10 bg-[#ffcc00] rounded-xl flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,204,0,0.3)]">
           L
         </div>
-        <span className={`font-black tracking-tighter text-2xl uppercase italic ${isDarkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>
-          Visit<span className="text-[#ffcc00]">BDL</span>
+        <span className={`font-black tracking-tighter text-sm sm:text-lg md:text-xl uppercase italic ${isDarkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>
+          Wisata<span className="text-[#ffcc00]"> Bandar Lampung</span>
         </span>
       </Link>
 
