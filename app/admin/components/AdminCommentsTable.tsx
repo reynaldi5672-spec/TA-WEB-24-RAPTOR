@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Trash2, Loader2, Star, ShieldAlert } from 'lucide-react';
+import { Trash2, Loader2, Star, ShieldAlert, Search } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 interface Komentar {
@@ -22,8 +22,8 @@ interface AdminCommentsProps {
 export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }: AdminCommentsProps) {
   const [komentar, setKomentar] = useState<Komentar[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // 1. Ambil semua data komentar dari API untuk di-audit admin
   const fetchComments = async () => {
     try {
       const res = await fetch('/api/komentar');
@@ -42,7 +42,6 @@ export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }:
     fetchComments();
   }, [refreshTrigger]);
 
-  // 2. Eksekusi bantai komentar toxic / spam judi online :v
   const handleDeleteComment = async (id: number) => {
     const confirm = await Swal.fire({
       title: 'Hapus komentar ini?',
@@ -53,7 +52,7 @@ export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }:
       color: theme === 'dark' ? '#fff' : '#000',
       confirmButtonColor: '#ef4444',
       cancelButtonColor: theme === 'dark' ? '#1a1a1a' : '#e5e7eb',
-      confirmButtonText: 'Ya, Bantai!',
+      confirmButtonText: 'Ya, Hapus!',
       cancelButtonText: 'Batal'
     });
 
@@ -68,13 +67,19 @@ export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }:
             background: theme === 'dark' ? '#0d0d0d' : '#fff',
             color: theme === 'dark' ? '#fff' : '#000'
           });
-          onRefresh(); // Trigger refresh data di dashboard
+          onRefresh();
         }
       } catch (err) {
         console.error("Gagal menghapus komentar:", err);
       }
     }
   };
+
+  const filteredKomentar = komentar.filter(k => 
+    k.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    k.nama_destinasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    k.isi_komentar.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (isLoading) {
     return (
@@ -88,7 +93,7 @@ export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }:
   if (komentar.length === 0) {
     return (
       <div className={`p-20 text-center italic text-sm border rounded-2xl border-dashed ${
-        theme === 'dark' ? 'text-gray-500 border-white/5 bg-white/1' : 'text-gray-400 border-black/5 bg-gray-50'
+        theme === 'dark' ? 'text-gray-500 border-white/5 bg-white/5' : 'text-gray-400 border-black/5 bg-gray-50'
       }`}>
         Aman terkendali. Belum ada review atau komentar publik yang masuk.
       </div>
@@ -96,15 +101,35 @@ export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }:
   }
 
   return (
-    <div className={`border rounded-2xl overflow-hidden transition-colors ${
-      theme === 'dark' ? 'bg-[#0d0d0d] border-white/5 shadow-2xl' : 'bg-white border-black/5 shadow-md'
+    <div className={`border rounded-[2rem] overflow-hidden transition-all duration-300 ${
+      theme === 'dark' ? 'bg-[#0b0b0b] border-white/5 shadow-2xl' : 'bg-white border-black/5 shadow-md'
     }`}>
-      {/* Header Panel Moderasi */}
-      <div className={`p-6 border-b text-left flex items-center gap-2 ${theme === 'dark' ? 'border-white/5' : 'border-black/5'}`}>
-        <ShieldAlert size={16} className="text-red-500" />
-        <h2 className="text-sm font-black uppercase italic tracking-wide text-red-500">
-          Live Security Review Gate ({komentar.length} Ulasan Masuk)
-        </h2>
+      
+      {/* Header Panel Moderasi with Search Bar */}
+      <div className={`p-6 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-left ${
+        theme === 'dark' ? 'border-white/5' : 'border-black/5'
+      }`}>
+        <div className="flex items-center gap-2">
+          <ShieldAlert size={16} className="text-red-500" />
+          <h2 className="text-sm font-black uppercase italic tracking-wide text-red-500">
+            Live Security Review Gate ({filteredKomentar.length} of {komentar.length})
+          </h2>
+        </div>
+
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" size={14} />
+          <input
+            type="text"
+            placeholder="Cari pengirim, ulasan, wisata..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`w-full py-2.5 pl-10 pr-4 rounded-xl border outline-none text-[11px] font-bold uppercase tracking-wider transition-all ${
+              theme === 'dark'
+                ? 'bg-white/[0.02] border-white/10 text-white placeholder-gray-600 focus:border-red-500/50'
+                : 'bg-gray-50 border-black/5 text-black placeholder-gray-400 focus:border-red-500'
+            }`}
+          />
+        </div>
       </div>
       
       {/* Table Data Komentar */}
@@ -123,14 +148,14 @@ export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }:
             </tr>
           </thead>
           <tbody className={`divide-y font-medium ${theme === 'dark' ? 'divide-white/5' : 'divide-black/5'}`}>
-            {komentar.map((item) => (
-              <tr key={item.id} className={theme === 'dark' ? 'hover:bg-white/1' : 'hover:bg-gray-50'}>
+            {filteredKomentar.map((item) => (
+              <tr key={item.id} className={`transition-colors ${theme === 'dark' ? 'hover:bg-white/5' : 'hover:bg-gray-50'}`}>
                 {/* Tanggal */}
                 <td className="p-4 pl-8 font-mono text-gray-500 text-[10px]">
                   {new Date(item.created_at).toLocaleDateString('id-ID')}
                 </td>
                 {/* Nama Tempat Wisata */}
-                <td className="p-4 font-bold text-[#ffcc00] uppercase tracking-tight text-[11px]">
+                <td className="p-4 font-black text-[#ffcc00] uppercase tracking-tight text-[11px]">
                   {item.nama_destinasi}
                 </td>
                 {/* Nama Pengunjung */}
@@ -168,6 +193,14 @@ export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }:
           </tbody>
         </table>
       </div>
+
+      {filteredKomentar.length === 0 && (
+        <div className={`p-16 text-center italic text-xs uppercase tracking-widest ${
+          theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+        }`}>
+          Data komentar tidak ditemukan
+        </div>
+      )}
     </div>
   );
 }
