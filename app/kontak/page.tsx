@@ -222,102 +222,90 @@ export default function KontakPage() {
         }}
       />
 
-      <Navbar />
-
-      {/* --- LAYOUT GRID --- */}
-      <div className="max-w-7xl w-full mx-auto px-6 md:px-16 pt-36 pb-16 relative z-10 my-auto">
+        {/* --- PAGE HEADER --- */}
+      <div className="max-w-7xl w-full mx-auto px-6 md:px-16 pt-36 pb-4 relative z-10 text-center space-y-4">
         <link
           href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
           rel="stylesheet"
         />
 
+        <div
+          className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm ${
+            isDarkMode
+              ? "bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]"
+              : "bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#bf9600]"
+          }`}
+        >
+          <Compass
+            size={12}
+            className="animate-[spin_10s_linear_infinite]"
+          />{" "}
+          Hubungi Kami
+        </div>
+
+        <div className="space-y-1">
+          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight italic">
+            Mari <span className="bg-gradient-to-r from-[#ffcc00] to-[#ffb300] bg-clip-text text-transparent drop-shadow-[0_10px_30px_rgba(255,204,0,0.15)]">Terhubung</span>
+          </h1>
+        </div>
+
+        <p
+          className={`text-xs md:text-sm max-w-xl mx-auto leading-relaxed ${
+            isDarkMode ? "text-gray-400" : "text-gray-600"
+          }`}
+        >
+          Punya pertanyaan seputar pariwisata di Bandar Lampung? Atau ingin melakukan kerja sama dengan VisitBDL? Hubungi kami langsung atau isi form yang telah disediakan.
+        </p>
+      </div>
+
+      {/* --- LAYOUT GRID --- */}
+      <div className="max-w-7xl w-full mx-auto px-6 md:px-16 pt-8 pb-16 relative z-10 my-auto">
         <div className="grid lg:grid-cols-12 gap-8 items-stretch">
           
           {/* ================= LEFT SIDE: INFO PANEL & MAP ================= */}
           <section className="lg:col-span-5 flex flex-col gap-6 justify-between">
-            {/* UNIFIED PANEL: HUBUNGI KAMI & SOCIAL MEDIA */}
+            {/* PANEL: SOCIAL MEDIA & CHANNELS */}
             <div
-              className={`p-8 rounded-[2rem] border backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500 flex-1 flex flex-col justify-between ${
+              className={`p-6 md:p-8 rounded-[2rem] border backdrop-blur-xl shadow-2xl transition-all duration-500 flex-1 flex flex-col justify-between gap-6 ${
                 isDarkMode
-                  ? "bg-black/35 border-white/10 shadow-black/40"
-                  : "bg-white/50 border-black/5 shadow-slate-200/40"
+                  ? "bg-[#11161a]/60 border-white/10 shadow-black/40"
+                  : "bg-white/70 border-black/5 shadow-slate-200/40"
               }`}
-              style={{
-                backgroundImage: `linear-gradient(${
-                  isDarkMode
-                    ? "rgba(0,0,0,0.7), rgba(0,0,0,0.8)"
-                    : "rgba(255,255,255,0.7), rgba(255,255,255,0.85)"
-                }), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
             >
-              <div>
-                <div
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-md shadow-sm mb-6 ${
-                    isDarkMode
-                      ? "bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#ffcc00]"
-                      : "bg-[#ffcc00]/20 border-[#ffcc00]/40 text-[#bf9600]"
-                  }`}
-                >
-                  <Compass
-                    size={13}
-                    className="animate-[spin_8s_linear_infinite]"
-                  />{" "}
-                  Hubungi Kami
-                </div>
-
-                <div className="space-y-1 mb-6 text-left">
-                  <h1
-                    className={`text-5xl md:text-6xl font-normal leading-none tracking-wide drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] ${
-                      isDarkMode ? "text-white" : "text-slate-800"
-                    }`}
-                    style={{ fontFamily: "'Kaushan Script', cursive" }}
-                  >
-                    Hubungi
-                  </h1>
-                  <h1
-                    className="text-6xl md:text-7xl font-normal leading-none tracking-wide text-[#ffcc00] drop-shadow-[0_4px_12px_rgba(255,204,0,0.25)]"
-                    style={{ fontFamily: "'Kaushan Script', cursive" }}
-                  >
-                    Kami
-                  </h1>
-                </div>
-
-                <p
-                  className={`text-xs md:text-sm font-medium leading-relaxed mb-6 text-left ${
-                    isDarkMode ? "text-gray-300" : "text-slate-700"
-                  }`}
-                >
-                  Punya pertanyaan seputar pariwisata di Bandar Lampung? Atau ingin melakukan kerja sama dengan VisitBDL? Hubungi kami langsung atau isi form yang telah disediakan.
-                </p>
+              <div className="text-left space-y-1">
+                <h3 className={`text-[9px] font-black uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`}>
+                  Saluran Komunikasi
+                </h3>
+                <h2 className="text-xl md:text-2xl font-black uppercase italic tracking-tight">
+                  Kontak <span className="text-[#ffcc00]">Resmi</span>
+                </h2>
               </div>
 
               {/* SOCIAL MEDIA CARDS GRID */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 flex-1">
                 {CONTACT_INFO.map((item, idx) => (
                   <a
                     key={idx}
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`p-3 rounded-2xl border transition-all duration-300 flex flex-col justify-between cursor-pointer group select-none text-left ${
+                    className={`p-3.5 rounded-2xl border transition-all duration-300 flex flex-col justify-between cursor-pointer group select-none text-left ${
                       item.fullWidth ? "col-span-2" : "col-span-1"
                     } ${
                       isDarkMode
-                        ? "bg-black/45 border-white/5 hover:bg-white/[0.04]"
-                        : "bg-white border-black/5 shadow-sm hover:bg-slate-50"
+                        ? "bg-black/35 border-white/5 hover:border-white/10 hover:bg-white/[0.04]"
+                        : "bg-white border-black/5 shadow-sm hover:bg-slate-50 hover:border-black/10"
                     } ${item.glowClass}`}
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center border shrink-0 transition-transform group-hover:scale-105 duration-300 ${
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center border shrink-0 transition-all group-hover:scale-110 duration-300 ${
                           isDarkMode
-                            ? "bg-black/40 border-white/5"
+                            ? "bg-black/45 border-white/5"
                             : "bg-slate-50 border-black/5 shadow-sm"
                         }`}
                       >
-                        <item.icon size={16} className={item.iconColor} />
+                        <item.icon size={16} className={`${item.iconColor} transition-transform group-hover:rotate-12 duration-300`} />
                       </div>
                       <div className="min-w-0">
                         <div className={`text-[8px] font-bold uppercase tracking-widest ${
@@ -339,27 +327,30 @@ export default function KontakPage() {
 
             {/* PETA LOKASI KANTOR DINAS PARIWISATA */}
             <div
-              className={`p-6 rounded-[2rem] border backdrop-blur-xl transition-all duration-500 space-y-4 ${
+              className={`p-6 md:p-8 rounded-[2rem] border backdrop-blur-xl transition-all duration-500 space-y-4 ${
                 isDarkMode
-                  ? "bg-black/20 border-white/5 shadow-2xl"
-                  : "bg-white border-black/5 shadow-md shadow-slate-200/30"
+                  ? "bg-[#11161a]/60 border-white/10 shadow-black/40"
+                  : "bg-white/70 border-black/5 shadow-slate-200/40"
               }`}
             >
               <div className="flex items-center justify-between text-left">
-                <div className="flex items-center gap-2">
-                  <MapPin className="text-[#ffcc00]" size={16} />
-                  <h3 className="text-xs font-black uppercase tracking-wider">Lokasi Kantor Dinas</h3>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="text-[#ffcc00]" size={14} />
+                    <h3 className={`text-[9px] font-black uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-slate-400'}`}>Lokasi Kantor</h3>
+                  </div>
+                  <h4 className="text-sm font-black uppercase tracking-tight">Dinas Pariwisata</h4>
                 </div>
                 <a
                   href="https://maps.app.goo.gl/t9uXQ1eW9T3QfX6t5"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-black/80 hover:bg-black text-[#ffcc00] border border-white/10 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 backdrop-blur-sm transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-sm"
+                  className="bg-[#ffcc00] hover:bg-[#e6b800] text-black border-none px-3.5 py-1.5 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-md shadow-[#ffcc00]/10"
                 >
                   Petunjuk Arah
                 </a>
               </div>
-              <div className="overflow-hidden rounded-2xl border border-white/10 relative group h-[160px]">
+              <div className="overflow-hidden rounded-2xl border border-gray-500/10 relative group h-[160px]">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.1648083658514!2d105.24718427453664!3d-5.407085753896585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40dad6e1db0b37%3A0xc3b8a1c97a2cbefb!2sDinas%20Pariwisata%20Kota%20Bandar%20Lampung!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
                   width="100%"
@@ -371,7 +362,7 @@ export default function KontakPage() {
                   className="grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                 ></iframe>
               </div>
-              <p className="text-[10px] text-gray-500 leading-relaxed font-medium text-left">
+              <p className={`text-[10px] leading-relaxed font-medium text-left ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>
                 Jl. Tjut Nyak Dien No.23, Durian Payung, Kec. Tj. Karang Pusat, Kota Bandar Lampung, Lampung 35114
               </p>
             </div>
@@ -403,8 +394,8 @@ export default function KontakPage() {
                       }
                       className={`w-full border rounded-xl py-3.5 px-5 text-xs font-medium outline-none transition-all duration-300 ${
                         isDarkMode
-                          ? "bg-[#090d10]/60 border-white/10 focus:border-[#ffcc00]/40 text-white placeholder-gray-600 focus:bg-[#090d10]/90 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
-                          : "bg-white border-black/10 focus:border-[#ffcc00]/40 text-[#1a1a1a] placeholder-gray-400 focus:bg-white focus:shadow-[0_4px_15px_rgba(255,204,0,0.08)]"
+                          ? "bg-[#090d10]/60 border-white/10 focus:border-[#ffcc00]/50 text-white placeholder-gray-600 focus:bg-[#090d10]/90 focus:ring-2 focus:ring-[#ffcc00]/10 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
+                          : "bg-white border-black/10 focus:border-[#ffcc00]/50 text-[#1a1a1a] placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-[#ffcc00]/15 focus:shadow-[0_4px_15px_rgba(255,204,0,0.05)]"
                       }`}
                     />
                   </div>
@@ -436,8 +427,8 @@ export default function KontakPage() {
                       }
                       className={`w-full border rounded-xl py-3.5 px-5 text-xs font-medium outline-none transition-all duration-300 ${
                         isDarkMode
-                          ? "bg-[#090d10]/60 border-white/10 focus:border-[#ffcc00]/40 text-white placeholder-gray-600 focus:bg-[#090d10]/90 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
-                          : "bg-white border-black/10 focus:border-[#ffcc00]/40 text-[#1a1a1a] placeholder-gray-400 focus:bg-white focus:shadow-[0_4px_15px_rgba(255,204,0,0.08)]"
+                          ? "bg-[#090d10]/60 border-white/10 focus:border-[#ffcc00]/50 text-white placeholder-gray-600 focus:bg-[#090d10]/90 focus:ring-2 focus:ring-[#ffcc00]/10 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
+                          : "bg-white border-black/10 focus:border-[#ffcc00]/50 text-[#1a1a1a] placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-[#ffcc00]/15 focus:shadow-[0_4px_15px_rgba(255,204,0,0.05)]"
                       }`}
                     />
                   </div>
@@ -450,7 +441,7 @@ export default function KontakPage() {
                   }`}>
                     Pilih Subjek Cepat
                   </label>
-                  <div className="flex flex-wrap gap-2 pt-1">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
                     {SUBJECT_PRESETS.map((preset) => (
                       <button
                         key={preset}
@@ -458,12 +449,12 @@ export default function KontakPage() {
                         onClick={() => {
                           setFormData({ ...formData, subject: preset });
                         }}
-                        className={`px-3 py-1.5 rounded-full text-[10px] font-bold transition-all duration-300 border cursor-pointer active:scale-95 ${
+                        className={`w-full py-2.5 px-2 rounded-xl text-[10px] font-bold transition-all duration-300 border cursor-pointer active:scale-95 text-center flex items-center justify-center ${
                           formData.subject === preset
-                            ? "bg-[#ffcc00] text-black border-[#ffcc00] shadow-[0_0_12px_rgba(255,204,0,0.3)]"
+                            ? "bg-[#ffcc00] text-black border-[#ffcc00] shadow-[0_4px_12px_rgba(255,204,0,0.2)]"
                             : isDarkMode
-                            ? "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"
-                            : "bg-white border-black/10 text-gray-700 hover:bg-gray-50 shadow-sm"
+                            ? "bg-[#090d10]/40 border-white/5 text-gray-300 hover:bg-white/5 hover:border-white/10"
+                            : "bg-white border-black/5 text-gray-700 hover:bg-gray-50 hover:border-black/10 shadow-sm"
                         }`}
                       >
                         {preset}
@@ -489,8 +480,8 @@ export default function KontakPage() {
                     }
                     className={`w-full border rounded-xl py-3.5 px-5 text-xs font-medium outline-none transition-all duration-300 ${
                       isDarkMode
-                        ? "bg-[#090d10]/60 border-white/10 focus:border-[#ffcc00]/40 text-white placeholder-gray-600 focus:bg-[#090d10]/90 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
-                        : "bg-white border-black/10 focus:border-[#ffcc00]/40 text-[#1a1a1a] placeholder-gray-400 focus:bg-white focus:shadow-[0_4px_15px_rgba(255,204,0,0.08)]"
+                        ? "bg-[#090d10]/60 border-white/10 focus:border-[#ffcc00]/50 text-white placeholder-gray-600 focus:bg-[#090d10]/90 focus:ring-2 focus:ring-[#ffcc00]/10 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
+                        : "bg-white border-black/10 focus:border-[#ffcc00]/50 text-[#1a1a1a] placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-[#ffcc00]/15 focus:shadow-[0_4px_15px_rgba(255,204,0,0.05)]"
                     }`}
                   />
                 </div>
@@ -520,8 +511,8 @@ export default function KontakPage() {
                     }
                     className={`w-full border rounded-xl py-3.5 px-5 text-xs font-medium outline-none transition-all duration-300 resize-none ${
                       isDarkMode
-                        ? "bg-[#090d10]/60 border-white/10 focus:border-[#ffcc00]/40 text-white placeholder-gray-600 focus:bg-[#090d10]/90 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
-                        : "bg-white border-black/10 focus:border-[#ffcc00]/40 text-[#1a1a1a] placeholder-gray-400 focus:bg-white focus:shadow-[0_4px_15px_rgba(255,204,0,0.08)]"
+                        ? "bg-[#090d10]/60 border-white/10 focus:border-[#ffcc00]/50 text-white placeholder-gray-600 focus:bg-[#090d10]/90 focus:ring-2 focus:ring-[#ffcc00]/10 focus:shadow-[0_0_15px_rgba(255,204,0,0.03)]"
+                        : "bg-white border-black/10 focus:border-[#ffcc00]/50 text-[#1a1a1a] placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-[#ffcc00]/15 focus:shadow-[0_4px_15px_rgba(255,204,0,0.05)]"
                     }`}
                   />
                 </div>
@@ -546,8 +537,8 @@ export default function KontakPage() {
           </div>
         </div>
 
-        {/* ================= GUESTBOOK SECTION ================= */}
-        <section className="mt-24 space-y-8">
+      {/* ================= GUESTBOOK SECTION ================= */}
+      <section className="mt-24 space-y-8">
           <div className="text-center space-y-3">
             <div className="text-[#ffcc00] text-[10px] font-black uppercase tracking-[0.2em]">Buku Tamu Publik</div>
             <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter">
