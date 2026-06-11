@@ -46,4 +46,6 @@ next-env.d.ts
 git_auto_commit.bat
 git_auto_commit.sh
 git_commit_log.txt
+seed_lampung.ts
+
 

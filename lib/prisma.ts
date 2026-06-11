@@ -2,7 +2,11 @@ import { PrismaClient } from './generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+let connectionString = process.env.DATABASE_URL;
+if (connectionString && connectionString.startsWith('"') && connectionString.endsWith('"')) {
+  connectionString = connectionString.slice(1, -1);
+}
+const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 
 declare global {

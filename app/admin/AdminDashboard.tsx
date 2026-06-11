@@ -3,11 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Sun, Moon, Plus, LogOut, LayoutDashboard, 
-  MessageSquare, Compass, Flame, Star, Sparkles, RefreshCw
+  MessageSquare, Compass, Flame, Star, Sparkles, RefreshCw, Mail
 } from 'lucide-react';
 import AdminTable from './components/AdminTable';
 import AdminForm from './components/AdminForm';
 import AdminCommentsTable from './components/AdminCommentsTable';
+import AdminContactMessagesTable from './components/AdminContactMessagesTable';
 import { useTheme } from '@/app/context/ThemeContext';
 
 interface Destinasi {
@@ -25,7 +26,7 @@ export default function AdminDashboard() {
   const { isDarkMode, setIsDarkMode } = useTheme();
   const theme = isDarkMode ? 'dark' : 'light';
 
-  const [activeTab, setActiveTab] = useState<'destinasi' | 'komentar'>('destinasi');
+  const [activeTab, setActiveTab] = useState<'destinasi' | 'komentar' | 'contact'>('destinasi');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editData, setEditData] = useState<Destinasi | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
     totalDestinasi: 0,
     totalViral: 0,
     totalKomentar: 0,
+    totalPesan: 0,
     avgRating: 0
   });
   const [statsLoading, setStatsLoading] = useState(true);
@@ -52,9 +54,13 @@ export default function AdminDashboard() {
       const dataKom = await resKom.json();
 
       if (Array.isArray(dataDest) && Array.isArray(dataKom)) {
+        const regularReviews = dataKom.filter((k: any) => k.rating > 0);
+        const contactMessages = dataKom.filter((k: any) => k.rating === 0);
+
         const totalDestinasi = dataDest.length;
         const totalViral = dataDest.filter((d: Destinasi) => d.is_viral).length;
-        const totalKomentar = dataKom.length;
+        const totalKomentar = regularReviews.length;
+        const totalPesan = contactMessages.length;
         const avgRating = dataDest.length > 0 
           ? (dataDest.reduce((acc: number, d: Destinasi) => acc + Number(d.rating), 0) / dataDest.length)
           : 0;
@@ -63,6 +69,7 @@ export default function AdminDashboard() {
           totalDestinasi,
           totalViral,
           totalKomentar,
+          totalPesan,
           avgRating
         });
       }
@@ -104,7 +111,6 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = () => {
-    // Reload back to login page
     window.location.reload();
   };
 
@@ -160,6 +166,18 @@ export default function AdminDashboard() {
             <MessageSquare size={18} />
             <span className="text-[10px] font-black uppercase tracking-widest hidden md:block">Moderasi Komentar</span>
           </button>
+
+          <button 
+            onClick={() => setActiveTab('contact')}
+            className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all cursor-pointer font-bold ${
+              activeTab === 'contact'
+                ? 'bg-[#ffcc00] text-black shadow-lg shadow-[#ffcc00]/15 scale-[1.02]'
+                : `text-gray-500 hover:text-[#ffcc00] ${theme === 'dark' ? 'hover:bg-white/5' : 'hover:bg-black/5'}`
+            }`}
+          >
+            <Mail size={18} />
+            <span className="text-[10px] font-black uppercase tracking-widest hidden md:block">Kotak Masuk</span>
+          </button>
         </div>
 
         {/* Sidebar Footer Controls */}
@@ -193,7 +211,7 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto space-y-12">
           
           {/* --- DASHBOARD METRICS SUMMARY SECTION --- */}
-          <section className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <section className="grid grid-cols-2 lg:grid-cols-5 gap-6">
             
             {/* Metric 1 */}
             <div className={`p-6 rounded-3xl border text-left transition-all hover:scale-[1.02] ${
@@ -236,7 +254,7 @@ export default function AdminDashboard() {
               theme === 'dark' ? 'bg-[#0c0c0c] border-white/5' : 'bg-white border-black/5 shadow-sm'
             }`}>
               <div className="flex justify-between items-start">
-                <span className="text-gray-500 text-[9px] font-black uppercase tracking-wider">Total Ulasan</span>
+                <span className="text-gray-500 text-[9px] font-black uppercase tracking-wider">Ulasan Wisata</span>
                 <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-blue-500/10 text-blue-400' : 'bg-blue-500/10 text-blue-600'}`}>
                   <MessageSquare size={16} />
                 </div>
@@ -249,7 +267,25 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Metric 4 */}
+            {/* Metric 4 (Inbox) */}
+            <div className={`p-6 rounded-3xl border text-left transition-all hover:scale-[1.02] ${
+              theme === 'dark' ? 'bg-[#0c0c0c] border-white/5' : 'bg-white border-black/5 shadow-sm'
+            }`}>
+              <div className="flex justify-between items-start">
+                <span className="text-gray-500 text-[9px] font-black uppercase tracking-wider">Pesan Kontak</span>
+                <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-[#ffcc00]/10 text-[#ffcc00]' : 'bg-[#ffcc00]/10 text-[#b38f00]'}`}>
+                  <Mail size={16} />
+                </div>
+              </div>
+              <div className="mt-4">
+                <h3 className="text-3xl font-black italic uppercase tracking-tighter text-amber-500">
+                  {statsLoading ? '...' : stats.totalPesan}
+                </h3>
+                <p className="text-[9px] font-bold uppercase tracking-wider text-gray-500 mt-1">Inquiries Masuk</p>
+              </div>
+            </div>
+
+            {/* Metric 5 */}
             <div className={`p-6 rounded-3xl border text-left transition-all hover:scale-[1.02] ${
               theme === 'dark' ? 'bg-[#0c0c0c] border-white/5' : 'bg-white border-black/5 shadow-sm'
             }`}>
@@ -310,7 +346,7 @@ export default function AdminDashboard() {
                 onRefresh={handleRefresh} 
               />
             </div>
-          ) : (
+          ) : activeTab === 'komentar' ? (
             <div className="space-y-8 animate-fadeIn">
               <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div className="text-left">
@@ -336,6 +372,37 @@ export default function AdminDashboard() {
               </header>
 
               <AdminCommentsTable 
+                theme={theme}
+                refreshTrigger={refreshTrigger}
+                onRefresh={handleRefresh}
+              />
+            </div>
+          ) : (
+            <div className="space-y-8 animate-fadeIn">
+              <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                <div className="text-left">
+                  <h4 className="text-[9px] font-black uppercase tracking-[0.4em] mb-2 text-[#ffcc00]">
+                    Inquiries Hub // Kotak Masuk Pesan Pengunjung
+                  </h4>
+                  <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter leading-none">
+                    Kelola <span className="text-[#ffcc00]">Kotak Masuk Pesan</span>
+                  </h2>
+                </div>
+                
+                <button 
+                  onClick={handleRefresh}
+                  className={`p-4 rounded-xl border flex items-center justify-center cursor-pointer transition-all ${
+                    theme === 'dark' 
+                      ? 'bg-white/5 border-white/10 text-gray-400 hover:text-white' 
+                      : 'bg-white border-black/10 text-gray-500 hover:bg-gray-100 text-black shadow-sm'
+                  }`}
+                  title="Segarkan Data"
+                >
+                  <RefreshCw size={14} className={statsLoading ? "animate-spin text-[#ffcc00]" : ""} />
+                </button>
+              </header>
+
+              <AdminContactMessagesTable 
                 theme={theme}
                 refreshTrigger={refreshTrigger}
                 onRefresh={handleRefresh}

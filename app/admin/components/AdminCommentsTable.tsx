@@ -29,7 +29,9 @@ export default function AdminCommentsTable({ theme, refreshTrigger, onRefresh }:
       const res = await fetch('/api/komentar');
       const data = await res.json();
       if (Array.isArray(data)) {
-        setKomentar(data);
+        // Filter out contact messages (rating 0)
+        const regularReviews = data.filter((k: any) => k.rating > 0);
+        setKomentar(regularReviews);
       }
     } catch (err) {
       console.error("Gagal memuat list komentar:", err);
