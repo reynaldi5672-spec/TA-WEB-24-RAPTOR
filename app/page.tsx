@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '@/app/components/Navbar'; 
+import Footer from '@/app/components/Footer';
+import { useTheme } from '@/app/context/ThemeContext';
 import { 
   ExternalLink, Mail, Globe, Anchor, 
   User, MessageSquare, Share2, ChevronLeft, ChevronRight 
@@ -31,7 +33,7 @@ const DESTINASI_SLIDES = [
 ];
 
 export default function PariwisataLampung() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const { isDarkMode } = useTheme();
   const [mounted, setMounted] = useState(false);
   
   // State untuk melacak index foto yang sedang aktif
@@ -238,6 +240,7 @@ export default function PariwisataLampung() {
           </section>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }
