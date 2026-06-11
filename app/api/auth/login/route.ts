@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Username dan password wajib diisi!' }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { username },
     });
 

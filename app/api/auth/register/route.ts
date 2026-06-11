@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     }
 
     // Cek apakah username sudah ada
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.users.findUnique({
       where: { username },
     });
 
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
     // Simpan user baru (Role default: admin)
     // TODO: Hash password dengan bcrypt sebelum menyimpan
-    await prisma.user.create({
+    await prisma.users.create({
       data: {
         username,
         password,
