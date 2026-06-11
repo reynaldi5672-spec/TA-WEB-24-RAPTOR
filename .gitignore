@@ -41,3 +41,9 @@ yarn-error.log*
 next-env.d.ts
 
 /lib/generated/prisma
+
+# git auto commit script helpers
+git_auto_commit.bat
+git_auto_commit.sh
+git_commit_log.txt
+
