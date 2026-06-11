@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '@/app/components/Navbar'; 
 import DetailModal from '@/app/components/DetailModal'; 
 import CompareModal from '@/app/components/CompareModal';
+import Footer from '@/app/components/Footer';
 // 1. IMPORT USETHEME GLOBAL DARI CONTEXT
 import { useTheme } from '@/app/context/ThemeContext';
 import { MapPin, Star, ArrowRight, Loader2, Search, Compass, Flame, Heart, Share2, GitCompare } from 'lucide-react';
@@ -577,6 +578,8 @@ export default function DestinasiPage() {
         )}
 
       </div>
+
+      <Footer />
     </main>
   );
 }
