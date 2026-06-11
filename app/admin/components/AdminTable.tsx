@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Trash2, Edit2, Loader2, Star, MapPin, Flame } from 'lucide-react';
+import { Trash2, Edit2, Loader2, Star, MapPin, Flame, Search } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 interface Destinasi {
@@ -11,8 +11,8 @@ interface Destinasi {
   deskripsi: string;
   gambar_url: string;
   rating: number;
-  is_viral: boolean; // Tambahkan agar sinkron dengan database
-  kategori: string;   // Tambahkan agar sinkron dengan database
+  is_viral: boolean;
+  kategori: string;
 }
 
 interface AdminTableProps {
@@ -22,16 +22,11 @@ interface AdminTableProps {
   onRefresh: () => void;
 }
 
-/**
- * AdminTable displays destination records in a customizable table.
- */
 export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }: AdminTableProps) {
-  const [destinasi, setDestinasi] = useState<Destinasi[]>([]); // Destinations array state fetched from database queries
-  const [isLoading, setIsLoading] = useState(true); // Controls local tables loading overlay trigger state
+  const [destinasi, setDestinasi] = useState<Destinasi[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  /**
-   * Requests backend GET routes to retrieve all active destination documents
-   */
   const fetchData = async () => {
     try {
       const res = await fetch('/api/destinasi');
@@ -53,9 +48,6 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
     fetchData();
   }, [refreshTrigger]);
 
-  /**
-   * Dispatches DELETE queries to backend endpoint routes for given document indexes
-   */
   const handleDelete = async (id: number) => {
     const confirm = await Swal.fire({
       title: 'Yakin mau hapus?',
@@ -82,13 +74,42 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
             color: theme === 'dark' ? '#fff' : '#000',
             confirmButtonColor: '#ffcc00'
           });
-          onRefresh(); // Ambil data ulang otomatis di dashboard
+          onRefresh();
         }
       } catch (err) {
         console.error(err);
       }
     }
   };
+
+  const getCategoryBadge = (kategori: string) => {
+    const cleanKategori = kategori.toLowerCase();
+    
+    const badges: Record<string, { label: string, color: string }> = {
+      pantai: { label: "🌊 Pantai", color: "bg-blue-500/10 text-blue-500 border-blue-500/20" },
+      pemandangan: { label: "⛰️ Pemandangan", color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" },
+      wisata_alam: { label: "🌿 Wisata Alam", color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" },
+      wisata_kota: { label: "🏙️ Wisata Kota", color: "bg-purple-500/10 text-purple-500 border-purple-500/20" },
+      heritage: { label: "🏛️ Cagar Budaya", color: "bg-amber-500/10 text-amber-500 border-amber-500/20" },
+      kuliner: { label: "🍽️ Kuliner", color: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20" },
+      adventure: { label: "🧗 Petualangan", color: "bg-red-500/10 text-red-500 border-red-500/20" },
+      terpopuler: { label: "⭐ Terpopuler", color: "bg-[#ffcc00]/10 text-[#ffcc00] border-[#ffcc00]/20" }
+    };
+    
+    const badge = badges[cleanKategori] || { label: kategori, color: "bg-gray-500/10 text-gray-500 border-gray-500/20" };
+    
+    return (
+      <span className={`px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider border ${badge.color}`}>
+        {badge.label}
+      </span>
+    );
+  };
+
+  const filteredDestinasi = destinasi.filter(d => 
+    d.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    d.lokasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    d.kategori.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (isLoading) {
     return (
@@ -110,13 +131,35 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
   }
 
   return (
-    <div className={`border rounded-2xl overflow-hidden transition-colors ${
-      theme === 'dark' ? 'bg-[#0d0d0d] border-white/5 shadow-2xl' : 'bg-white border-black/[0.04] shadow-md'
+    <div className={`border rounded-[2rem] overflow-hidden transition-all duration-300 ${
+      theme === 'dark' ? 'bg-[#0b0b0b] border-white/5 shadow-2xl' : 'bg-white border-black/[0.05] shadow-md'
     }`}>
-      <div className={`p-6 border-b text-left ${theme === 'dark' ? 'border-white/5' : 'border-black/5'}`}>
-        <h2 className="text-sm font-black uppercase italic tracking-wide">📂 Database Records ({destinasi.length})</h2>
+      
+      {/* Table Header with Search Bar */}
+      <div className={`p-6 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-left ${
+        theme === 'dark' ? 'border-white/5' : 'border-black/5'
+      }`}>
+        <h2 className="text-sm font-black uppercase italic tracking-wider flex items-center gap-2">
+          📂 Database Records ({filteredDestinasi.length} of {destinasi.length})
+        </h2>
+        
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" size={14} />
+          <input
+            type="text"
+            placeholder="Cari wisata, lokasi..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`w-full py-2.5 pl-10 pr-4 rounded-xl border outline-none text-[11px] font-bold uppercase tracking-wider transition-all ${
+              theme === 'dark'
+                ? 'bg-white/[0.02] border-white/10 text-white placeholder-gray-600 focus:border-[#ffcc00]/50'
+                : 'bg-gray-50 border-black/5 text-black placeholder-gray-400 focus:border-[#ffcc00]'
+            }`}
+          />
+        </div>
       </div>
       
+      {/* Table Content */}
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs border-collapse">
           <thead>
@@ -131,33 +174,30 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
             </tr>
           </thead>
           <tbody className={`divide-y font-medium ${theme === 'dark' ? 'divide-white/5' : 'divide-black/5'}`}>
-            {destinasi.map((item) => ( /* Maps individual records as customized table row indices elements */
-              <tr key={item.id} className={theme === 'dark' ? 'hover:bg-white/[0.01]' : 'hover:bg-gray-50/50'}>
+            {filteredDestinasi.map((item) => (
+              <tr key={item.id} className={`transition-colors ${theme === 'dark' ? 'hover:bg-white/[0.01]' : 'hover:bg-gray-50/50'}`}>
                 <td className="p-4 pl-8 font-mono text-gray-500">{item.id}</td>
                 <td className="p-4">
                   <div className="flex items-center gap-4">
                     <img 
-                      // Dipotong berdasarkan koma, ambil indeks ke-0 (foto pertama)
                       src={item.gambar_url ? item.gambar_url.split(',')[0].trim() : 'https://via.placeholder.com/150?text=No+Image'} 
                       alt="" 
                       className="w-12 h-12 object-cover rounded-xl border border-white/5 bg-gray-900" 
                     />
-                    <div className="text-left space-y-1">
-                      <div className="flex items-center gap-2">
+                    <div className="text-left space-y-1.5">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className={`font-black uppercase tracking-tight text-sm ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                           {item.nama}
                         </span>
-                        {/* MINI VIRAL BADGE */}
                         {item.is_viral && (
                           <span className="bg-red-600/10 text-red-500 border border-red-500/20 px-1.5 py-0.5 rounded text-[8px] font-black flex items-center gap-0.5 scale-90">
-                            <Flame size={8} /> VIRAL
+                            <Flame size={8} className="animate-bounce" /> VIRAL
                           </span>
                         )}
                       </div>
-                      {/* LABEL KATEGORI DETIL DI DALAM ROW */}
-                      <span className="text-[9px] font-mono uppercase tracking-wider text-gray-500 block">
-                        // {item.kategori}
-                      </span>
+                      <div className="flex items-center">
+                        {getCategoryBadge(item.kategori)}
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -168,7 +208,7 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
                 </td>
                 <td className="p-4">
                   <div className="flex items-center gap-1 font-black text-[#ffcc00]">
-                    <Star size={12} fill="#ffcc00" /> {Number(item.rating).toFixed(1)}
+                    <Star size={12} fill="#ffcc00" stroke="none" /> {Number(item.rating).toFixed(1)}
                   </div>
                 </td>
                 <td className="p-4 text-center pr-8">
@@ -198,6 +238,14 @@ export default function AdminTable({ theme, onEdit, refreshTrigger, onRefresh }:
           </tbody>
         </table>
       </div>
+
+      {filteredDestinasi.length === 0 && (
+        <div className={`p-16 text-center italic text-xs uppercase tracking-widest ${
+          theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
+        }`}>
+          Data destinasi tidak ditemukan
+        </div>
+      )}
     </div>
   );
 }
