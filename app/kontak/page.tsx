@@ -222,6 +222,8 @@ export default function KontakPage() {
         }}
       />
 
+      <Navbar />
+
         {/* --- PAGE HEADER --- */}
       <div className="max-w-7xl w-full mx-auto px-6 md:px-16 pt-36 pb-4 relative z-10 text-center space-y-4">
         <link
