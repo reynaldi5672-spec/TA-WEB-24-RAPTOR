@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { 
   Mail, Phone, MapPin, Calendar, Clock, 
   Send, ShieldCheck, HelpCircle, FileText,
-  Instagram, Facebook, Youtube, Twitter, Globe, ArrowUp
+  Globe, ArrowUp
 } from 'lucide-react';
+import { FaInstagram, FaFacebookF, FaYoutube, FaTwitter } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
 import Swal from 'sweetalert2';
 
@@ -137,10 +138,10 @@ export default function Footer() {
               <span className={`text-[10px] font-black uppercase tracking-wider block ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>Ikuti Media Sosial Kami</span>
               <div className="flex gap-3">
                 {[
-                  { icon: <Instagram size={16} />, href: "https://instagram.com", color: "hover:bg-[#e1306c] hover:text-white" },
-                  { icon: <Facebook size={16} />, href: "https://facebook.com", color: "hover:bg-[#1877f2] hover:text-white" },
-                  { icon: <Youtube size={16} />, href: "https://youtube.com", color: "hover:bg-[#ff0000] hover:text-white" },
-                  { icon: <Twitter size={16} />, href: "https://twitter.com", color: "hover:bg-[#1da1f2] hover:text-white" }
+                  { icon: <FaInstagram size={16} />, href: "https://instagram.com", color: "hover:bg-[#e1306c] hover:text-white" },
+                  { icon: <FaFacebookF size={16} />, href: "https://facebook.com", color: "hover:bg-[#1877f2] hover:text-white" },
+                  { icon: <FaYoutube size={16} />, href: "https://youtube.com", color: "hover:bg-[#ff0000] hover:text-white" },
+                  { icon: <FaTwitter size={16} />, href: "https://twitter.com", color: "hover:bg-[#1da1f2] hover:text-white" }
                 ].map((social, index) => (
                   <a
                     key={index}
