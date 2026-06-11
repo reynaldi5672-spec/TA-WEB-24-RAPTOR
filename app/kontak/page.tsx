@@ -37,15 +37,60 @@ const SUBJECT_PRESETS = [
   "Laporan Masalah ⚠️"
 ];
 
-/**
- * KontakPage enables visitors to submit feedback and view FAQs.
- */
+const CONTACT_INFO = [
+  {
+    icon: Mail,
+    label: "Email Resmi",
+    value: "dispar@bandarlampungkota.go.id",
+    link: "mailto:dispar@bandarlampungkota.go.id",
+    iconColor: "text-blue-400",
+    glowClass: "hover:border-blue-500/30 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]",
+    fullWidth: true
+  },
+  {
+    icon: FaInstagram,
+    label: "Instagram",
+    value: "@pariwisata_bdl",
+    link: "https://instagram.com",
+    iconColor: "text-pink-400",
+    glowClass: "hover:border-pink-500/30 hover:shadow-[0_0_15px_rgba(236,72,153,0.15)]",
+    fullWidth: false
+  },
+  {
+    icon: FaWhatsapp,
+    label: "WhatsApp",
+    value: "+62 812-7474-0010",
+    link: "https://wa.me/6281274740010",
+    iconColor: "text-green-400",
+    glowClass: "hover:border-green-500/30 hover:shadow-[0_0_15px_rgba(34,197,94,0.15)]",
+    fullWidth: false
+  },
+  {
+    icon: FaTiktok,
+    label: "Tiktok",
+    value: "@wisata_bdl",
+    link: "https://tiktok.com",
+    iconColor: "text-emerald-400",
+    glowClass: "hover:border-emerald-500/30 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]",
+    fullWidth: false
+  },
+  {
+    icon: FaYoutube,
+    label: "Youtube",
+    value: "VisitBDL",
+    link: "https://youtube.com",
+    iconColor: "text-rose-400",
+    glowClass: "hover:border-rose-500/30 hover:shadow-[0_0_15px_rgba(244,63,94,0.15)]",
+    fullWidth: false
+  }
+];
+
 export default function KontakPage() {
   const { isDarkMode } = useTheme();
 
-  const [mounted, setMounted] = useState(false); // Client hydration lock state indicator
-  const [isLoading, setIsLoading] = useState(false); // Contact form submit button loading tracker
-  const [openFaq, setOpenFaq] = useState<number | null>(null); // Stores currently active expanded FAQ index
+  const [mounted, setMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Search & Categories for FAQ
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,7 +100,7 @@ export default function KontakPage() {
   const [messagesList, setMessagesList] = useState<any[]>([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
 
-  const [formData, setFormData] = useState({ // Forms binding states
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
@@ -69,7 +114,6 @@ export default function KontakPage() {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
-  // Fetch guestbook messages list on mount
   useEffect(() => {
     fetchMessages();
   }, []);
@@ -93,9 +137,6 @@ export default function KontakPage() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  /**
-   * Dispatches user message payload details to database API handler via POST method requests
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -127,7 +168,7 @@ export default function KontakPage() {
 
       if (res.ok) {
         Swal.fire({
-          title: "Berhasil!", // Success confirmation popup title config
+          title: "Berhasil!",
           text: "Pesan Anda telah disimpan di database dan dikirim ke admin.",
           icon: "success",
           background: isDarkMode ? "#111" : "#fff",
@@ -136,14 +177,13 @@ export default function KontakPage() {
           confirmButtonText: "Sip, Mantap!",
         });
         setFormData({ name: "", email: "", subject: "", message: "" });
-        // Refresh guestbook list instantly
-        fetchMessages();
+        fetchMessages(); // Refresh public guestbook
       } else {
         throw new Error("Gagal mengirim pesan");
       }
     } catch (error) {
       Swal.fire({
-        title: "Gagal!", // Error notification configuration configs
+        title: "Gagal!",
         text: "Terjadi kesalahan sistem saat mengirim pesan.",
         icon: "error",
         background: isDarkMode ? "#111" : "#fff",
@@ -155,7 +195,6 @@ export default function KontakPage() {
     }
   };
 
-  // Filter FAQs based on active category and search query
   const filteredFaqs = FAQ_ITEMS.filter((faq) => {
     const matchesCategory = activeCategory === "Semua" || faq.category === activeCategory;
     const matchesSearch = faq.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -192,160 +231,135 @@ export default function KontakPage() {
           rel="stylesheet"
         />
 
-        <div className="grid lg:grid-cols-12 gap-8 items-start">
-          <section className="lg:col-span-5 space-y-6">
-            {/* KARTU ATAS: HUBUNGI KAMI */}
+        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+          
+          {/* ================= LEFT SIDE: INFO PANEL & MAP ================= */}
+          <section className="lg:col-span-5 flex flex-col gap-6 justify-between">
+            {/* UNIFIED PANEL: HUBUNGI KAMI & SOCIAL MEDIA */}
             <div
-              className={`p-8 rounded-[2rem] border backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500 ${
+              className={`p-8 rounded-[2rem] border backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500 flex-1 flex flex-col justify-between ${
                 isDarkMode
-                  ? "bg-black/30 border-white/10 shadow-black/40"
-                  : "bg-white/40 border-black/5 shadow-slate-200/40"
+                  ? "bg-black/35 border-white/10 shadow-black/40"
+                  : "bg-white/50 border-black/5 shadow-slate-200/40"
               }`}
               style={{
                 backgroundImage: `linear-gradient(${
                   isDarkMode
-                    ? "rgba(0,0,0,0.65), rgba(0,0,0,0.75)"
-                    : "rgba(255,255,255,0.6), rgba(255,255,255,0.7)"
+                    ? "rgba(0,0,0,0.7), rgba(0,0,0,0.8)"
+                    : "rgba(255,255,255,0.7), rgba(255,255,255,0.85)"
                 }), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             >
-              <div
-                className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-md shadow-sm mb-6 ${
-                  isDarkMode
-                    ? "bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#ffcc00]"
-                    : "bg-[#ffcc00]/20 border-[#ffcc00]/40 text-[#bf9600]"
-                }`}
-              >
-                <Compass
-                  size={13}
-                  className="animate-[spin_8s_linear_infinite]"
-                />{" "}
-                Hubungi Kami
-              </div>
-
-              <div className="space-y-1 mb-6">
-                <h1
-                  className="text-5xl md:text-6xl font-normal leading-none tracking-wide text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]"
-                  style={{ fontFamily: "'Kaushan Script', cursive" }}
-                >
-                  Hubungi
-                </h1>
-                <h1
-                  className="text-6xl md:text-7xl font-normal leading-none tracking-wide text-[#ffcc00] drop-shadow-[0_4px_12px_rgba(255,204,0,0.3)]"
-                  style={{ fontFamily: "'Kaushan Script', cursive" }}
-                >
-                  Kami
-                </h1>
-              </div>
-
-              <p
-                className={`text-xs md:text-sm font-medium leading-relaxed ${
-                  isDarkMode ? "text-gray-200" : "text-slate-800"
-                }`}
-              >
-                Punya pertanyaan seputar pariwisata di Bandar Lampung? Atau ingin melakukan kerja sama dengan VisitBDL? Kirimkan pesan Anda melalui form di samping!
-              </p>
-            </div>
-
-            {/* INFO ALAMAT & SOSMED DENGAN EFEK GLOW HARI INI */}
-            <div
-              className={`p-4 rounded-[2rem] border backdrop-blur-xl transition-all duration-500 space-y-2.5 ${
-                isDarkMode
-                  ? "bg-black/20 border-white/5 shadow-2xl"
-                  : "bg-white/30 border-black/5 shadow-sm"
-              }`}
-            >
-              {[
-                {
-                  icon: Mail,
-                  label: "Email Resmi",
-                  value: "dispar@bandarlampungkota.go.id",
-                  link: "mailto:dispar@bandarlampungkota.go.id",
-                  iconColor: "text-blue-400",
-                  glowClass: "hover:border-blue-500/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)]",
-                },
-                {
-                  icon: FaInstagram,
-                  label: "Instagram Resmi",
-                  value: "@pariwisata_bandarlampung",
-                  link: "https://instagram.com",
-                  iconColor: "text-pink-400",
-                  glowClass: "hover:border-pink-500/30 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)]",
-                },
-                {
-                  icon: FaTiktok,
-                  label: "Tiktok",
-                  value: "@wisata_bandar_lampung",
-                  link: "https://tiktok.com",
-                  iconColor: "text-emerald-400",
-                  glowClass: "hover:border-emerald-500/30 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]",
-                },
-                {
-                  icon: FaYoutube,
-                  label: "Youtube Channel",
-                  value: "Wisata Bandar Lampung",
-                  link: "https://youtube.com",
-                  iconColor: "text-rose-400",
-                  glowClass: "hover:border-rose-500/30 hover:shadow-[0_0_20px_rgba(244,63,94,0.15)]",
-                },
-                {
-                  icon: FaWhatsapp,
-                  label: "WhatsApp Hotline",
-                  value: "+62 812-7474-0010",
-                  link: "https://wa.me/6281274740010",
-                  iconColor: "text-green-400",
-                  glowClass: "hover:border-green-500/30 hover:shadow-[0_0_20px_rgba(34,197,94,0.15)]",
-                },
-              ].map((item, idx) => (
-                <a
-                  key={idx}
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center justify-between p-3 rounded-xl border transition-all duration-300 block cursor-pointer ${
+              <div>
+                <div
+                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] backdrop-blur-md shadow-sm mb-6 ${
                     isDarkMode
-                      ? "border-white/[0.02] hover:bg-white/5"
-                      : "border-black/[0.02] hover:bg-black/[0.02]"
-                  } ${item.glowClass}`}
+                      ? "bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#ffcc00]"
+                      : "bg-[#ffcc00]/20 border-[#ffcc00]/40 text-[#bf9600]"
+                  }`}
                 >
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
-                        isDarkMode
-                          ? "bg-black/30 border-white/5"
-                          : "bg-white border-black/5 shadow-sm"
-                      }`}
-                    >
-                      <item.icon size={18} className={item.iconColor} />
-                    </div>
-                    <div>
-                      <div className="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">
-                        {item.label}
+                  <Compass
+                    size={13}
+                    className="animate-[spin_8s_linear_infinite]"
+                  />{" "}
+                  Hubungi Kami
+                </div>
+
+                <div className="space-y-1 mb-6 text-left">
+                  <h1
+                    className={`text-5xl md:text-6xl font-normal leading-none tracking-wide drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] ${
+                      isDarkMode ? "text-white" : "text-slate-800"
+                    }`}
+                    style={{ fontFamily: "'Kaushan Script', cursive" }}
+                  >
+                    Hubungi
+                  </h1>
+                  <h1
+                    className="text-6xl md:text-7xl font-normal leading-none tracking-wide text-[#ffcc00] drop-shadow-[0_4px_12px_rgba(255,204,0,0.25)]"
+                    style={{ fontFamily: "'Kaushan Script', cursive" }}
+                  >
+                    Kami
+                  </h1>
+                </div>
+
+                <p
+                  className={`text-xs md:text-sm font-medium leading-relaxed mb-6 text-left ${
+                    isDarkMode ? "text-gray-300" : "text-slate-700"
+                  }`}
+                >
+                  Punya pertanyaan seputar pariwisata di Bandar Lampung? Atau ingin melakukan kerja sama dengan VisitBDL? Hubungi kami langsung atau isi form yang telah disediakan.
+                </p>
+              </div>
+
+              {/* SOCIAL MEDIA CARDS GRID */}
+              <div className="grid grid-cols-2 gap-3">
+                {CONTACT_INFO.map((item, idx) => (
+                  <a
+                    key={idx}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-3 rounded-2xl border transition-all duration-300 flex flex-col justify-between cursor-pointer group select-none text-left ${
+                      item.fullWidth ? "col-span-2" : "col-span-1"
+                    } ${
+                      isDarkMode
+                        ? "bg-black/45 border-white/5 hover:bg-white/[0.04]"
+                        : "bg-white border-black/5 shadow-sm hover:bg-slate-50"
+                    } ${item.glowClass}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center border shrink-0 transition-transform group-hover:scale-105 duration-300 ${
+                          isDarkMode
+                            ? "bg-black/40 border-white/5"
+                            : "bg-slate-50 border-black/5 shadow-sm"
+                        }`}
+                      >
+                        <item.icon size={16} className={item.iconColor} />
                       </div>
-                      <div className="text-xs font-bold tracking-tight">
-                        {item.value}
+                      <div className="min-w-0">
+                        <div className={`text-[8px] font-bold uppercase tracking-widest ${
+                          isDarkMode ? "text-gray-500" : "text-slate-400"
+                        }`}>
+                          {item.label}
+                        </div>
+                        <div className={`text-[11px] font-black tracking-tight truncate ${
+                          isDarkMode ? "text-white" : "text-slate-800"
+                        }`}>
+                          {item.value}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
-              ))}
+                  </a>
+                ))}
+              </div>
             </div>
 
             {/* PETA LOKASI KANTOR DINAS PARIWISATA */}
             <div
-              className={`p-4 rounded-[2rem] border backdrop-blur-xl transition-all duration-500 space-y-3 ${
+              className={`p-6 rounded-[2rem] border backdrop-blur-xl transition-all duration-500 space-y-4 ${
                 isDarkMode
                   ? "bg-black/20 border-white/5 shadow-2xl"
-                  : "bg-white/30 border-black/5 shadow-sm"
+                  : "bg-white border-black/5 shadow-md shadow-slate-200/30"
               }`}
             >
-              <div className="flex items-center gap-2 px-2">
-                <MapPin className="text-[#ffcc00]" size={16} />
-                <h3 className="text-xs font-black uppercase tracking-wider">Lokasi Kantor Dinas</h3>
+              <div className="flex items-center justify-between text-left">
+                <div className="flex items-center gap-2">
+                  <MapPin className="text-[#ffcc00]" size={16} />
+                  <h3 className="text-xs font-black uppercase tracking-wider">Lokasi Kantor Dinas</h3>
+                </div>
+                <a
+                  href="https://maps.app.goo.gl/t9uXQ1eW9T3QfX6t5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-black/80 hover:bg-black text-[#ffcc00] border border-white/10 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 backdrop-blur-sm transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-sm"
+                >
+                  Petunjuk Arah
+                </a>
               </div>
-              <div className="overflow-hidden rounded-2xl border border-white/10 relative group h-[200px]">
+              <div className="overflow-hidden rounded-2xl border border-white/10 relative group h-[160px]">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.1648083658514!2d105.24718427453664!3d-5.407085753896585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40dad6e1db0b37%3A0xc3b8a1c97a2cbefb!2sDinas%20Pariwisata%20Kota%20Bandar%20Lampung!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
                   width="100%"
@@ -354,28 +368,18 @@ export default function KontakPage() {
                   allowFullScreen={true}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                  className="grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                 ></iframe>
-                <div className="absolute bottom-3 right-3">
-                  <a
-                    href="https://maps.app.goo.gl/t9uXQ1eW9T3QfX6t5"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-black/80 hover:bg-black text-[#ffcc00] border border-white/10 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase flex items-center gap-1 backdrop-blur-sm transition-all"
-                  >
-                    Petunjuk Arah
-                  </a>
-                </div>
               </div>
-              <p className="text-[10px] text-gray-500 leading-normal px-2">
+              <p className="text-[10px] text-gray-500 leading-relaxed font-medium text-left">
                 Jl. Tjut Nyak Dien No.23, Durian Payung, Kec. Tj. Karang Pusat, Kota Bandar Lampung, Lampung 35114
               </p>
             </div>
           </section>
 
           {/* ================= RIGHT SIDE: FORM BLOCK ================= */}
-          <div className="lg:col-span-7">
-            <div className={`h-full rounded-[2.5rem] border backdrop-blur-xl p-8 md:p-10 shadow-2xl flex flex-col justify-center transition-all duration-500 ${
+          <div className="lg:col-span-7 flex">
+            <div className={`w-full rounded-[2.5rem] border backdrop-blur-xl p-8 md:p-10 shadow-2xl flex flex-col justify-center transition-all duration-500 ${
               isDarkMode 
                 ? "bg-[#11161a]/60 border-white/10 hover:border-white/15" 
                 : "bg-white/70 border-black/5 hover:border-black/10 shadow-slate-200/40"
@@ -383,7 +387,7 @@ export default function KontakPage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Row 1: Nama & Email */}
                 <div className="grid md:grid-cols-2 gap-5">
-                  <div className="space-y-2">
+                  <div className="space-y-2 text-left">
                     <label className={`text-[10px] font-bold uppercase tracking-wider ml-1 ${
                       isDarkMode ? "text-gray-400" : "text-slate-600"
                     }`}>
@@ -405,7 +409,7 @@ export default function KontakPage() {
                     />
                   </div>
 
-                  <div className="space-y-2 relative">
+                  <div className="space-y-2 relative text-left">
                     <div className="flex justify-between items-center ml-1">
                       <label className={`text-[10px] font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-400" : "text-slate-600"
@@ -440,11 +444,11 @@ export default function KontakPage() {
                 </div>
 
                 {/* Row 2: Preset Pilihan Subjek Cepat */}
-                <div className="space-y-2">
+                <div className="space-y-2 text-left">
                   <label className={`text-[10px] font-bold uppercase tracking-wider ml-1 ${
                     isDarkMode ? "text-gray-400" : "text-slate-600"
                   }`}>
-                    Pilihan Subjek Cepat
+                    Pilih Subjek Cepat
                   </label>
                   <div className="flex flex-wrap gap-2 pt-1">
                     {SUBJECT_PRESETS.map((preset) => (
@@ -458,8 +462,8 @@ export default function KontakPage() {
                           formData.subject === preset
                             ? "bg-[#ffcc00] text-black border-[#ffcc00] shadow-[0_0_12px_rgba(255,204,0,0.3)]"
                             : isDarkMode
-                            ? "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:border-white/20"
-                            : "bg-white border-black/10 text-gray-700 hover:bg-gray-50 hover:border-black/20 shadow-sm"
+                            ? "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"
+                            : "bg-white border-black/10 text-gray-700 hover:bg-gray-50 shadow-sm"
                         }`}
                       >
                         {preset}
@@ -469,7 +473,7 @@ export default function KontakPage() {
                 </div>
 
                 {/* Row 3: Subjek */}
-                <div className="space-y-2">
+                <div className="space-y-2 text-left">
                   <label className={`text-[10px] font-bold uppercase tracking-wider ml-1 ${
                     isDarkMode ? "text-gray-400" : "text-slate-600"
                   }`}>
@@ -478,7 +482,7 @@ export default function KontakPage() {
                   <input
                     type="text"
                     required
-                    placeholder="Apa yang ingin Anda tanyakan?"
+                    placeholder="Masukkan subjek atau topik pesan Anda"
                     value={formData.subject}
                     onChange={(e) =>
                       setFormData({ ...formData, subject: e.target.value })
@@ -492,7 +496,7 @@ export default function KontakPage() {
                 </div>
 
                 {/* Row 4: Isi Pesan */}
-                <div className="space-y-2">
+                <div className="space-y-2 text-left">
                   <div className="flex justify-between items-center ml-1">
                     <label className={`text-[10px] font-bold uppercase tracking-wider ${
                       isDarkMode ? "text-gray-400" : "text-slate-600"
@@ -543,7 +547,7 @@ export default function KontakPage() {
         </div>
 
         {/* ================= GUESTBOOK SECTION ================= */}
-        <section className="mt-20 space-y-8">
+        <section className="mt-24 space-y-8">
           <div className="text-center space-y-3">
             <div className="text-[#ffcc00] text-[10px] font-black uppercase tracking-[0.2em]">Buku Tamu Publik</div>
             <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter">
@@ -570,10 +574,10 @@ export default function KontakPage() {
                 return (
                   <div 
                     key={msg.id || idx}
-                    className={`p-6 rounded-[2rem] border transition-all duration-300 hover:scale-[1.02] flex flex-col justify-between space-y-4 ${
+                    className={`p-6 rounded-[2rem] border transition-all duration-350 hover:scale-[1.02] hover:-translate-y-1 flex flex-col justify-between space-y-5 ${
                       isDarkMode 
-                        ? 'bg-[#11161a]/40 border-white/5 hover:border-white/10 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]' 
-                        : 'bg-white border-black/5 shadow-sm hover:shadow-lg hover:border-black/10'
+                        ? 'bg-[#11161a]/40 border-white/5 hover:border-white/10 hover:shadow-[0_15px_30px_rgba(0,0,0,0.4)]' 
+                        : 'bg-white border-black/5 shadow-md shadow-slate-200/30 hover:shadow-xl hover:border-black/10'
                     }`}
                   >
                     <div className="space-y-3 text-left">
@@ -629,18 +633,19 @@ export default function KontakPage() {
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Search and Category filters */}
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between pb-4 border-b border-gray-500/10">
-              {/* Categories */}
-              <div className="flex flex-wrap gap-2 order-2 md:order-1">
+              
+              {/* Categories horizontally scrollable on mobile */}
+              <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1 -mb-1 max-w-full order-2 md:order-1 select-none">
                 {["Semua", "Destinasi", "Rute", "Umum"].map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 border cursor-pointer ${
+                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 border cursor-pointer shrink-0 ${
                       activeCategory === cat
                         ? "bg-[#ffcc00] text-black border-[#ffcc00] shadow-[0_4px_12px_rgba(255,204,0,0.15)]"
                         : isDarkMode
                         ? "bg-white/5 border-white/5 text-gray-300 hover:bg-white/10"
-                        : "bg-white border-black/5 text-gray-700 hover:bg-gray-50 hover:border-black/10 shadow-sm"
+                        : "bg-white border-black/5 text-gray-700 hover:bg-gray-50 shadow-sm"
                     }`}
                   >
                     {cat}
