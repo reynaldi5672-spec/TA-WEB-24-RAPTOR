@@ -34,6 +34,7 @@ export default function RootLayout({
       {/* BUNGKUS CHILDREN DENGAN THEMEPROVIDER DI DALAM BODY */}
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
+          <ScrollProgress />
           {children}
           <BackToTop />
         </ThemeProvider>
