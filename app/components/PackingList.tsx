@@ -238,7 +238,7 @@ export default function PackingList() {
           <form onSubmit={addItem} className="flex gap-2">
             <input
               type="text"
-              placeholder="Tambahkan barang bawaan kustom sendiri..."
+              placeholder="Tambahkan barang bawaan kustom sendiri (contoh: Kacamata Hitam)..."
               value={newItemText}
               onChange={(e) => setNewItemText(e.target.value)}
               className={`flex-1 py-3 px-5 rounded-xl border text-xs font-bold outline-none transition-all duration-300 ${
