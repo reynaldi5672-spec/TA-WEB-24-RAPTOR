@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
-import { Checklist, ShoppingBag, Plus, Trash2, RotateCcw, Check, Sparkles } from 'lucide-react';
+import { ShoppingBag, Plus, Trash2, RotateCcw, Check, Sparkles } from 'lucide-react';
 
 type ActivityType = "bahari" | "alam" | "urban";
 

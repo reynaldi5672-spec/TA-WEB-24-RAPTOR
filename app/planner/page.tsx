@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '@/app/components/Navbar'; 
 import Footer from '@/app/components/Footer';
 import { useTheme } from '@/app/context/ThemeContext';
-import { Calculator, Checklist, HelpCircle, Sparkles, MessageSquare, Compass } from 'lucide-react';
+import { Calculator, HelpCircle, Sparkles, MessageSquare, Compass } from 'lucide-react';
 import CostEstimator from '@/app/components/CostEstimator';
 import PackingList from '@/app/components/PackingList';
 import DestinasiQuiz from '@/app/components/DestinasiQuiz';
