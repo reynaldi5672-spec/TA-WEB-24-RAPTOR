@@ -4,56 +4,50 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
 import { ShoppingBag, Plus, Trash2, RotateCcw, Check, Sparkles } from 'lucide-react';
 
+/**
+ * Valid activity types for the packing list templates.
+ */
 type ActivityType = "bahari" | "alam" | "urban";
 
+/**
+ * Represents an individual item in the packing checklist.
+ */
 interface PackingItem {
+  /** Unique identifier for the item. */
   id: string;
+  /** Human-readable name of the item. */
   name: string;
+  /** Whether the item has been packed by the user. */
   packed: boolean;
+  /** Flag indicating if the item was added manually by the user. */
   isCustom?: boolean;
 }
 
-const DEFAULT_ITEMS: Record<ActivityType, string[]> = {
-  bahari: [
-    "Baju Renang & Pakaian Ganti",
-    "Kacamata Hitam & Topi Pantai",
-    "Sunscreen / Tabir Surya (SPF 50+)",
-    "Sandal Jepit / Sandal Pantai",
-    "Handuk Cepat Kering",
-    "Kantong Plastik / Dry Bag (Tas Anti Air)",
-    "Kamera Aksi / Waterproof Case HP",
-    "Obat Anti Mabuk Laut / Plaster Luka"
-  ],
-  alam: [
-    "Jaket Gunung / Jaket Anti Angin",
-    "Sepatu Outdoor / Sandal Gunung",
-    "Kaus Kaki Tebal Cadangan",
-    "Jas Hujan Ringan / Ponco",
-    "Senter / Headlamp + Baterai Cadangan",
-    "Powerbank Kapasitas Besar",
-    "Botol Minum Isi Ulang (Tumbler)",
-    "Cemilan Tinggi Kalori (Cokelat/Kacang)"
-  ],
-  urban: [
-    "Pakaian Santai / Kasual",
-    "Sepatu Kets Nyaman untuk Berjalan",
-    "Uang Tunai Pecahan Kecil (untuk Jajanan Lokal)",
-    "Hand Sanitizer & Tisu Basah",
-    "Payung Lipat Kecil",
-    "Obat Lambung / Pencernaan (untuk Wisata Kuliner)",
-    "Tas Selempang Ringan (Sling Bag)",
-    "Charger HP & Kabel Data"
-  ]
-};
-
+/**
+ * PackingList Component
+ * 
+ * An interactive checklist tool that provides predefined templates based on the type of 
+ * activity (Coastal, Nature, Urban). It allows users to track their packing progress, 
+ * add custom items, and persists the state in localStorage.
+ * 
+ * @returns {JSX.Element | null} The rendered packing list component.
+ */
 export default function PackingList() {
+  /** Theme context for adaptive styling. */
   const { isDarkMode } = useTheme();
+
+  /** Currently selected activity template. */
   const [activity, setActivity] = useState<ActivityType>("bahari");
+
+  /** List of items to be packed for the current activity. */
   const [items, setItems] = useState<PackingItem[]>([]);
+
+  /** Input state for adding new custom items. */
   const [newItemText, setNewItemText] = useState("");
+
+  /** Hydration safety flag for client-side rendering. */
   const [mounted, setMounted] = useState(false);
 
-  // Load items from localStorage or defaults
   useEffect(() => {
     setMounted(true);
     if (typeof window !== "undefined") {
@@ -62,7 +56,7 @@ export default function PackingList() {
         try {
           setItems(JSON.parse(stored));
         } catch (e) {
-          console.error(e);
+          console.error("Error loading packing list from storage:", e);
           loadDefaults(activity);
         }
       } else {
@@ -71,11 +65,21 @@ export default function PackingList() {
     }
   }, [activity]);
 
+  /**
+   * Updates the local state and synchronizes it with localStorage.
+   * 
+   * @param {PackingItem[]} newItems - The updated list of packing items.
+   */
   const saveToStorage = (newItems: PackingItem[]) => {
     setItems(newItems);
     localStorage.setItem(`visitbdl_packing_${activity}`, JSON.stringify(newItems));
   };
 
+  /**
+   * Replaces the current list with default items defined for the specified activity.
+   * 
+   * @param {ActivityType} act - The activity type to load defaults for.
+   */
   const loadDefaults = (act: ActivityType) => {
     const list = DEFAULT_ITEMS[act].map((name, index) => ({
       id: `${act}-${index}-${Date.now()}`,
@@ -85,6 +89,11 @@ export default function PackingList() {
     saveToStorage(list);
   };
 
+  /**
+   * Toggles the 'packed' status of a specific item.
+   * 
+   * @param {string} id - The unique ID of the item to toggle.
+   */
   const toggleItem = (id: string) => {
     const updated = items.map(item => 
       item.id === id ? { ...item, packed: !item.packed } : item
@@ -92,6 +101,11 @@ export default function PackingList() {
     saveToStorage(updated);
   };
 
+  /**
+   * Adds a new custom item to the current packing list.
+   * 
+   * @param {React.FormEvent} e - The form submission event.
+   */
   const addItem = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItemText.trim()) return;
@@ -107,11 +121,19 @@ export default function PackingList() {
     setNewItemText("");
   };
 
+  /**
+   * Removes a specific item from the packing list.
+   * 
+   * @param {string} id - The unique ID of the item to delete.
+   */
   const deleteItem = (id: string) => {
     const updated = items.filter(item => item.id !== id);
     saveToStorage(updated);
   };
 
+  /**
+   * Resets the current list to its default template after user confirmation.
+   */
   const resetList = () => {
     if (window.confirm("Apakah Anda yakin ingin mengatur ulang daftar barang bawaan ini ke bawaan pabrik?")) {
       loadDefaults(activity);
