@@ -8,19 +8,39 @@ import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/app/context/ThemeContext';
 
 /**
- * Navbar component handles global site navigation, links mapping, and the theme switcher toggle.
+ * Navbar Component
+ * 
+ * Provides the main navigation menu, theme switcher, and language toggle.
+ * It also tracks the number of favorite destinations from localStorage.
+ * 
+ * @returns {JSX.Element} The rendered navigation bar component.
  */
 export default function Navbar() {
-  const pathname = usePathname(); // Retrieves the current window location path
+  /**
+   * Current URL pathname from Next.js navigation.
+   * Used to highlight the active menu item.
+   */
+  const pathname = usePathname(); 
   
-  // 2. CONSUME STATE TEMA GLOBAL (Hapus interface NavbarProps di atas)
-  const { isDarkMode, setIsDarkMode } = useTheme(); // Consumes the shared theme context
+  /**
+   * Global theme context state.
+   */
+  const { isDarkMode, setIsDarkMode } = useTheme(); 
 
+  /**
+   * Local state for the currently selected language (mocked).
+   */
   const [currentLang, setCurrentLang] = useState<'ID' | 'EN'>('ID');
-  // State untuk jumlah favorit
-  const [favoritesCount, setFavoritesCount] = useState(0); // Tracks favorite locations locally
+
+  /**
+   * Local state for the number of favorited items stored in the browser.
+   */
+  const [favoritesCount, setFavoritesCount] = useState(0); 
 
   useEffect(() => {
+    /**
+     * Synchronizes the favorites count from localStorage to local state.
+     */
     const updateFavoritesCount = () => {
       if (typeof window !== "undefined") {
         const stored = localStorage.getItem("visitbdl_favorites");
@@ -31,7 +51,7 @@ export default function Navbar() {
               setFavoritesCount(parsed.length);
             }
           } catch (e) {
-            console.error(e);
+            console.error("Error parsing favorites:", e);
           }
         } else {
           setFavoritesCount(0);
@@ -39,17 +59,19 @@ export default function Navbar() {
       }
     };
 
-    updateFavoritesCount(); // Sync favorites count state immediately on mount
+    updateFavoritesCount(); 
 
-    window.addEventListener('favorites-updated', updateFavoritesCount); // Watch for global favorite updates
+    window.addEventListener('favorites-updated', updateFavoritesCount); 
     return () => {
       window.removeEventListener('favorites-updated', updateFavoritesCount);
     };
   }, []);
 
-  // --- DEFINISI FUNGSI HANDLE CLICK ---
   /**
-   * Handles scroll to top / landing zone redirect when clicking home
+   * Handles navigation behavior when clicking the Home link.
+   * If already on the homepage, it performs a smooth scroll to the top section.
+   * 
+   * @param {React.MouseEvent} e - The mouse click event.
    */
   const handleHomeClick = (e: React.MouseEvent) => {
     if (pathname === '/' /* Check if currently on the homepage */) {
