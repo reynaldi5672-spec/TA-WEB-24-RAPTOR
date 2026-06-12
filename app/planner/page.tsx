@@ -17,6 +17,25 @@ export default function TravelPlannerPage() {
   const [activeTab, setActiveTab] = useState<TabType>("estimator");
   const [mounted, setMounted] = useState(false);
 
+  // Weather Widget Mock Data/State
+  const [weatherData, setWeatherData] = useState({
+    temp: 29,
+    condition: "Cerah Berawan",
+    humidity: "75%",
+    wind: "12 km/h",
+    recommendation: "Sangat cocok untuk berwisata pantai atau mendaki bukit hari ini!"
+  });
+
+  const changeWeatherForecast = () => {
+    const forecasts = [
+      { temp: 31, condition: "Cerah", humidity: "65%", wind: "10 km/h", recommendation: "Waktu terbaik untuk berkunjung ke Pulau Pahawang atau Pantai Mutun!" },
+      { temp: 28, condition: "Berawan", humidity: "80%", wind: "8 km/h", recommendation: "Cuaca sejuk, pas untuk jalan-jalan ke Puncak Mas atau Lengkung Langit." },
+      { temp: 26, condition: "Hujan Ringan", humidity: "90%", wind: "15 km/h", recommendation: "Ada potensi gerimis, persiapkan jas hujan atau kunjungi Museum Lampung saja." }
+    ];
+    const random = forecasts[Math.floor(Math.random() * forecasts.length)];
+    setWeatherData(random);
+  };
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -56,6 +75,50 @@ export default function TravelPlannerPage() {
           <p className={`text-xs md:text-sm font-medium max-w-2xl leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
             Rencanakan petualangan terbaik Anda di Bandar Lampung dengan kalkulator anggaran interaktif, checklist barang bawaan otomatis, kuis destinasi ideal, dan konsultasi asisten pemandu wisata virtual.
           </p>
+        </div>
+
+        {/* Weather Widget Component */}
+        <div className={`p-6 mb-12 rounded-3xl border flex flex-col lg:flex-row items-center justify-between gap-6 text-left transition-all duration-500 ${
+          isDarkMode ? 'bg-white/[0.02] border-white/5' : 'bg-white border-black/[0.04] shadow-sm'
+        }`}>
+          <div className="flex items-center gap-4 flex-1">
+            <div className="text-4xl shrink-0">
+              {weatherData.condition === "Cerah" ? "☀️" : weatherData.condition === "Berawan" ? "⛅" : weatherData.condition === "Cerah Berawan" ? "⛅" : "🌧️"}
+            </div>
+            <div>
+              <div className="text-[9px] text-[#ffcc00] font-black uppercase tracking-wider">Informasi Cuaca Hari Ini</div>
+              <h3 className="text-base font-black uppercase tracking-tight">Bandar Lampung, Indonesia</h3>
+              <p className={`text-xs mt-0.5 leading-relaxed font-semibold ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                {weatherData.recommendation}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-6 divide-x divide-gray-500/10 text-xs font-bold font-mono">
+            <div className="pl-4">
+              <span className="text-gray-500 block text-[8px] uppercase font-sans font-black">Temperatur</span>
+              <span className="text-lg font-black text-[#ffcc00]">{weatherData.temp}°C</span>
+            </div>
+            <div className="pl-4">
+              <span className="text-gray-500 block text-[8px] uppercase font-sans font-black">Kondisi</span>
+              <span className="text-lg font-black">{weatherData.condition}</span>
+            </div>
+            <div className="pl-4">
+              <span className="text-gray-500 block text-[8px] uppercase font-sans font-black">Kelembapan</span>
+              <span className="text-lg font-black">{weatherData.humidity}</span>
+            </div>
+            <div className="pl-4 flex items-center justify-center">
+              <button 
+                onClick={changeWeatherForecast}
+                className={`px-3 py-2 rounded-xl border text-[9px] font-sans font-black uppercase tracking-widest transition-all cursor-pointer ${
+                  isDarkMode 
+                    ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20' 
+                    : 'bg-gray-100 border-black/5 hover:bg-gray-200 text-gray-700'
+                }`}
+              >
+                🔄 Simulasi
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Tab Switcher Navigation */}
