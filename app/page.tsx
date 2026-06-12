@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Navbar from '@/app/components/Navbar'; 
 import Footer from '@/app/components/Footer';
 import WeatherWidget from '@/app/components/WeatherWidget';
+import Newsletter from '@/app/components/Newsletter';
 import { useTheme } from '@/app/context/ThemeContext';
 import { 
   Compass, MapPin, Star, ArrowRight, ChevronLeft, ChevronRight,
