@@ -201,7 +201,10 @@ export default function DestinasiPage() {
     const matchesSearch = item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.lokasi?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = activeCategory === "all" || 
-                            (activeCategory === "favorit" ? favorites.includes(item.id) : item.kategori === activeCategory);
+                            (activeCategory === "favorit" ? favorites.includes(item.id) : 
+                             activeCategory === "terpopuler" ? item.is_viral === true : 
+                             activeCategory === "pemandangan" ? (item.kategori === "wisata_alam" || item.kategori === "pemandangan") : 
+                             item.kategori === activeCategory);
     const matchesViral = !showOnlyViral || item.is_viral === true;
     return matchesSearch && matchesCategory && matchesViral;
   });
@@ -322,11 +325,11 @@ export default function DestinasiPage() {
           {/* Tab Kategori Utama */}
           <div className="flex flex-wrap gap-2.5">
             {[
-              { id: 'all', label: '✨ Semua' },
-              { id: 'terpopuler', label: '⭐ Terpopuler' },
-              { id: 'pantai', label: '🌊 Pantai' },
-              { id: 'pemandangan', label: '⛰️ Pemandangan' },
-              { id: 'favorit', label: '❤️ Favorit Saya' }
+              { id: 'all', label: '✨ Semua', count: destinasi.length },
+              { id: 'terpopuler', label: '⭐ Terpopuler', count: destinasi.filter(d => d.is_viral).length },
+              { id: 'pantai', label: '🌊 Pantai', count: destinasi.filter(d => d.kategori === 'pantai').length },
+              { id: 'pemandangan', label: '⛰️ Pemandangan', count: destinasi.filter(d => d.kategori === 'wisata_alam' || d.kategori === 'pemandangan').length },
+              { id: 'favorit', label: '❤️ Favorit Saya', count: favorites.length }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -337,7 +340,7 @@ export default function DestinasiPage() {
                     : (isDarkMode ? 'bg-white/[0.02] border border-white/5 text-gray-400 hover:text-white hover:border-white/20' : 'bg-white border border-black/5 text-gray-600 hover:bg-gray-50 hover:text-black')
                 }`}
               >
-                {tab.label}
+                {tab.label} ({tab.count})
               </button>
             ))}
           </div>
