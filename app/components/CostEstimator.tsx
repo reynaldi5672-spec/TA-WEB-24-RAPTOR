@@ -397,6 +397,48 @@ export default function CostEstimator() {
                 <span className={isDarkMode ? 'text-white' : 'text-black'}>{formatIDR(ticketTotal)}</span>
               </div>
 
+              {/* Visual Breakdown Bar */}
+              <div className="mt-6 space-y-3">
+                <span className="text-[9px] text-gray-500 font-black uppercase tracking-widest block">Proporsi Pengeluaran</span>
+                <div className="h-3 w-full rounded-full overflow-hidden flex bg-gray-500/10">
+                  {accommodationTotal > 0 && (
+                    <div 
+                      style={{ width: `${(accommodationTotal / grandTotal) * 100}%` }} 
+                      className="h-full bg-blue-500 transition-all duration-500" 
+                      title={`Akomodasi: ${Math.round((accommodationTotal / grandTotal) * 100)}%`}
+                    />
+                  )}
+                  {transportTotal > 0 && (
+                    <div 
+                      style={{ width: `${(transportTotal / grandTotal) * 100}%` }} 
+                      className="h-full bg-[#ffcc00] transition-all duration-500" 
+                      title={`Transportasi: ${Math.round((transportTotal / grandTotal) * 100)}%`}
+                    />
+                  )}
+                  {foodTotal > 0 && (
+                    <div 
+                      style={{ width: `${(foodTotal / grandTotal) * 100}%` }} 
+                      className="h-full bg-emerald-500 transition-all duration-500" 
+                      title={`Konsumsi: ${Math.round((foodTotal / grandTotal) * 100)}%`}
+                    />
+                  )}
+                  {ticketTotal > 0 && (
+                    <div 
+                      style={{ width: `${(ticketTotal / grandTotal) * 100}%` }} 
+                      className="h-full bg-purple-500 transition-all duration-500" 
+                      title={`Tiket: ${Math.round((ticketTotal / grandTotal) * 100)}%`}
+                    />
+                  )}
+                </div>
+                {/* Legend */}
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-[8px] font-black uppercase tracking-wider text-gray-400">
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Akomodasi ({grandTotal > 0 ? Math.round((accommodationTotal / grandTotal) * 100) : 0}%)</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-[#ffcc00]" /> Transport ({grandTotal > 0 ? Math.round((transportTotal / grandTotal) * 100) : 0}%)</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Konsumsi ({grandTotal > 0 ? Math.round((foodTotal / grandTotal) * 100) : 0}%)</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-purple-500" /> Tiket ({grandTotal > 0 ? Math.round((ticketTotal / grandTotal) * 100) : 0}%)</div>
+                </div>
+              </div>
+
               {/* Divider */}
               <div className={`h-px my-4 ${isDarkMode ? 'bg-white/10' : 'bg-black/10'}`}></div>
 
