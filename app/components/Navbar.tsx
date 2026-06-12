@@ -178,7 +178,8 @@ export default function Navbar() {
           }`}
         >
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
+          </button>
+        </div>
       </div>
     </nav>
   );

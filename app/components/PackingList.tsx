@@ -23,6 +23,39 @@ interface PackingItem {
   isCustom?: boolean;
 }
 
+const DEFAULT_ITEMS: Record<ActivityType, string[]> = {
+  bahari: [
+    "Baju Renang & Pakaian Ganti",
+    "Kacamata Hitam & Topi Pantai",
+    "Sunscreen / Tabir Surya (SPF 50+)",
+    "Sandal Jepit / Sandal Pantai",
+    "Handuk Cepat Kering",
+    "Kantong Plastik / Dry Bag (Tas Anti Air)",
+    "Kamera Aksi / Waterproof Case HP",
+    "Obat Anti Mabuk Laut / Plaster Luka"
+  ],
+  alam: [
+    "Jaket Gunung / Jaket Anti Angin",
+    "Sepatu Outdoor / Sandal Gunung",
+    "Kaus Kaki Tebal Cadangan",
+    "Jas Hujan Ringan / Ponco",
+    "Senter / Headlamp + Baterai Cadangan",
+    "Powerbank Kapasitas Besar",
+    "Botol Minum Isi Ulang (Tumbler)",
+    "Cemilan Tinggi Kalori (Cokelat/Kacang)"
+  ],
+  urban: [
+    "Pakaian Santai / Kasual",
+    "Sepatu Kets Nyaman untuk Berjalan",
+    "Uang Tunai Pecahan Kecil (untuk Jajanan Lokal)",
+    "Hand Sanitizer & Tisu Basah",
+    "Payung Lipat Kecil",
+    "Obat Lambung / Pencernaan (untuk Wisata Kuliner)",
+    "Tas Selempang Ringan (Sling Bag)",
+    "Charger HP & Kabel Data"
+  ]
+};
+
 /**
  * PackingList Component
  * 

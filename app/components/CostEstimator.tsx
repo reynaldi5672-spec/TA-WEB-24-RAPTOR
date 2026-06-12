@@ -20,6 +20,13 @@ interface Destinasi {
   kategori: string;
 }
 
+const FALLBACK_DESTINASI: Destinasi[] = [
+  { id: 1, nama: "Pulau Pahawang", lokasi: "Pesawaran", rating: 4.8, kategori: "bahari" },
+  { id: 2, nama: "Pantai Gigi Hiu", lokasi: "Tanggamus", rating: 4.7, kategori: "eksotis" },
+  { id: 3, nama: "Way Kambas", lokasi: "Lampung Timur", rating: 4.6, kategori: "konservasi" },
+  { id: 4, nama: "Puncak Mas", lokasi: "Bandar Lampung", rating: 4.5, kategori: "pemandangan" },
+];
+
 /**
  * CostEstimator Component
  * 
@@ -118,6 +125,13 @@ export default function CostEstimator() {
     if (cat.includes("konservasi") || cat.includes("hiu")) return 75000 * travelers;
     return 15000 * travelers;
   };
+
+  // Calculate totals
+  const accommodationTotal = ACCOMMODATION_COSTS[accommodationTier] * Math.max(0, days - 1);
+  const transportTotal = TRANSPORT_COSTS[transportTier] * days;
+  const foodTotal = FOOD_COSTS[foodTier] * days * travelers;
+  const ticketTotal = getTicketPrice();
+  const grandTotal = accommodationTotal + transportTotal + foodTotal + ticketTotal;
 
   /**
    * Helper function to format numeric values into Indonesian Rupiah (IDR) currency strings.
