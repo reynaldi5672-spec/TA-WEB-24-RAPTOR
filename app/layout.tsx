@@ -25,6 +25,22 @@ export const metadata: Metadata = {
   keywords: ["Wisata Lampung", "Bandar Lampung", "Pantai Lampung", "Pahawang", "Kuliner Lampung", "Liburan Sumatra"],
   authors: [{ name: "Dinas Pariwisata Bandar Lampung", url: "https://wisatabandarlampung.go.id" }],
   creator: "Tim TA-WEB-24-RAPTOR",
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://wisatabandarlampung.go.id",
+    title: "WISATA BANDAR LAMPUNG - Portal Destinasi Wisata Terlengkap",
+    description: "Jelajahi keindahan tersembunyi Bandar Lampung. Panduan perjalanan, destinasi unggulan, dan info cuaca real-time.",
+    siteName: "Wisata Bandar Lampung",
+    images: [
+      {
+        url: "/next.svg", // Fallback image
+        width: 1200,
+        height: 630,
+        alt: "Wisata Bandar Lampung Preview",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
