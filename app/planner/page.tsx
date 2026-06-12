@@ -26,18 +26,58 @@ export default function TravelPlannerPage() {
     recommendation: "Sangat cocok untuk berwisata pantai atau mendaki bukit hari ini!"
   });
 
-  const changeWeatherForecast = () => {
-    const forecasts = [
-      { temp: 31, condition: "Cerah", humidity: "65%", wind: "10 km/h", recommendation: "Waktu terbaik untuk berkunjung ke Pulau Pahawang atau Pantai Mutun!" },
-      { temp: 28, condition: "Berawan", humidity: "80%", wind: "8 km/h", recommendation: "Cuaca sejuk, pas untuk jalan-jalan ke Puncak Mas atau Lengkung Langit." },
-      { temp: 26, condition: "Hujan Ringan", humidity: "90%", wind: "15 km/h", recommendation: "Ada potensi gerimis, persiapkan jas hujan atau kunjungi Museum Lampung saja." }
-    ];
-    const random = forecasts[Math.floor(Math.random() * forecasts.length)];
-    setWeatherData(random);
+  const fetchWeather = async () => {
+    try {
+      const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=-5.3971&longitude=105.2663&current=temperature_2m,relative_humidity_2m,weather_code");
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.current) {
+          const temp = Math.round(data.current.temperature_2m);
+          const code = data.current.weather_code;
+          const humidity = data.current.relative_humidity_2m;
+          
+          let condition = "Cerah Berawan";
+          let rec = "Sangat cocok untuk berwisata pantai atau mendaki bukit hari ini!";
+          if (code === 0) {
+            condition = "Cerah";
+            rec = "Cuaca sangat cerah! Waktu terbaik untuk berkunjung ke Pulau Pahawang atau Pantai Mutun.";
+          } else if (code >= 1 && code <= 3) {
+            condition = "Cerah Berawan";
+            rec = "Cuaca sejuk dan sedikit berawan, pas untuk jalan-jalan ke Puncak Mas atau Lengkung Langit.";
+          } else if (code === 45 || code === 48) {
+            condition = "Berkabut";
+            rec = "Cuaca berkabut. Harap berhati-hati dalam perjalanan berkendara ke daerah perbukitan.";
+          } else if (code >= 51 && code <= 55) {
+            condition = "Gerimis";
+            rec = "Ada potensi gerimis ringan. Persiapkan payung/jas hujan jika ingin menjelajahi tempat wisata terbuka.";
+          } else if (code >= 61 && code <= 67) {
+            condition = "Hujan";
+            rec = "Ada potensi hujan hari ini. Persiapkan payung/jas hujan, atau kunjungi Museum Lampung saja.";
+          } else if (code >= 80 && code <= 82) {
+            condition = "Hujan Deras";
+            rec = "Hujan deras diprakirakan turun. Sebaiknya pilih destinasi dalam ruangan (indoor) untuk keamanan.";
+          } else if (code >= 95) {
+            condition = "Badai Petir";
+            rec = "Waspada potensi badai petir. Hindari aktivitas di luar ruangan atau wilayah pantai.";
+          }
+          
+          setWeatherData({
+            temp,
+            condition,
+            humidity: `${humidity}%`,
+            wind: "Live API",
+            recommendation: rec
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Gagal memuat cuaca live, menggunakan fallback.", err);
+    }
   };
 
   useEffect(() => {
     setMounted(true);
+    fetchWeather();
   }, []);
 
   if (!mounted) return null;
@@ -83,7 +123,15 @@ export default function TravelPlannerPage() {
         }`}>
           <div className="flex items-center gap-4 flex-1">
             <div className="text-4xl shrink-0">
-              {weatherData.condition === "Cerah" ? "☀️" : weatherData.condition === "Berawan" ? "⛅" : weatherData.condition === "Cerah Berawan" ? "⛅" : "🌧️"}
+              {weatherData.condition === "Cerah" ? "☀️" : 
+               weatherData.condition === "Berawan" ? "☁️" : 
+               weatherData.condition === "Cerah Berawan" ? "⛅" : 
+               weatherData.condition === "Gerimis" ? "🌦️" : 
+               weatherData.condition === "Hujan" ? "🌧️" : 
+               weatherData.condition === "Hujan Deras" ? "🌧️" : 
+               weatherData.condition === "Badai Petir" ? "⛈️" : 
+               weatherData.condition === "Berkabut" ? "🌫️" : 
+               "⛅"}
             </div>
             <div>
               <div className="text-[9px] text-[#ffcc00] font-black uppercase tracking-wider">Informasi Cuaca Hari Ini</div>
@@ -108,14 +156,14 @@ export default function TravelPlannerPage() {
             </div>
             <div className="pl-4 flex items-center justify-center">
               <button 
-                onClick={changeWeatherForecast}
+                onClick={fetchWeather}
                 className={`px-3 py-2 rounded-xl border text-[9px] font-sans font-black uppercase tracking-widest transition-all cursor-pointer ${
                   isDarkMode 
                     ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20' 
                     : 'bg-gray-100 border-black/5 hover:bg-gray-200 text-gray-700'
                 }`}
               >
-                🔄 Simulasi
+                🔄 Segarkan
               </button>
             </div>
           </div>
