@@ -5,26 +5,43 @@ import { Sun, CloudSun, Cloud, CloudFog, CloudDrizzle, CloudRain, CloudRainWind,
 import { useTheme } from '@/app/context/ThemeContext';
 
 /**
- * Represents parsed meteorological parameters from Open-Meteo
+ * Represents parsed meteorological parameters retrieved from the Open-Meteo API.
  */
 interface WeatherData {
+  /** Temperature in Celsius. */
   temperature: number;
+  /** Relative humidity percentage. */
   humidity: number;
+  /** Wind speed in kilometers per hour. */
   windSpeed: number;
+  /** World Meteorological Organization (WMO) weather interpretation code. */
   weatherCode: number;
 }
 
 /**
- * WeatherWidget displays real-time weather details for Bandar Lampung
+ * WeatherWidget Component
+ * 
+ * Fetches and displays real-time meteorological data for Bandar Lampung.
+ * Automatically refreshes every 10 minutes to ensure accurate data.
+ * 
+ * @returns {JSX.Element} The rendered weather widget.
  */
 export default function WeatherWidget() {
+  /** Theme context for adaptive visuals. */
   const { isDarkMode } = useTheme();
-  const [weather, setWeather] = useState<WeatherData | null>(null); // Meteorological telemetry data state
-  const [loading, setLoading] = useState<boolean>(true); // Spinner visibility control state
-  const [error, setError] = useState<boolean>(false); // Connection fault visual feedback state
+
+  /** State for the fetched meteorological data. */
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+
+  /** Loading state during API requests. */
+  const [loading, setLoading] = useState<boolean>(true);
+
+  /** Error state for handling API failures. */
+  const [error, setError] = useState<boolean>(false);
 
   /**
-   * Queries open-meteo REST endpoint for Bandar Lampung coordinates
+   * Queries the Open-Meteo REST API for current weather conditions in Bandar Lampung.
+   * Coordinates: Latitude -5.4292, Longitude 105.2611.
    */
   const fetchWeather = async () => {
     setLoading(true);
@@ -42,7 +59,7 @@ export default function WeatherWidget() {
         weatherCode: data.current.weather_code,
       });
     } catch (err) {
-      console.error(err);
+      console.error("Weather fetch failed:", err);
       setError(true);
     } finally {
       setLoading(false);
@@ -51,13 +68,17 @@ export default function WeatherWidget() {
 
   useEffect(() => {
     fetchWeather();
+    
     // Refresh weather every 10 minutes
-    const interval = setInterval(fetchWeather, 10 * 60 * 1000); // Trigger fetch reload every 10 min
+    const interval = setInterval(fetchWeather, 10 * 60 * 1000); 
     return () => clearInterval(interval);
   }, []);
 
   /**
-   * Maps World Meteorological Organization weather codes to custom icons and labels
+   * Maps World Meteorological Organization (WMO) weather codes to custom icons and labels.
+   * 
+   * @param {number} code - The WMO weather interpretation code.
+   * @returns {{label: string, icon: JSX.Element}} Object containing a human-readable label and a corresponding icon.
    */
   const getWeatherDetails = (code: number) => {
     // Mapping weather codes (WMO standards)
