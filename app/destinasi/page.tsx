@@ -34,6 +34,8 @@ export default function DestinasiPage() {
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const POPULAR_SUGGESTIONS = ["Pantai", "Pahawang", "Puncak Mas", "Museum", "Lengkung Langit"];
   
   const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan" | "favorit">("all"); // Tracks currently filtered category tab
   const [showOnlyViral, setShowOnlyViral] = useState(false); // Filter toggle status for viral list only
@@ -272,6 +274,8 @@ export default function DestinasiPage() {
                 placeholder="Cari pantai, bukit, kuliner..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     handleSaveSearch(searchTerm);
@@ -283,6 +287,35 @@ export default function DestinasiPage() {
                   : 'bg-white border-black/10 focus:border-[#ffcc00] text-black shadow-md placeholder-gray-400'
                 }`}
               />
+
+              {/* Suggestions Box */}
+              {showSuggestions && (
+                <div 
+                  className={`absolute top-full left-0 w-full mt-2 p-4 rounded-2xl border backdrop-blur-md z-30 shadow-2xl animate-fadeIn ${
+                    isDarkMode ? 'bg-[#0d0d0d]/95 border-white/10 text-white shadow-black/80' : 'bg-white/95 border-black/5 text-black shadow-slate-200/80'
+                  }`}
+                >
+                  <div className="text-[8px] font-black uppercase tracking-wider text-gray-500 mb-2.5">Saran Pencarian Populer</div>
+                  <div className="flex flex-col gap-1.5">
+                    {POPULAR_SUGGESTIONS.map((sug, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onMouseDown={() => {
+                          setSearchTerm(sug);
+                          handleSaveSearch(sug);
+                          setShowSuggestions(false);
+                        }}
+                        className={`w-full text-left py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          isDarkMode ? 'hover:bg-white/5 text-gray-300' : 'hover:bg-gray-100 text-gray-700'
+                        }`}
+                      >
+                        🔍 {sug}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             
             {/* Recent Searches Tags */}
