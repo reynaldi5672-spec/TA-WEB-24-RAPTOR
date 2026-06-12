@@ -669,6 +669,9 @@ export default function PariwisataLampung() {
         </div>
       </section>
 
+      {/* Newsletter Section */}
+      <Newsletter />
+
       {/* Footer component */}
       <Footer />
     </main>
