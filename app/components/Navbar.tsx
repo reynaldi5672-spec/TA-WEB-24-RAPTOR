@@ -16,6 +16,7 @@ export default function Navbar() {
   // 2. CONSUME STATE TEMA GLOBAL (Hapus interface NavbarProps di atas)
   const { isDarkMode, setIsDarkMode } = useTheme(); // Consumes the shared theme context
 
+  const [currentLang, setCurrentLang] = useState<'ID' | 'EN'>('ID');
   // State untuk jumlah favorit
   const [favoritesCount, setFavoritesCount] = useState(0); // Tracks favorite locations locally
 
