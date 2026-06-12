@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
-import { Sparkles, ArrowRight, ArrowLeft, RefreshCw, Star, MapPin, Compass, ShieldCheck } from 'lucide-react';
+import { Sparkles, ArrowRight, ArrowLeft, RefreshCw, Star, MapPin, Compass, ShieldCheck, Share2 } from 'lucide-react';
 import Link from 'next/link';
 
 interface Destinasi {
@@ -147,6 +147,24 @@ export default function DestinasiQuiz() {
     setPrefBudget(null);
     setStep(1);
     setRecommended([]);
+  };
+
+  const handleShareQuiz = () => {
+    if (recommended.length === 0) return;
+    const listText = recommended.map((item, idx) => `${idx + 1}. ${item.nama} (${item.matchScore}% Cocok)`).join('\n');
+    const shareText = `Hasil Kuis Destinasi Wisata Bandar Lampung saya:\n${listText}\n\nTemukan destinasi idealmu juga di Wisata Bandar Lampung!`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareText)
+        .then(() => {
+          alert("Hasil rekomendasi kuis berhasil disalin ke papan klip!");
+        })
+        .catch(err => {
+          console.error("Gagal menyalin ulasan kuis:", err);
+        });
+    } else {
+      alert("Fitur salin tidak didukung pada browser Anda.");
+    }
   };
 
   if (!mounted) return null;
@@ -393,7 +411,17 @@ export default function DestinasiQuiz() {
             })}
           </div>
 
-          <div className="flex justify-center pt-4 border-t border-gray-500/10">
+          <div className="flex justify-center gap-3 pt-4 border-t border-gray-500/10">
+            <button
+              onClick={handleShareQuiz}
+              className={`px-6 py-3.5 rounded-xl border text-xs font-black uppercase tracking-widest flex items-center gap-2.5 cursor-pointer transition-all hover:scale-105 ${
+                isDarkMode 
+                  ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00] hover:bg-[#ffcc00]/10' 
+                  : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#b38f00] hover:bg-[#ffcc00]/20'
+              }`}
+            >
+              <Share2 size={14} /> Bagikan Hasil
+            </button>
             <button
               onClick={handleReset}
               className={`px-6 py-3.5 rounded-xl border text-xs font-black uppercase tracking-widest flex items-center gap-2.5 cursor-pointer transition-all hover:scale-105 ${
