@@ -4,46 +4,80 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
 import { Calculator, Users, Calendar, Home, Car, Utensils, HelpCircle, AlertCircle, ArrowRight } from 'lucide-react';
 
+/**
+ * Represents a destination object used for calculating estimated entrance fees.
+ */
 interface Destinasi {
+  /** Unique identifier for the destination. */
   id: number;
+  /** Name of the destination. */
   nama: string;
+  /** City or region where the destination is located. */
   lokasi: string;
+  /** Average user rating. */
   rating: number;
+  /** Category type (e.g., "bahari", "eksotis") used for price estimation. */
   kategori: string;
 }
 
-const FALLBACK_DESTINASI: Destinasi[] = [
-  { id: 1, nama: "Pulau Pahawang", lokasi: "Pesawaran", rating: 4.8, kategori: "bahari" },
-  { id: 2, nama: "Pantai Gigi Hiu", lokasi: "Tanggamus", rating: 4.7, kategori: "eksotis" },
-  { id: 3, nama: "Way Kambas", lokasi: "Lampung Timur", rating: 4.6, kategori: "konservasi" },
-  { id: 4, nama: "Puncak Mas", lokasi: "Bandar Lampung", rating: 4.5, kategori: "pemandangan" },
-];
-
+/**
+ * CostEstimator Component
+ * 
+ * An interactive tool for travelers to estimate their vacation budget in Bandar Lampung.
+ * Calculates costs for accommodation, transportation, food, and entrance fees based on
+ * user inputs like the number of travelers, duration, and service tiers.
+ * 
+ * @returns {JSX.Element} The rendered cost estimator tool.
+ */
 export default function CostEstimator() {
+  /** Theme context for adaptive styling. */
   const { isDarkMode } = useTheme();
+
+  /** State for the list of available destinations. */
   const [destinasiList, setDestinasiList] = useState<Destinasi[]>(FALLBACK_DESTINASI);
+
+  /** Currently selected destination ID for specific ticket pricing. */
   const [selectedDestinasiId, setSelectedDestinasiId] = useState<string>("custom");
+
+  /** Number of people traveling. */
   const [travelers, setTravelers] = useState<number>(2);
+
+  /** Duration of the trip in days. */
   const [days, setDays] = useState<number>(3);
   
-  // Budget Tiers
+  /** Tier of accommodation selected (budget, mid, luxury). */
   const [accommodationTier, setAccommodationTier] = useState<"budget" | "mid" | "luxury">("mid");
+
+  /** Mode of transportation selected (public, car, tour). */
   const [transportTier, setTransportTier] = useState<"public" | "car" | "tour">("public");
+
+  /** Tier of food and activities selected (budget, mid, premium). */
   const [foodTier, setFoodTier] = useState<"budget" | "mid" | "premium">("mid");
 
-  // Costs mapping (in IDR)
+  /** 
+   * Accommodation base prices in IDR per night.
+   * @constant 
+   */
   const ACCOMMODATION_COSTS = {
     budget: 150000,   // Homestay / Hostel
     mid: 450000,      // Guest House / Hotel *3
     luxury: 1350000   // Resort / Hotel *5
   };
 
+  /** 
+   * Transportation base prices in IDR per day.
+   * @constant 
+   */
   const TRANSPORT_COSTS = {
     public: 75000,    // Scooter Rent / Public Trans
     car: 550000,      // Rental Car + Driver
     tour: 1200000     // Private Boat / Tour Package
   };
 
+  /** 
+   * Food and activity base prices in IDR per person per day.
+   * @constant 
+   */
   const FOOD_COSTS = {
     budget: 80000,    // Local street food / warung
     mid: 200000,      // Cafes & standard restaurants
@@ -51,6 +85,9 @@ export default function CostEstimator() {
   };
 
   useEffect(() => {
+    /**
+     * Fetches real destination data from the API to populate the selection dropdown.
+     */
     const fetchDestinasi = async () => {
       try {
         const res = await fetch('/api/destinasi');
@@ -65,12 +102,11 @@ export default function CostEstimator() {
     fetchDestinasi();
   }, []);
 
-  // Calculate totals
-  const accommodationTotal = ACCOMMODATION_COSTS[accommodationTier] * Math.max(0, days - 1);
-  const transportTotal = TRANSPORT_COSTS[transportTier] * days;
-  const foodTotal = FOOD_COSTS[foodTier] * days * travelers;
-  
-  // Ticket cost (estimated base fee based on category)
+  /**
+   * Calculates the estimated ticket price based on the selected destination's category.
+   * 
+   * @returns {number} The total estimated ticket cost in IDR.
+   */
   const getTicketPrice = () => {
     if (selectedDestinasiId === "custom") return 25000 * travelers;
     const dest = destinasiList.find(d => d.id.toString() === selectedDestinasiId);
@@ -82,11 +118,13 @@ export default function CostEstimator() {
     if (cat.includes("konservasi") || cat.includes("hiu")) return 75000 * travelers;
     return 15000 * travelers;
   };
-  
-  const ticketTotal = getTicketPrice();
-  const grandTotal = accommodationTotal + transportTotal + foodTotal + ticketTotal;
 
-  // Format currency helper
+  /**
+   * Helper function to format numeric values into Indonesian Rupiah (IDR) currency strings.
+   * 
+   * @param {number} num - The numeric value to format.
+   * @returns {string} The formatted currency string.
+   */
   const formatIDR = (num: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
