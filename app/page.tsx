@@ -174,7 +174,7 @@ export default function PariwisataLampung() {
       <Navbar />
 
       {/* --- HERO SECTION --- */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-40 pb-20 relative z-10">
+      <header className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-40 pb-20 relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* HERO LEFT (6 Columns) */}
@@ -327,7 +327,7 @@ export default function PariwisataLampung() {
             </div>
           </section>
         </div>
-      </div>
+      </header>
 
       {/* --- STATISTICS GRID BANNER --- */}
       <section className={`py-12 border-y transition-colors duration-500 ${
