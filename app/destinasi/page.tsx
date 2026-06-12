@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/app/components/Navbar'; 
+import Breadcrumbs from '@/app/components/Breadcrumbs';
 import DetailModal from '@/app/components/DetailModal'; 
 import CompareModal from '@/app/components/CompareModal';
 import Footer from '@/app/components/Footer';
