@@ -11,12 +11,41 @@ import { FaInstagram, FaFacebookF, FaYoutube, FaTwitter } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
 import Swal from 'sweetalert2';
 
+/**
+ * Footer Component
+ * 
+ * Displays corporate information, site navigation links, social media channels, 
+ * and a newsletter subscription form.
+ * 
+ * @returns {JSX.Element} The rendered footer component.
+ */
 export default function Footer() {
+  /**
+   * Theme context for adaptive styling.
+   */
   const { isDarkMode } = useTheme();
+
+  /**
+   * Local state for the newsletter email input.
+   */
   const [email, setEmail] = useState('');
+
+  /**
+   * Loading state during subscription processing.
+   */
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  /**
+   * Success state after a successful subscription.
+   */
   const [isSubscribed, setIsSubscribed] = useState(false);
 
+  /**
+   * Handles the newsletter subscription form submission.
+   * Simulates an API call and displays a success notification.
+   * 
+   * @param {React.FormEvent} e - The form submission event.
+   */
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
@@ -42,6 +71,9 @@ export default function Footer() {
     });
   };
 
+  /**
+   * Smoothly scrolls the window back to the top of the page.
+   */
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
