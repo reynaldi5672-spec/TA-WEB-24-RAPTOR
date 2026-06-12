@@ -8,6 +8,7 @@ import { Calculator, Checklist, HelpCircle, Sparkles, MessageSquare, Compass } f
 import CostEstimator from '@/app/components/CostEstimator';
 import PackingList from '@/app/components/PackingList';
 import DestinasiQuiz from '@/app/components/DestinasiQuiz';
+import VirtualGuide from '@/app/components/VirtualGuide';
 
 type TabType = "estimator" | "packing" | "quiz" | "guide";
 
@@ -100,13 +101,8 @@ export default function TravelPlannerPage() {
           )}
 
           {activeTab === "guide" && (
-            <div className="p-10 border border-dashed rounded-[2.5rem] border-gray-500/20 text-center space-y-4 animate-fadeIn">
-              <p className="text-gray-500 text-xs italic font-bold uppercase tracking-widest">
-                Pemandu Virtual (Virtual Chat Guide) sedang disiapkan untuk Commit keempat.
-              </p>
-              <div className="h-1 bg-white/5 rounded-full overflow-hidden max-w-xs mx-auto">
-                <div className="h-full bg-[#ffcc00] w-full rounded-full"></div>
-              </div>
+            <div className="animate-fadeIn">
+              <VirtualGuide />
             </div>
           )}
         </div>

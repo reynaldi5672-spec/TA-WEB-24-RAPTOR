@@ -110,6 +110,17 @@ export default function Navbar() {
           </Link>
 
           <Link 
+            href="/planner" 
+            className={`pb-1 hover:text-[#ffcc00] transition-all border-b-2 ${
+              pathname === '/planner' 
+              ? (isDarkMode ? 'text-white border-[#ffcc00]' : 'text-[#1a1a1a] border-[#ffcc00]') 
+              : 'border-transparent'
+            }`}
+          >
+            Alat Travel
+          </Link>
+
+          <Link 
             href="/kontak" 
             className={`pb-1 hover:text-[#ffcc00] transition-all border-b-2 ${
               pathname === '/kontak' 
