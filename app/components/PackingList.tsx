@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
 import { ShoppingBag, Plus, Trash2, RotateCcw, Check, Sparkles, Download } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 /**
  * Valid activity types for the packing list templates.
@@ -168,9 +169,30 @@ export default function PackingList() {
    * Resets the current list to its default template after user confirmation.
    */
   const resetList = () => {
-    if (window.confirm("Apakah Anda yakin ingin mengatur ulang daftar barang bawaan ini ke bawaan pabrik?")) {
-      loadDefaults(activity);
-    }
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Daftar barang bawaan Anda saat ini akan diatur ulang ke templat bawaan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ffcc00",
+      cancelButtonColor: "#ef4444",
+      confirmButtonText: "Ya, Atur Ulang!",
+      cancelButtonText: "Batal",
+      background: isDarkMode ? "#0d0d0d" : "#fff",
+      color: isDarkMode ? "#fff" : "#1a1a1a",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        loadDefaults(activity);
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Daftar bawaan telah berhasil diatur ulang.",
+          icon: "success",
+          confirmButtonColor: "#ffcc00",
+          background: isDarkMode ? "#0d0d0d" : "#fff",
+          color: isDarkMode ? "#fff" : "#1a1a1a",
+        });
+      }
+    });
   };
 
   /**
@@ -178,7 +200,14 @@ export default function PackingList() {
    */
   const downloadList = () => {
     if (items.length === 0) {
-      alert("Daftar barang bawaan kosong, tidak ada yang bisa diunduh.");
+      Swal.fire({
+        title: "Daftar Kosong!",
+        text: "Tidak ada barang bawaan untuk diunduh.",
+        icon: "info",
+        confirmButtonColor: "#ffcc00",
+        background: isDarkMode ? "#0d0d0d" : "#fff",
+        color: isDarkMode ? "#fff" : "#1a1a1a",
+      });
       return;
     }
     const textContent = `DAFTAR BARANG BAWAAN WISATA - WISATA BANDAR LAMPUNG\n` +

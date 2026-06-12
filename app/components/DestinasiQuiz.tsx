@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
 import { Sparkles, ArrowRight, ArrowLeft, RefreshCw, Star, MapPin, Compass, ShieldCheck, Share2 } from 'lucide-react';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 interface Destinasi {
   id: number;
@@ -157,13 +158,27 @@ export default function DestinasiQuiz() {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(shareText)
         .then(() => {
-          alert("Hasil rekomendasi kuis berhasil disalin ke papan klip!");
+          Swal.fire({
+            title: "Tersalin!",
+            text: "Hasil rekomendasi kuis berhasil disalin ke papan klip.",
+            icon: "success",
+            confirmButtonColor: "#ffcc00",
+            background: isDarkMode ? "#0d0d0d" : "#fff",
+            color: isDarkMode ? "#fff" : "#1a1a1a",
+          });
         })
         .catch(err => {
           console.error("Gagal menyalin ulasan kuis:", err);
         });
     } else {
-      alert("Fitur salin tidak didukung pada browser Anda.");
+      Swal.fire({
+        title: "Tidak Didukung!",
+        text: "Fitur salin tidak didukung pada browser Anda.",
+        icon: "error",
+        confirmButtonColor: "#ffcc00",
+        background: isDarkMode ? "#0d0d0d" : "#fff",
+        color: isDarkMode ? "#fff" : "#1a1a1a",
+      });
     }
   };
 
