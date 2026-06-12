@@ -49,7 +49,7 @@ export default function BackToTop() {
       }`}
       aria-label="Kembali ke atas" /* Screenreader support for accessibility */
     >
-      <ArrowUp size={18} className="animate-pulse" /> /* Pulse animate icon to draw user attention */
+      <ArrowUp size={18} className="animate-pulse group-hover:-translate-y-1 transition-transform" /> /* Pulse animate icon to draw user attention */
     </button>
   );
 }
