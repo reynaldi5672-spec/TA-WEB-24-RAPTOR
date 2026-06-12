@@ -6,6 +6,7 @@ import Footer from '@/app/components/Footer';
 import { useTheme } from '@/app/context/ThemeContext';
 import { Calculator, Checklist, HelpCircle, Sparkles, MessageSquare, Compass } from 'lucide-react';
 import CostEstimator from '@/app/components/CostEstimator';
+import PackingList from '@/app/components/PackingList';
 
 type TabType = "estimator" | "packing" | "quiz" | "guide";
 
@@ -86,13 +87,8 @@ export default function TravelPlannerPage() {
           )}
 
           {activeTab === "packing" && (
-            <div className="p-10 border border-dashed rounded-[2.5rem] border-gray-500/20 text-center space-y-4 animate-fadeIn">
-              <p className="text-gray-500 text-xs italic font-bold uppercase tracking-widest">
-                Daftar Bawaan (Packing List) sedang disiapkan untuk Commit berikutnya.
-              </p>
-              <div className="h-1 bg-white/5 rounded-full overflow-hidden max-w-xs mx-auto">
-                <div className="h-full bg-[#ffcc00] w-1/3 rounded-full"></div>
-              </div>
+            <div className="animate-fadeIn">
+              <PackingList />
             </div>
           )}
 
