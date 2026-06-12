@@ -41,6 +41,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "WISATA BANDAR LAMPUNG",
+    description: "Panduan pariwisata resmi Bandar Lampung. Eksplorasi destinasi terbaik sekarang.",
+    images: ["/next.svg"],
+  },
 };
 
 export default function RootLayout({
