@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
-import { ShoppingBag, Plus, Trash2, RotateCcw, Check, Sparkles } from 'lucide-react';
+import { ShoppingBag, Plus, Trash2, RotateCcw, Check, Sparkles, Download } from 'lucide-react';
 
 /**
  * Valid activity types for the packing list templates.
@@ -173,6 +173,31 @@ export default function PackingList() {
     }
   };
 
+  /**
+   * Downloads the current packing list as a formatted text file (.txt).
+   */
+  const downloadList = () => {
+    if (items.length === 0) {
+      alert("Daftar barang bawaan kosong, tidak ada yang bisa diunduh.");
+      return;
+    }
+    const textContent = `DAFTAR BARANG BAWAAN WISATA - WISATA BANDAR LAMPUNG\n` +
+      `Kategori: ${activity.toUpperCase()}\n` +
+      `Tanggal Unduh: ${new Date().toLocaleDateString('id-ID')}\n` +
+      `Progress: ${packedItems}/${totalItems} (${progressPercent}%)\n` +
+      `=============================================\n\n` +
+      items.map(item => `[${item.packed ? 'X' : ' '}] ${item.name} ${item.isCustom ? '(Kustom)' : ''}`).join('\n') +
+      `\n\nSelamat berlibur di Bandar Lampung!`;
+
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `daftar-bawaan-${activity}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (!mounted) return null;
 
   const totalItems = items.length;
@@ -201,16 +226,28 @@ export default function PackingList() {
         </div>
 
         {/* Action Buttons */}
-        <button
-          onClick={resetList}
-          className={`px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
-            isDarkMode 
-              ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white' 
-              : 'bg-gray-100 border-black/5 hover:bg-gray-200 text-gray-700'
-          }`}
-        >
-          <RotateCcw size={12} /> Reset Template
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={downloadList}
+            className={`px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+              isDarkMode 
+                ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00] hover:bg-[#ffcc00]/10' 
+                : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#b38f00] hover:bg-[#ffcc00]/20'
+            }`}
+          >
+            <Download size={12} /> Unduh (.txt)
+          </button>
+          <button
+            onClick={resetList}
+            className={`px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+              isDarkMode 
+                ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white' 
+                : 'bg-gray-100 border-black/5 hover:bg-gray-200 text-gray-700'
+            }`}
+          >
+            <RotateCcw size={12} /> Reset Template
+          </button>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-12 gap-8 items-start">
