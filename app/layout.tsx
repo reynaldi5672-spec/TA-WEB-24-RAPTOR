@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 // IMPORT THEME PROVIDER GLOBAL
 import { ThemeProvider } from "./context/ThemeContext";
 import BackToTop from "@/app/components/BackToTop";
+import ScrollProgress from "@/app/components/ScrollProgress";
 import "./globals.css";
 
 const geistSans = Geist({
