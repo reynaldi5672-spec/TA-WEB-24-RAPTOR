@@ -47,6 +47,17 @@ export const metadata: Metadata = {
     description: "Panduan pariwisata resmi Bandar Lampung. Eksplorasi destinasi terbaik sekarang.",
     images: ["/next.svg"],
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
