@@ -388,10 +388,10 @@ export default function DestinasiPage() {
             {sortedDestinasi.map((item) => (
               <div 
                 key={item.id}
-                className={`group rounded-[2.5rem] overflow-hidden border transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between ${
+                className={`group rounded-[2.5rem] overflow-hidden border transition-all duration-500 hover:-translate-y-2 hover:scale-[1.01] flex flex-col justify-between ${
                   isDarkMode 
-                    ? 'bg-[#0d0d0d] border-white/5 hover:border-white/10' 
-                    : 'bg-white border-black/[0.04] shadow-sm hover:shadow-xl'
+                    ? 'bg-[#0d0d0d] border-white/5 hover:border-[#ffcc00]/30 hover:shadow-[0_20px_40px_rgba(255,204,0,0.08)]' 
+                    : 'bg-white border-black/[0.04] shadow-sm hover:border-[#ffcc00]/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)]'
                 }`}
               >
                 {/* Image Wrap */}
