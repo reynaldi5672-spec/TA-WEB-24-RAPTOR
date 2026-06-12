@@ -11,38 +11,82 @@ import AdminCommentsTable from './components/AdminCommentsTable';
 import AdminContactMessagesTable from './components/AdminContactMessagesTable';
 import { useTheme } from '@/app/context/ThemeContext';
 
+/**
+ * Represents a destination object as managed by the admin panel.
+ */
 interface Destinasi {
+  /** Unique ID. */
   id: number;
+  /** Destination name. */
   nama: string;
+  /** Location string. */
   lokasi: string;
+  /** HTML or plain text description. */
   deskripsi: string;
+  /** Primary image URL. */
   gambar_url: string;
+  /** Calculated average rating. */
   rating: number;
+  /** Flag for viral status. */
   is_viral: boolean;
+  /** Primary category. */
   kategori: string;
 }
 
+/**
+ * AdminDashboard Component
+ * 
+ * The central management hub for the application. It provides real-time statistics 
+ * (metrics) and dedicated interfaces for managing destinations, moderating user 
+ * comments, and handling contact inquiries.
+ * 
+ * @returns {JSX.Element | null} The rendered dashboard or null if not mounted.
+ */
 export default function AdminDashboard() {
+  /** Global theme context. */
   const { isDarkMode, setIsDarkMode } = useTheme();
+  
+  /** Current theme string ('dark' | 'light'). */
   const theme = isDarkMode ? 'dark' : 'light';
 
+  /** Current active management tab. */
   const [activeTab, setActiveTab] = useState<'destinasi' | 'komentar' | 'contact'>('destinasi');
+
+  /** Controls visibility of the destination create/edit form modal. */
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  /** Holds the destination data currently being edited. Null for creation. */
   const [editData, setEditData] = useState<Destinasi | null>(null);
+
+  /** Boolean trigger used to force re-fetching of table data. */
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+  /** Hydration safety flag. */
   const [mounted, setMounted] = useState(false);
 
-  // Dashboard Metrics State
+  /**
+   * Consolidated state for various dashboard metrics.
+   */
   const [stats, setStats] = useState({
+    /** Total number of destination records. */
     totalDestinasi: 0,
+    /** Number of destinations marked as viral. */
     totalViral: 0,
+    /** Count of regular user reviews. */
     totalKomentar: 0,
+    /** Count of contact messages (rating 0). */
     totalPesan: 0,
+    /** Average rating across all destinations. */
     avgRating: 0
   });
+
+  /** Loading state for metrics calculation. */
   const [statsLoading, setStatsLoading] = useState(true);
 
-  // Fetch Dashboard Stats
+  /**
+   * Fetches and calculates high-level statistics from the database.
+   * Runs on initial load and whenever a data refresh is triggered.
+   */
   const fetchStats = async () => {
     setStatsLoading(true);
     try {
@@ -88,28 +132,43 @@ export default function AdminDashboard() {
     return () => cancelAnimationFrame(animationFrameId);
   }, [refreshTrigger]);
 
+  /** Toggles the global application theme. */
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
   
+  /** Triggers a data refresh across all dashboard components. */
   const handleRefresh = () => {
     setRefreshTrigger(prev => !prev);
   };
 
+  /** Opens the form modal in creation mode. */
   const handleOpenCreateForm = () => {
     setEditData(null);
     setIsFormOpen(true);
   };
 
+  /**
+   * Opens the form modal in edit mode with existing data.
+   * 
+   * @param {Destinasi} item - The destination object to edit.
+   */
   const handleOpenEditForm = (item: Destinasi) => {
     setEditData(item);
     setIsFormOpen(true);
   };
 
+  /**
+   * Success callback for form submissions. 
+   * Closes the modal and refreshes data.
+   */
   const handleFormSuccess = () => {
     setIsFormOpen(false);
     setEditData(null);
     handleRefresh();
   };
 
+  /**
+   * Simulated logout handler.
+   */
   const handleLogout = () => {
     window.location.reload();
   };
