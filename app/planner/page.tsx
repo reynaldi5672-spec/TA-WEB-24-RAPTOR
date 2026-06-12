@@ -39,7 +39,7 @@ export default function TravelPlannerPage() {
       <div className="max-w-7xl mx-auto px-6 md:px-16 pt-40 pb-24 relative z-10">
         
         {/* Welcome Header */}
-        <div className={`flex flex-col md:items-start text-left gap-4 mb-14 border-b pb-12 ${
+        <header className={`flex flex-col md:items-start text-left gap-4 mb-14 border-b pb-12 ${
           isDarkMode ? 'border-white/5' : 'border-black/5'
         }`}>
           <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
@@ -53,7 +53,7 @@ export default function TravelPlannerPage() {
           <p className={`text-xs md:text-sm font-medium max-w-2xl leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
             Rencanakan petualangan terbaik Anda di Bandar Lampung dengan kalkulator anggaran interaktif, checklist barang bawaan otomatis, kuis destinasi ideal, dan konsultasi asisten pemandu wisata virtual.
           </p>
-        </div>
+        </header>
 
         {/* Tab Switcher Navigation */}
         <div className="flex flex-wrap gap-2.5 mb-12 border-b pb-8 border-gray-500/10">
