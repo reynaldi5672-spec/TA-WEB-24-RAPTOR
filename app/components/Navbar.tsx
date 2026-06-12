@@ -133,9 +133,22 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Toggle Theme Button */}
-        <button 
-          onClick={() => setIsDarkMode(!isDarkMode)}
+        <div className="flex items-center gap-4">
+          {/* Language Switcher */}
+          <button 
+            onClick={() => setCurrentLang(currentLang === 'ID' ? 'EN' : 'ID')}
+            className={`px-3 py-1.5 rounded-lg border text-[10px] font-black transition-all duration-300 cursor-pointer ${
+              isDarkMode 
+                ? 'bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20' 
+                : 'bg-black/5 border-black/5 text-[#1a1a1a] hover:bg-black/10 hover:border-black/20'
+            }`}
+          >
+            {currentLang}
+          </button>
+
+          {/* Toggle Theme Button */}
+          <button 
+            onClick={() => setIsDarkMode(!isDarkMode)}
           className={`p-3 rounded-xl border transition-all duration-300 cursor-pointer ${
             isDarkMode 
               ? 'bg-white/5 border-white/10 text-[#ffcc00] hover:bg-white/10' 
