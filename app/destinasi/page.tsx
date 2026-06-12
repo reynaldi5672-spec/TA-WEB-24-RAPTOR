@@ -412,6 +412,7 @@ export default function DestinasiPage() {
                       e.stopPropagation();
                       toggleFavorite(item.id);
                     }}
+                    aria-label={favorites.includes(item.id) ? `Hapus ${item.nama} dari favorit` : `Tambah ${item.nama} ke favorit`}
                     className="absolute top-6 left-6 z-20 p-2.5 rounded-xl bg-black/50 text-white hover:bg-red-500 hover:text-white hover:scale-105 active:scale-95 transition-all backdrop-blur-sm cursor-pointer border border-white/10 shadow-lg"
                   >
                     <Heart
