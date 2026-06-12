@@ -92,7 +92,7 @@ export default function Navbar() {
     }`}>
       
       {/* Logo */}
-      <Link href="/" onClick={handleHomeClick} className="flex items-center gap-2 group">
+      <Link href="/" onClick={handleHomeClick} className="flex items-center gap-2 group transition-transform duration-300 hover:scale-105">
         <div className="w-10 h-10 bg-[#ffcc00] rounded-xl flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,204,0,0.3)]">
           L
         </div>
