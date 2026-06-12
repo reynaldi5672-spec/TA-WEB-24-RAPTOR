@@ -102,10 +102,21 @@ export default function PariwisataLampung() {
   const [destinasiUnggulan, setDestinasiUnggulan] = useState<Destinasi[]>([]);
   const [loadingDestinasi, setLoadingDestinasi] = useState(true);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [greeting, setGreeting] = useState('');
 
   // Fetch dynamic destinations from database
   useEffect(() => {
     setMounted(true);
+
+    const getGreeting = () => {
+      const hour = new Date().getHours();
+      if (hour < 12) return 'Selamat Pagi';
+      if (hour < 15) return 'Selamat Siang';
+      if (hour < 18) return 'Selamat Sore';
+      return 'Selamat Malam';
+    };
+    setGreeting(getGreeting());
+
     const fetchDestinasi = async () => {
       try {
         const response = await fetch('/api/destinasi');
