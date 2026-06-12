@@ -7,6 +7,7 @@ import { useTheme } from '@/app/context/ThemeContext';
 import { Calculator, Checklist, HelpCircle, Sparkles, MessageSquare, Compass } from 'lucide-react';
 import CostEstimator from '@/app/components/CostEstimator';
 import PackingList from '@/app/components/PackingList';
+import DestinasiQuiz from '@/app/components/DestinasiQuiz';
 
 type TabType = "estimator" | "packing" | "quiz" | "guide";
 
@@ -93,13 +94,8 @@ export default function TravelPlannerPage() {
           )}
 
           {activeTab === "quiz" && (
-            <div className="p-10 border border-dashed rounded-[2.5rem] border-gray-500/20 text-center space-y-4 animate-fadeIn">
-              <p className="text-gray-500 text-xs italic font-bold uppercase tracking-widest">
-                Kuis Cari Destinasi sedang disiapkan untuk Commit ketiga.
-              </p>
-              <div className="h-1 bg-white/5 rounded-full overflow-hidden max-w-xs mx-auto">
-                <div className="h-full bg-[#ffcc00] w-2/3 rounded-full"></div>
-              </div>
+            <div className="animate-fadeIn">
+              <DestinasiQuiz />
             </div>
           )}
 
