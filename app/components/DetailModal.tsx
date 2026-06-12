@@ -341,6 +341,25 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
               </p>
             </div>
 
+            {/* Peta Lokasi */}
+            <div className="space-y-3">
+              <span className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] flex items-center gap-1.5">
+                <MapPin size={12} /> Peta Lokasi & Rute
+              </span>
+              <div className={`w-full h-48 rounded-2xl overflow-hidden border transition-all ${
+                isDarkMode ? 'border-white/10 bg-white/[0.02]' : 'border-gray-200 bg-gray-50'
+              }`}>
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, filter: isDarkMode ? 'invert(90%) hue-rotate(180deg)' : 'none' }}
+                  loading="lazy"
+                  allowFullScreen
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(item.nama + " " + item.lokasi)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                ></iframe>
+              </div>
+            </div>
+
             <hr className={isDarkMode ? 'border-white/5' : 'border-gray-100'} />
 
             {/* --- REVISI: FORM INPUT RATING & KOMENTAR (PUBLIC GUEST) --- */}
