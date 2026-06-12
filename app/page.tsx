@@ -201,7 +201,7 @@ export default function PariwisataLampung() {
               <h2 className={`text-lg md:text-xl font-bold tracking-wide transition-colors duration-500 ${
                 isDarkMode ? 'text-gray-300' : 'text-gray-700'
               }`}>
-                Jelajahi Surga Pariwisata Urban & Bahari
+                {greeting}, Jelajahi Surga Pariwisata Urban & Bahari
               </h2>
             </div>
             
