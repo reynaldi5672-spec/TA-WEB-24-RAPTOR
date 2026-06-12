@@ -237,8 +237,9 @@ export default function DestinasiPage() {
       
       {/* 3. HAPUS PROPS PROPS LAMA PADA NAVBAR KARENA NAVBAR SUDAH OTOMATIS BACA GLOBAL */}
       <Navbar />
+      <Breadcrumbs />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-16 pt-40 pb-24 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-16 pt-10 pb-24 relative z-10">
         
         {/* --- WELCOME HERO BANNER & SEARCH BAR --- */}
         <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-10 mb-14 border-b pb-12 text-left ${
