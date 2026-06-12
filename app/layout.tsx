@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | Wisata Bandar Lampung"
   },
   description: "Panduan pariwisata resmi Bandar Lampung. Eksplorasi destinasi bahari, kuliner legendaris, dan cagar alam terbaik di pintu gerbang Pulau Sumatra.",
-  keywords: ["Wisata Lampung", "Bandar Lampung", "Pantai Lampung", "Pahawang", "Kuliner Lampung", "Liburan Sumatra"],
+  keywords: ["Wisata Lampung", "Bandar Lampung", "Pantai Lampung", "Pahawang", "Kuliner Lampung", "Liburan Sumatra", "Wisata Hits", "Destinasi Terbaru BDL"],
   authors: [{ name: "Dinas Pariwisata Bandar Lampung", url: "https://wisatabandarlampung.go.id" }],
   creator: "Tim TA-WEB-24-RAPTOR",
   openGraph: {
