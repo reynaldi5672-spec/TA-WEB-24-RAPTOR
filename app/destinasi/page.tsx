@@ -427,7 +427,7 @@ export default function DestinasiPage() {
                       e.stopPropagation();
                       handleShare(item);
                     }}
-                    className="absolute top-6 right-24 z-20 p-2.5 rounded-xl bg-black/50 text-white hover:bg-[#ffcc00] hover:text-black hover:scale-105 active:scale-95 transition-all backdrop-blur-sm cursor-pointer border border-white/10 shadow-lg"
+                    className="absolute top-6 right-24 z-20 p-2.5 rounded-xl bg-black/50 text-white hover:bg-[#ffcc00] hover:text-black hover:scale-110 active:scale-90 transition-all backdrop-blur-sm cursor-pointer border border-white/10 shadow-lg"
                     title="Bagikan"
                   >
                     <Share2 size={14} />
