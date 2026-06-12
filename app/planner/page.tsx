@@ -39,6 +39,9 @@ export default function TravelPlannerPage() {
       <div className="max-w-7xl mx-auto px-6 md:px-16 pt-40 pb-24 relative z-10">
         
         {/* Welcome Header */}
+        <div className="text-[10px] font-black uppercase text-[#ffcc00] tracking-widest mb-1 opacity-80 animate-pulse">
+          🌅 Ayo rencanakan agenda liburan terbaikmu!
+        </div>
         <div className={`flex flex-col md:items-start text-left gap-4 mb-14 border-b pb-12 ${
           isDarkMode ? 'border-white/5' : 'border-black/5'
         }`}>
