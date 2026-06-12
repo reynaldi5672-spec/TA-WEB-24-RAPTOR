@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+/**
+ * Handles GET requests to retrieve user comments.
+ * Can filter comments by destination ID if provided as a query parameter.
+ * Otherwise, returns all comments with their associated destination info.
+ * 
+ * @param {Request} request - The incoming HTTP request.
+ * @returns {Promise<NextResponse>} JSON response containing the list of comments or an error message.
+ */
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -25,6 +33,13 @@ export async function GET(request: Request) {
   }
 }
 
+/**
+ * Handles POST requests to submit a new user comment/review.
+ * Validates required fields (destinasi_id, nama_user, isi_komentar, rating).
+ * 
+ * @param {Request} request - The incoming HTTP request containing comment data.
+ * @returns {Promise<NextResponse>} JSON response containing the created comment or an error message.
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -50,6 +65,13 @@ export async function POST(request: Request) {
   }
 }
 
+/**
+ * Handles DELETE requests to remove a user comment.
+ * Requires the comment ID as a query parameter.
+ * 
+ * @param {Request} request - The incoming HTTP request.
+ * @returns {Promise<NextResponse>} JSON response indicating success or an error message.
+ */
 export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -63,7 +85,7 @@ export async function DELETE(request: Request) {
       where: { id: parseInt(id) },
     });
 
-    return NextResponse.json({ message: 'Komentar toxic berhasil dimusnahkan!' }, { status: 200 });
+    return NextResponse.json({ message: 'Komentar berhasil dihapus!' }, { status: 200 });
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Terjadi kesalahan sistem';
     return NextResponse.json({ message: errorMessage }, { status: 500 });
