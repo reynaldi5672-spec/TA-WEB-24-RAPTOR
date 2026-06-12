@@ -6,62 +6,101 @@ import { FaWhatsapp, FaTelegramPlane, FaTwitter, FaCopy } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
 import Swal from 'sweetalert2';
 
+/**
+ * Represents a destination object with full details.
+ */
 interface Destinasi {
+  /** Unique identifier. */
   id: number;
+  /** Name of the destination. */
   nama: string;
+  /** Location/Region. */
   lokasi: string;
+  /** Long description. */
   deskripsi: string;
+  /** Comma-separated list of image URLs. */
   gambar_url: string;
+  /** User rating out of 5.0. */
   rating: number;
+  /** Popularity status flag. */
   is_viral: boolean;
+  /** Tourism category. */
   kategori: string;
 }
 
+/**
+ * Represents a user review/comment retrieved from the database.
+ */
 interface Komentar {
+  /** Unique identifier for the comment. */
   id: number;
+  /** Display name of the user who posted the comment. */
   nama_user: string;
+  /** The text content of the review. */
   isi_komentar: string;
+  /** Rating given by the user (1-5). */
   rating: number;
+  /** ISO date string of when the comment was created. */
   created_at: string;
 }
 
+/**
+ * Properties for the DetailModal component.
+ */
 interface DetailModalProps {
+  /** The destination object to display. */
   item: Destinasi;
+  /** Callback function to close the modal. */
   onClose: () => void;
 }
 
 /**
- * DetailModal displays detail view for a specific selected location.
+ * DetailModal Component
+ * 
+ * Provides a comprehensive view of a specific destination, including a multi-image slider, 
+ * detailed description, social media sharing options, and a live comment section 
+ * integrated with the backend API.
+ * 
+ * @param {DetailModalProps} props - Component properties.
+ * @returns {JSX.Element} The rendered detail modal.
  */
 export default function DetailModal({ item, onClose }: DetailModalProps) {
+  /** Theme context for adaptive styling. */
   const { isDarkMode } = useTheme();
   
-  // State untuk drawer sharing
+  /** Controls the visibility of the social sharing drawer. */
   const [showShareDrawer, setShowShareDrawer] = useState(false);
   
-  // State untuk Slider Gambar
-  // Memecah gambar_url berdasarkan tanda koma (,). Jika cuma 1 gambar, array isinya tetap 1.
-  const daftarGambar = item.gambar_url ? item.gambar_url.split(',').map(url => url.trim()) : ['https://via.placeholder.com/800x600?text=No+Image']; // Multi-image slider source list
-  const [activeSlide, setActiveSlide] = useState(0); // Tracks current visible slide index
+  /** 
+   * List of image URLs parsed from the destination data.
+   * Defaults to a placeholder if no images are provided.
+   */
+  const daftarGambar = item.gambar_url ? item.gambar_url.split(',').map(url => url.trim()) : ['https://via.placeholder.com/800x600?text=No+Image']; 
+  
+  /** Index of the currently displayed image in the slider. */
+  const [activeSlide, setActiveSlide] = useState(0); 
 
-  // State untuk Data Komentar dari DB
-  const [listKomentar, setListKomentar] = useState<Komentar[]>([]); // User feedback entries list state
-  const [isCommentsLoading, setIsCommentsLoading] = useState(true); // Reviews section load control indicator
+  /** List of user comments fetched from the API. */
+  const [listKomentar, setListKomentar] = useState<Komentar[]>([]); 
 
-  // State untuk Form Input Review Baru
-  const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 }); // New review details form model state
-  const [isSubmittingReview, setIsSubmittingReview] = useState(false); // Review submit loading indicator state
+  /** Loading state for the comments section. */
+  const [isCommentsLoading, setIsCommentsLoading] = useState(true); 
 
-  // URL sharing sosial media
+  /** Form state for submitting a new review. */
+  const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 }); 
+
+  /** Loading state during review submission. */
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false); 
+
+  // Social media share URLs and text.
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/destinasi?id=${item.id}` : "";
   const shareText = `Yuk kunjungi destinasi seru "${item.nama}" di ${item.lokasi}!`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
   const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
 
-  // Fetch komentar khusus destinasi ini saat modal terbuka
   /**
-   * Queries backend REST endpoints for user comments corresponding to this destination
+   * Fetches the list of comments for the current destination from the backend API.
    */
   const fetchKomentar = async () => {
     try {
@@ -81,9 +120,9 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
     fetchKomentar();
   }, [item.id]);
 
-  // Handler Share Modal
   /**
-   * Triggers native device share sheet fallback or copies clipboard links
+   * Handles the share functionality. 
+   * Uses the Native Web Share API if available, otherwise copies the URL to the clipboard.
    */
   const handleShareModal = () => {
     const shareUrl = `${window.location.origin}/destinasi?id=${item.id}`;
@@ -115,24 +154,24 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
     }
   };
 
-  // Handler Navigasi Slider Gambar
   /**
-   * Shifts slide view viewport forward to next visual image index
+   * Navigates to the next image in the slider.
    */
   const nextSlide = () => {
     setActiveSlide((prev) => (prev === daftarGambar.length - 1 ? 0 : prev + 1));
   };
 
   /**
-   * Shifts slide view viewport backward to previous visual image index
+   * Navigates to the previous image in the slider.
    */
   const prevSlide = () => {
     setActiveSlide((prev) => (prev === 0 ? daftarGambar.length - 1 : prev - 1));
   };
 
-  // Handler Submit Review (Public Guest)
   /**
-   * Sends structured comment schema to database via POST request endpoints
+   * Submits a new user review to the backend database.
+   * 
+   * @param {React.FormEvent} e - The form submission event.
    */
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,10 +201,8 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
           color: isDarkMode ? '#fff' : '#000',
           confirmButtonColor: '#ffcc00'
         });
-        // Reset form input ulasan
         setFormReview({ nama_user: '', isi_komentar: '', rating: 5 });
-        // Ambil data komentar ulang secara live
-        fetchKomentar();
+        fetchKomentar(); // Refresh comments list
       } else {
         throw new Error(data.message);
       }
