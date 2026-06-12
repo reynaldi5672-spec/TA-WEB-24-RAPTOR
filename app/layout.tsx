@@ -17,8 +17,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WISATA BANDAR LAMPUNG - Destinasi Wisata Lampung",
-  description: "Eksplorasi petualangan bahari dan pariwisata urban terbaik di Bandar Lampung",
+  title: {
+    default: "WISATA BANDAR LAMPUNG - Portal Destinasi Wisata Terlengkap",
+    template: "%s | Wisata Bandar Lampung"
+  },
+  description: "Panduan pariwisata resmi Bandar Lampung. Eksplorasi destinasi bahari, kuliner legendaris, dan cagar alam terbaik di pintu gerbang Pulau Sumatra.",
+  keywords: ["Wisata Lampung", "Bandar Lampung", "Pantai Lampung", "Pahawang", "Kuliner Lampung", "Liburan Sumatra"],
+  authors: [{ name: "Dinas Pariwisata Bandar Lampung", url: "https://wisatabandarlampung.go.id" }],
+  creator: "Tim TA-WEB-24-RAPTOR",
 };
 
 export default function RootLayout({
