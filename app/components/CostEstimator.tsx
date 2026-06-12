@@ -43,7 +43,7 @@ export default function CostEstimator() {
   const [travelers, setTravelers] = useState<number>(2);
 
   /** Duration of the trip in days. */
-  const [days, setDays] = useState<number>(3);
+  const [days, setDays] = useState<number>(2);
   
   /** Tier of accommodation selected (budget, mid, luxury). */
   const [accommodationTier, setAccommodationTier] = useState<"budget" | "mid" | "luxury">("mid");
