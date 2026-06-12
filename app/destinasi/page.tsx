@@ -241,79 +241,79 @@ export default function DestinasiPage() {
 
       <div className="max-w-7xl mx-auto px-6 md:px-16 pt-10 pb-24 relative z-10">
         
-        {/* --- WELCOME HERO BANNER & SEARCH BAR --- */}
-        <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-10 mb-14 border-b pb-12 text-left ${
-          isDarkMode ? 'border-white/5' : 'border-black/5'
-        }`}>
-          <div className="space-y-4 max-w-2xl">
-            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
-              isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#e6b800]'
-            }`}>
-              <Compass size={11} className="animate-spin [animation-duration:15s]" /> Selamat Datang di WISATA BANDAR LAMPUMNG
-            </div>
-            <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
-              Jelajahi <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.15)]">Destinasi Terbaik</span> Lampung
-            </h1>
-            <p className={`text-xs md:text-sm font-medium max-w-xl leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-              Temukan surga tersembunyi, hamparan pantai pasir putih, hingga spot pemandangan paling hits. 
-              Saat ini mengelola <span className="text-[#ffcc00] font-bold">{totalWisata} lokasi wisata</span> aktif and <span className="text-red-500 font-bold">{totalViral} spot viral</span> terverifikasi.
-            </p>
+      {/* --- WELCOME HERO BANNER & SEARCH BAR --- */}
+      <header className={`flex flex-col lg:flex-row lg:items-center justify-between gap-10 mb-14 border-b pb-12 text-left ${
+        isDarkMode ? 'border-white/5' : 'border-black/5'
+      }`}>
+        <div className="space-y-4 max-w-2xl">
+          <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
+            isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#e6b800]'
+          }`}>
+            <Compass size={11} className="animate-spin [animation-duration:15s]" /> Selamat Datang di WISATA BANDAR LAMPUMNG
           </div>
-
-          {/* Search Input Card */}
-          <div className="relative w-full lg:w-96 flex flex-col gap-3 group text-left">
-            <div className="relative">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-hover:text-[#ffcc00] transition-colors" size={16} />
-              <input 
-                type="text"
-                placeholder="Cari pantai, bukit, kuliner..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSaveSearch(searchTerm);
-                  }
-                }}
-                className={`w-full py-4 pl-14 pr-6 rounded-2xl border transition-all duration-300 outline-none text-xs font-bold tracking-wider uppercase backdrop-blur-md ${
-                  isDarkMode 
-                  ? 'bg-white/[0.02] border-white/10 focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white placeholder-gray-600 shadow-2xl' 
-                  : 'bg-white border-black/10 focus:border-[#ffcc00] text-black shadow-md placeholder-gray-400'
-                }`}
-              />
-            </div>
-            
-            {/* Recent Searches Tags */}
-            {recentSearches.length > 0 && (
-              <div className="flex flex-wrap items-center gap-1.5 px-1 animate-fadeIn">
-                <span className={`text-[8px] font-black uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                  Riwayat:
-                </span>
-                {recentSearches.map((term, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setSearchTerm(term);
-                      handleSaveSearch(term);
-                    }}
-                    className={`px-2.5 py-1 rounded-md text-[8px] font-bold uppercase transition-all cursor-pointer ${
-                      isDarkMode 
-                        ? 'bg-white/5 border border-white/5 text-gray-400 hover:bg-white/10 hover:text-white' 
-                        : 'bg-white border border-black/5 text-gray-600 hover:bg-gray-50 hover:text-black'
-                    }`}
-                  >
-                    {term}
-                  </button>
-                ))}
-                <button
-                  onClick={handleClearSearches}
-                  className="text-[8px] font-black uppercase text-red-500 hover:text-red-400 transition-colors ml-1 cursor-pointer"
-                >
-                  Hapus
-                </button>
-              </div>
-            )}
-          </div>
+          <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
+            Jelajahi <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.15)]">Destinasi Terbaik</span> Lampung
+          </h1>
+          <p className={`text-xs md:text-sm font-medium max-w-xl leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            Temukan surga tersembunyi, hamparan pantai pasir putih, hingga spot pemandangan paling hits. 
+            Saat ini mengelola <span className="text-[#ffcc00] font-bold">{totalWisata} lokasi wisata</span> aktif and <span className="text-red-500 font-bold">{totalViral} spot viral</span> terverifikasi.
+          </p>
         </div>
+
+        {/* Search Input Card */}
+        <div className="relative w-full lg:w-96 flex flex-col gap-3 group text-left">
+          <div className="relative">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-hover:text-[#ffcc00] transition-colors" size={16} />
+            <input 
+              type="text"
+              placeholder="Cari pantai, bukit, kuliner..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSaveSearch(searchTerm);
+                }
+              }}
+              className={`w-full py-4 pl-14 pr-6 rounded-2xl border transition-all duration-300 outline-none text-xs font-bold tracking-wider uppercase backdrop-blur-md ${
+                isDarkMode 
+                ? 'bg-white/[0.02] border-white/10 focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white placeholder-gray-600 shadow-2xl' 
+                : 'bg-white border-black/10 focus:border-[#ffcc00] text-black shadow-md placeholder-gray-400'
+              }`}
+            />
+          </div>
+          
+          {/* Recent Searches Tags */}
+          {recentSearches.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5 px-1 animate-fadeIn">
+              <span className={`text-[8px] font-black uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                Riwayat:
+              </span>
+              {recentSearches.map((term, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setSearchTerm(term);
+                    handleSaveSearch(term);
+                  }}
+                  className={`px-2.5 py-1 rounded-md text-[8px] font-bold uppercase transition-all cursor-pointer ${
+                    isDarkMode 
+                      ? 'bg-white/5 border border-white/5 text-gray-400 hover:bg-white/10 hover:text-white' 
+                      : 'bg-white border border-black/5 text-gray-600 hover:bg-gray-50 hover:text-black'
+                  }`}
+                >
+                  {term}
+                </button>
+              ))}
+              <button
+                onClick={handleClearSearches}
+                className="text-[8px] font-black uppercase text-red-500 hover:text-red-400 transition-colors ml-1 cursor-pointer"
+              >
+                Hapus
+              </button>
+            </div>
+          )}
+        </div>
+      </header>
 
         {/* --- NAVIGASI FILTER KATEGORI ULTRA CLEAN --- */}
         <div className={`flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16 border-b pb-8 ${
