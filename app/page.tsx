@@ -257,10 +257,10 @@ export default function PariwisataLampung() {
 
               {/* Slider Image Window */}
               <div className="relative h-80 md:h-96 rounded-3xl overflow-hidden group shadow-inner">
-                <img 
-                  src={HERO_SLIDES[currentSlide].image} 
-                  alt={HERO_SLIDES[currentSlide].title}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" 
+                <img
+                  src={HERO_SLIDES[currentSlide].image}
+                  alt={`Rekomendasi Utama: ${HERO_SLIDES[currentSlide].title} - ${HERO_SLIDES[currentSlide].category}`}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
 
                 {/* Info Overlay inside Image */}
@@ -277,15 +277,17 @@ export default function PariwisataLampung() {
                 </div>
 
                 {/* Manual Arrows */}
-                <button 
+                <button
                   onClick={prevSlide}
+                  aria-label="Slide sebelumnya"
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-black/45 hover:bg-black/80 border border-white/10 text-white flex items-center justify-center backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
                 >
                   <ChevronLeft size={20} />
                 </button>
 
-                <button 
+                <button
                   onClick={nextSlide}
+                  aria-label="Slide berikutnya"
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-black/45 hover:bg-black/80 border border-white/10 text-white flex items-center justify-center backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
                 >
                   <ChevronRight size={20} />
@@ -299,6 +301,7 @@ export default function PariwisataLampung() {
                     <button
                       key={index}
                       onClick={() => setCurrentSlide(index)}
+                      aria-label={`Pindah ke slide ${index + 1}`}
                       className={`h-2 rounded-full transition-all cursor-pointer ${
                         currentSlide === index ? 'w-8 bg-[#ffcc00]' : 'w-2 bg-gray-500/40'
                       }`}
