@@ -150,6 +150,12 @@ export default function DestinasiPage() {
     window.dispatchEvent(new Event('favorites-updated'));
   };
 
+  /**
+   * Saves a search term to localStorage and updates recent searches state.
+   * Keeps only the 5 most recent unique searches.
+   * 
+   * @param {string} term - The search term to save.
+   */
   const handleSaveSearch = (term: string) => {
     const trimmed = term.trim();
     if (!trimmed) return;
