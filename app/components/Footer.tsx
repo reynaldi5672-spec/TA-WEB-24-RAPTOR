@@ -91,12 +91,12 @@ export default function Footer() {
       )}
 
       {/* --- SECTION 1: CORPORATE STATS BANNER --- */}
-      <div className={`border-b transition-colors duration-500 ${
+      <section aria-label="Statistik Wisata" className={`border-b transition-colors duration-500 ${
         isDarkMode ? 'border-white/5 bg-white/[0.01]' : 'border-black/[0.02] bg-gray-50/50'
       }`}>
         <div className="max-w-7xl mx-auto px-6 md:px-16 py-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center gap-4 group">
+            <article className="flex flex-col md:flex-row items-center gap-4 group">
               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${
                 isDarkMode ? 'bg-[#ffcc00]/5 text-[#ffcc00] border border-[#ffcc00]/10' : 'bg-[#ffcc00]/10 text-[#e6b800] border border-[#ffcc00]/20'
               } group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(255,204,0,0.15)]`}>
@@ -106,8 +106,8 @@ export default function Footer() {
                 <h4 className={`text-2xl font-black italic uppercase tracking-tighter ${isDarkMode ? 'text-white' : 'text-black'}`}>50+ Destinasi</h4>
                 <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Spot Wisata Terverifikasi</p>
               </div>
-            </div>
-            <div className="flex flex-col md:flex-row items-center gap-4 group">
+            </article>
+            <article className="flex flex-col md:flex-row items-center gap-4 group">
               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${
                 isDarkMode ? 'bg-blue-500/5 text-blue-500 border border-blue-500/10' : 'bg-blue-500/10 text-blue-600 border border-blue-500/20'
               } group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]`}>
@@ -117,8 +117,8 @@ export default function Footer() {
                 <h4 className={`text-2xl font-black italic uppercase tracking-tighter ${isDarkMode ? 'text-white' : 'text-black'}`}>15k+ Pengunjung</h4>
                 <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Mengeksplorasi Setiap Bulan</p>
               </div>
-            </div>
-            <div className="flex flex-col md:flex-row items-center gap-4 group">
+            </article>
+            <article className="flex flex-col md:flex-row items-center gap-4 group">
               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${
                 isDarkMode ? 'bg-emerald-500/5 text-emerald-500 border border-emerald-500/10' : 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20'
               } group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]`}>
@@ -128,17 +128,17 @@ export default function Footer() {
                 <h4 className={`text-2xl font-black italic uppercase tracking-tighter ${isDarkMode ? 'text-white' : 'text-black'}`}>24/7 Dukungan</h4>
                 <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Layanan Informasi Terpadu</p>
               </div>
-            </div>
+            </article>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* --- SECTION 2: MAIN CORPORATE LINKS & NEWSLETTER --- */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 py-16">
+      <section aria-label="Informasi Footer" className="max-w-7xl mx-auto px-6 md:px-16 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           
           {/* Company Brand Column (4 Columns) */}
-          <div className="lg:col-span-4 space-y-6 text-left">
+          <article className="lg:col-span-4 space-y-6 text-left">
             <Link href="/" className="flex items-center gap-2 group w-max">
               <div className="w-10 h-10 bg-[#ffcc00] rounded-xl flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,204,0,0.3)]">
                 L
@@ -153,7 +153,7 @@ export default function Footer() {
             </p>
 
             {/* Office Hours Card */}
-            <div className={`p-4 rounded-2xl border transition-all ${
+            <address className={`p-4 rounded-2xl border transition-all ${
               isDarkMode ? 'bg-white/[0.02] border-white/5' : 'bg-gray-50 border-black/5 shadow-sm'
             }`}>
               <div className="flex items-center gap-3 text-left">
@@ -163,23 +163,24 @@ export default function Footer() {
                   <p className="text-[11px] font-medium text-gray-500">Senin - Jumat: 08.00 - 16.00 WIB</p>
                 </div>
               </div>
-            </div>
+            </address>
 
             {/* Social Media Follow */}
             <div className="space-y-3">
               <span className={`text-[10px] font-black uppercase tracking-wider block ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>Ikuti Media Sosial Resmi Kami</span>
               <div className="flex gap-3">
                 {[
-                  { icon: <FaInstagram size={16} />, href: "https://instagram.com", color: "hover:bg-[#e1306c] hover:text-white" },
-                  { icon: <FaFacebookF size={16} />, href: "https://facebook.com", color: "hover:bg-[#1877f2] hover:text-white" },
-                  { icon: <FaYoutube size={16} />, href: "https://youtube.com", color: "hover:bg-[#ff0000] hover:text-white" },
-                  { icon: <FaTwitter size={16} />, href: "https://twitter.com", color: "hover:bg-[#1da1f2] hover:text-white" }
+                  { icon: <FaInstagram size={16} />, href: "https://instagram.com", label: "Instagram", color: "hover:bg-[#e1306c] hover:text-white" },
+                  { icon: <FaFacebookF size={16} />, href: "https://facebook.com", label: "Facebook", color: "hover:bg-[#1877f2] hover:text-white" },
+                  { icon: <FaYoutube size={16} />, href: "https://youtube.com", label: "YouTube", color: "hover:bg-[#ff0000] hover:text-white" },
+                  { icon: <FaTwitter size={16} />, href: "https://twitter.com", label: "Twitter", color: "hover:bg-[#1da1f2] hover:text-white" }
                 ].map((social, index) => (
                   <a
                     key={index}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Ikuti kami di ${social.label}`}
                     className={`w-9 h-9 rounded-xl flex items-center justify-center border transition-all duration-300 ${
                       isDarkMode 
                         ? 'bg-white/5 border-white/5 text-gray-400 hover:border-white/20' 
@@ -191,10 +192,10 @@ export default function Footer() {
                 ))}
               </div>
             </div>
-          </div>
+          </article>
 
           {/* Useful Links Columns (4 Columns total, split into two sets) */}
-          <div className="lg:col-span-4 grid grid-cols-2 gap-6 text-left">
+          <nav className="lg:col-span-4 grid grid-cols-2 gap-6 text-left" aria-label="Navigasi Footer">
             <div className="space-y-5">
               <h4 className={`text-xs font-black uppercase tracking-[0.2em] border-b pb-2 ${isDarkMode ? 'text-white border-white/5' : 'text-black border-black/5'}`}>
                 Layanan
@@ -250,7 +251,7 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-          </div>
+          </nav>
 
           {/* Newsletter Column (4 Columns) */}
           <div className="lg:col-span-4 space-y-5 text-left">
@@ -301,10 +302,10 @@ export default function Footer() {
           </div>
 
         </div>
-      </div>
+      </section>
 
       {/* --- SECTION 3: COPYRIGHT & ADDRESS BAR --- */}
-      <div className={`border-t transition-colors duration-500 py-8 ${
+      <section aria-label="Informasi Hak Cipta" className={`border-t transition-colors duration-500 py-8 ${
         isDarkMode ? 'border-white/5 bg-[#010101]' : 'border-black/5 bg-gray-50'
       }`}>
         <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
@@ -339,7 +340,7 @@ export default function Footer() {
           </div>
 
         </div>
-      </div>
+      </section>
 
     </footer>
   );

@@ -6,75 +6,74 @@ import { Sparkles, ArrowRight, ArrowLeft, RefreshCw, Star, MapPin, Compass, Shie
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 
+/**
+ * Represents a destination object used for calculation match scores in the quiz.
+ */
 interface Destinasi {
+  /** Unique identifier for the destination. */
   id: number;
+  /** Name of the destination. */
   nama: string;
+  /** Location (regency/city) of the destination. */
   lokasi: string;
+  /** Short description of the place. */
   deskripsi: string;
+  /** Comma-separated or single URL string for the destination image. */
   gambar_url: string;
+  /** Average user rating. */
   rating: number;
+  /** Flag for highly popular or viral destinations. */
   is_viral: boolean;
+  /** Primary category (e.g., "pantai", "pemandangan"). */
   kategori: string;
 }
 
 const FALLBACK_DESTINASI: Destinasi[] = [
-  {
-    id: 1,
-    nama: "Pulau Pahawang",
-    lokasi: "Pesawaran",
-    deskripsi: "Surga snorkeling dengan keindahan terumbu karang dan pasir putih yang memukau.",
-    gambar_url: "https://awsimages.detik.net.id/community/media/visual/2023/05/11/pulau-pahawang-lampung_169.jpeg?w=1200",
-    rating: 4.8,
-    is_viral: true,
-    kategori: "pantai"
-  },
-  {
-    id: 2,
-    nama: "Pantai Gigi Hiu",
-    lokasi: "Tanggamus",
-    deskripsi: "Gugusan batu karang tajam yang berdiri kokoh menghadapi deburan ombak Samudra Hindia.",
-    gambar_url: "https://awsimages.detik.net.id/community/media/visual/2023/09/14/pantai-gigi-hiu_169.jpeg?w=1200",
-    rating: 4.7,
-    is_viral: false,
-    kategori: "pantai"
-  },
-  {
-    id: 3,
-    nama: "Way Kambas",
-    lokasi: "Lampung Timur",
-    deskripsi: "Pusat konservasi gajah sumatra yang ramah lingkungan dan kaya edukasi flora-fauna.",
-    gambar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2LYAdUqyjuyydcRo_slrfg9Meoqe4d2V2xg&s",
-    rating: 4.6,
-    is_viral: true,
-    kategori: "pemandangan"
-  },
-  {
-    id: 4,
-    nama: "Puncak Mas",
-    lokasi: "Bandar Lampung",
-    deskripsi: "Destinasi wisata perbukitan yang menawarkan spot foto instagramable dan pemandangan kota.",
-    gambar_url: "https://awsimages.detik.net.id/community/media/visual/2023/05/11/pulau-pahawang-lampung_169.jpeg?w=1200",
-    rating: 4.5,
-    is_viral: false,
-    kategori: "pemandangan"
-  }
+  { id: 1, nama: "Pulau Pahawang", lokasi: "Pesawaran", deskripsi: "Surga snorkeling dengan terumbu karang indah.", gambar_url: "", rating: 4.8, is_viral: true, kategori: "bahari" },
+  { id: 2, nama: "Pantai Gigi Hiu", lokasi: "Tanggamus", deskripsi: "Gugusan karang tajam mirip gigi hiu yang sangat artistik.", gambar_url: "", rating: 4.7, is_viral: false, kategori: "eksotis" },
+  { id: 3, nama: "Way Kambas", lokasi: "Lampung Timur", deskripsi: "Taman Nasional pusat penangkaran gajah sumatera.", gambar_url: "", rating: 4.6, is_viral: false, kategori: "konservasi" },
+  { id: 4, nama: "Puncak Mas", lokasi: "Bandar Lampung", deskripsi: "Pemandangan kota Bandar Lampung dari atas bukit.", gambar_url: "", rating: 4.5, is_viral: true, kategori: "pemandangan" },
 ];
 
+/**
+ * DestinasiQuiz Component
+ * 
+ * An interactive multi-step quiz that recommends destinations in Bandar Lampung based 
+ * on user preferences such as trip type, companions, and budget. Uses a custom scoring 
+ * algorithm to rank the most suitable locations.
+ * 
+ * @returns {JSX.Element | null} The rendered quiz component.
+ */
 export default function DestinasiQuiz() {
+  /** Theme context for adaptive visuals. */
   const { isDarkMode } = useTheme();
+
+  /** Full list of destinations fetched from the database. */
   const [destinasi, setDestinasi] = useState<Destinasi[]>(FALLBACK_DESTINASI);
+
+  /** Current step in the multi-step quiz process. */
   const [step, setStep] = useState(1);
   
-  // Answers state
+  /** User's preferred type of holiday (Coastal, Nature, Urban). */
   const [prefType, setPrefType] = useState<"bahari" | "alam" | "urban" | null>(null);
+
+  /** User's travel companion type (Solo, Couple, Family). */
   const [prefCompanion, setPrefCompanion] = useState<"solo" | "couple" | "family" | null>(null);
+
+  /** User's budget allocation level (Low, Mid, High). */
   const [prefBudget, setPrefBudget] = useState<"low" | "mid" | "high" | null>(null);
 
+  /** List of top 3 recommended destinations with calculated match scores. */
   const [recommended, setRecommended] = useState<(Destinasi & { matchScore: number })[]>([]);
+
+  /** Hydration safety flag for client-side rendering. */
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    /**
+     * Fetches the complete destination list from the API for the quiz matching engine.
+     */
     const fetchDestinasi = async () => {
       try {
         const response = await fetch('/api/destinasi');
@@ -89,6 +88,10 @@ export default function DestinasiQuiz() {
     fetchDestinasi();
   }, []);
 
+  /**
+   * Main scoring algorithm that evaluates each destination against user responses.
+   * Matches categories, companion types, and budget levels to generate a percentage score.
+   */
   const handleCalculate = () => {
     if (!prefType || !prefCompanion || !prefBudget) return;
 
@@ -96,7 +99,7 @@ export default function DestinasiQuiz() {
     const scored = destinasi.map((item) => {
       let score = 50; // base score
 
-      // Category match logic
+      // Category match logic (weights match by 30 points)
       const cat = item.kategori.toLowerCase();
       if (prefType === "bahari" && (cat.includes("pantai") || cat.includes("bahari") || cat.includes("laut"))) {
         score += 30;
@@ -108,7 +111,7 @@ export default function DestinasiQuiz() {
         score += 10; // partial category match points
       }
 
-      // Companion adjustments
+      // Companion adjustments (contextual weighting)
       if (prefCompanion === "family" && (item.is_viral || item.rating >= 4.5)) {
         score += 10; // families love high rating & popular places
       } else if (prefCompanion === "solo" && !item.is_viral) {
@@ -117,7 +120,7 @@ export default function DestinasiQuiz() {
         score += 10; // romantic couple sunset walks
       }
 
-      // Budget score helper
+      // Budget score helper (price vs popularity proxy)
       if (prefBudget === "low") {
         if (!item.is_viral) score += 5; // non-viral is usually cheaper entry fees
       } else if (prefBudget === "high") {
@@ -127,7 +130,7 @@ export default function DestinasiQuiz() {
       // Rating modifier (adds up to 10 points)
       score += Math.round((item.rating - 4.0) * 10);
 
-      // Max score cap
+      // Max score cap at 100%
       const matchScore = Math.min(100, Math.max(0, score));
 
       return {
@@ -136,12 +139,15 @@ export default function DestinasiQuiz() {
       };
     });
 
-    // Sort by match score desc and take top 3
+    // Sort by match score desc and take top 3 results
     const sorted = scored.sort((a, b) => b.matchScore - a.matchScore).slice(0, 3);
     setRecommended(sorted);
-    setStep(4); // Go to results
+    setStep(4); // Advance to results screen
   };
 
+  /**
+   * Resets the quiz state to the first question.
+   */
   const handleReset = () => {
     setPrefType(null);
     setPrefCompanion(null);

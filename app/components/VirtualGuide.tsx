@@ -4,36 +4,83 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
 import { MessageSquare, Send, Bot, User, Sparkles } from 'lucide-react';
 
+/**
+ * Represents a single message in the chat conversation.
+ */
 interface ChatMessage {
+  /** Unique identifier for the message. */
   id: string;
+  /** Identity of the sender (the virtual guide or the user). */
   sender: 'guide' | 'user';
+  /** The actual text content of the message. */
   text: string;
+  /** Formatted time string (e.g., "14:30"). */
   timestamp: string;
 }
 
-const PRESET_QUESTIONS = [
-  { q: "⛵ Cara menyeberang ke Pulau Pahawang?", a: "Untuk menyeberang ke Pulau Pahawang, Anda perlu berkendara sekitar 1 jam dari pusat kota Bandar Lampung menuju Dermaga Ketapang di Kabupaten Pesawaran. Dari dermaga tersebut, Anda dapat menyewa perahu motor wisata (kapal kayu kapasitas 10-15 orang) dengan tarif berkisar Rp 500.000 s/d Rp 800.000 per hari untuk pergi-pulang dan antar spot snorkeling." },
-  { q: "🍌 Pusat oleh-oleh keripik pisang?", a: "Pusat oleh-oleh keripik pisang legendaris khas Lampung ada di Jalan Pagar Alam (dikenal sebagai Gang PU), Kedaton, Bandar Lampung. Di sana terdapat puluhan outlet berjejer yang menjual keripik pisang aneka rasa (cokelat, susu, keju, kopi, melon, dll.) yang diproduksi secara lokal dengan cita rasa renyah manis khas." },
-  { q: "🐟 Makanan khas Lampung yang wajib?", a: "Tiga kuliner wajib Lampung:\n1. Seruit: Ikan bakar sungai khas Lampung yang dinikmati dengan cocolan sambal terasi dicampur tempoyak (durian fermentasi) atau mangga muda.\n2. Bakso Sonhaji Sony: Bakso legendaris bertekstur daging sapi sangat pekat di Bandar Lampung.\n3. Kemplang Panggang: Kerupuk ikan tenggiri yang dipanggang di atas bara api, disajikan dengan saus sambal manis pedas." },
-  { q: "🚗 Akses jalan ke Pantai Gigi Hiu?", a: "Pantai Gigi Hiu terletak di Kelumbayan, Kabupaten Tanggamus (jarak tempuh sekitar 3-4 jam dari Bandar Lampung). Akses jalan menuju ke sana cukup menantang dengan tanjakan berbatu dan tanah liat. Sangat direkomendasikan menyewa motor trail atau mobil bersasis tinggi (4x4) dari Teluk Kiluan dengan pemandu lokal demi keselamatan." }
+interface PresetQuestion {
+  q: string;
+  a: string;
+}
+
+const PRESET_QUESTIONS: PresetQuestion[] = [
+  {
+    q: "🗺️ Bagaimana rute menuju ke pantai?",
+    a: "Rute ke pantai pesisir Pesawaran/Lampung Selatan dari pusat kota Bandar Lampung dapat ditempuh melalui Jalan RE Martadinata ke arah Teluk Betung, lalu ikuti jalan lurus sepanjang pesisir. Waktu tempuh berkisar antara 40-90 menit tergantung pantai tujuan."
+  },
+  {
+    q: "🍲 Apa saja kuliner khas wajib dicoba?",
+    a: "Jangan lewatkan Bakso Sony yang legendaris, Kopi Lampung yang harum, Keripik Pisang Cokelat khas di Jl. Pagar Alam, serta Seruit (hidangan ikan bakar khas Lampung yang disajikan dengan sambal terasi, tempoyak, dan mangga)."
+  },
+  {
+    q: "💰 Tips hemat liburan di Bandar Lampung?",
+    a: "Sewa sepeda motor (sekitar Rp 70rb-80rb/hari) agar lebih fleksibel menjelajah. Untuk makanan, pilihlah warung lokal atau tenda pinggir jalan. Datanglah berkelompok jika ingin menyeberang ke Pulau Pahawang agar bisa patungan sewa kapal."
+  },
+  {
+    q: "💎 Destinasi tersembunyi / hidden gems?",
+    a: "Coba kunjungi Pantai Gigi Hiu di Tanggamus untuk lanskap karang yang megah, atau Pantai Minang Rua di Lampung Selatan yang memiliki air terjun mini di tepi pantai dan penangkaran penyu."
+  }
 ];
 
+/**
+ * VirtualGuide Component
+ * 
+ * A simulated chatbot experience ("Kak Rajo") that provides automated responses to 
+ * frequently asked questions about Bandar Lampung's tourism. It features a typing 
+ * indicator, predefined question buttons, and a message history log.
+ * 
+ * @returns {JSX.Element | null} The rendered virtual guide component.
+ */
 export default function VirtualGuide() {
+  /** Theme context for adaptive styling. */
   const { isDarkMode } = useTheme();
+
+  /** State for the complete conversation history. */
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+
+  /** Local state for the text currently in the input field. */
   const [inputText, setInputText] = useState("");
+
+  /** State indicating whether the bot is currently "typing" a response. */
   const [isTyping, setIsTyping] = useState(false);
+
+  /** Reference to the end of the chat log for automatic scrolling. */
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  /** Hydration safety flag for client-side rendering. */
   const [mounted, setMounted] = useState(false);
 
-  // Initialize welcome message
   useEffect(() => {
     setMounted(true);
+    /**
+     * Generates a simple timestamp string for message metadata.
+     */
     const getTimestamp = () => {
       const now = new Date();
       return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
     };
     
+    // Initial greeting from the virtual guide.
     setMessages([
       {
         id: 'welcome',
@@ -44,20 +91,30 @@ export default function VirtualGuide() {
     ]);
   }, []);
 
-  // Scroll to bottom helper
+  // Effect to handle automatic scrolling to the latest message.
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
+  /**
+   * Helper to get the current system time in a formatted string.
+   * 
+   * @returns {string} The formatted time (HH:mm).
+   */
   const getTimestamp = () => {
     const now = new Date();
     return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
   };
 
+  /**
+   * Orchestrates sending a message and triggering the automated reply.
+   * 
+   * @param {string} textToSend - The text content to be sent by the user.
+   */
   const handleSendMessage = (textToSend: string) => {
     if (!textToSend.trim()) return;
 
-    // 1. Add User Message
+    // 1. Add User Message to the state.
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       sender: 'user',
@@ -68,9 +125,9 @@ export default function VirtualGuide() {
     setInputText("");
     setIsTyping(true);
 
-    // 2. Simulate typing and add Guide reply
+    // 2. Simulate bot processing time and append the reply.
     setTimeout(() => {
-      // Find answer from presets
+      // Find a matching answer from the preset questions list.
       const matched = PRESET_QUESTIONS.find(
         (pq) => pq.q.toLowerCase().includes(textToSend.toLowerCase()) || textToSend.toLowerCase().includes(pq.q.substring(3).toLowerCase())
       );

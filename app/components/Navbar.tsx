@@ -91,7 +91,7 @@ export default function Navbar() {
       isDarkMode ? 'bg-[#050505]/80 border-white/5' : 'bg-white/70 border-black/5 shadow-sm'
     }`}>
       
-      {/* Logo */}
+      {/* Logo Link Wrapper - Redirects to homepage */}
       <Link href="/" onClick={handleHomeClick} className="flex items-center gap-2 group transition-transform duration-300 hover:scale-105">
         <div className="w-10 h-10 bg-[#ffcc00] rounded-xl flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,204,0,0.3)]">
           L
@@ -102,7 +102,7 @@ export default function Navbar() {
       </Link>
 
       <div className="flex items-center gap-10">
-        {/* Menu Navigasi */}
+        {/* Menu Navigasi Container */}
         <div className="hidden md:flex gap-10 text-[11px] font-bold tracking-[0.2em] uppercase text-gray-500">
           <Link 
             href="/" 
@@ -155,14 +155,16 @@ export default function Navbar() {
           </Link>
         </div>
 
+        {/* Action buttons (Language & Theme) */}
         <div className="flex items-center gap-4">
           {/* Language Switcher */}
           <button 
             onClick={() => setCurrentLang(currentLang === 'ID' ? 'EN' : 'ID')}
-            className={`px-3 py-1.5 rounded-lg border text-[10px] font-black transition-all duration-300 cursor-pointer ${
+            aria-label={`Ganti bahasa ke ${currentLang === 'ID' ? 'Inggris' : 'Indonesia'}`}
+            className={`px-3 py-1.5 rounded-lg border text-[10px] font-black transition-all duration-300 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#ffcc00] focus-visible:ring-offset-2 ${
               isDarkMode 
-                ? 'bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20' 
-                : 'bg-black/5 border-black/5 text-[#1a1a1a] hover:bg-black/10 hover:border-black/20'
+                ? 'bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20 focus-visible:ring-offset-[#050505]' 
+                : 'bg-black/5 border-black/5 text-[#1a1a1a] hover:bg-black/10 hover:border-black/20 focus-visible:ring-offset-white'
             }`}
           >
             {currentLang}
@@ -171,13 +173,14 @@ export default function Navbar() {
           {/* Toggle Theme Button */}
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
-          className={`p-3 rounded-xl border transition-all duration-300 cursor-pointer ${
-            isDarkMode 
-              ? 'bg-white/5 border-white/10 text-[#ffcc00] hover:bg-white/10' 
-              : 'bg-black/5 border-black/5 text-[#e6b800] hover:bg-black/10'
-          }`}
-        >
-          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            aria-label={`Aktifkan mode ${isDarkMode ? 'terang' : 'gelap'}`}
+            className={`p-3 rounded-xl border transition-all duration-300 cursor-pointer ${
+              isDarkMode 
+                ? 'bg-white/5 border-white/10 text-[#ffcc00] hover:bg-white/10' 
+                : 'bg-black/5 border-black/5 text-[#e6b800] hover:bg-black/10'
+            }`}
+          >
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
       </div>

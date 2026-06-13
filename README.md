@@ -7,18 +7,34 @@
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+Portal resmi pariwisata Kota Bandar Lampung. Proyek ini dikembangkan sebagai portal informasi untuk destinasi wisata, kuliner, dan budaya di Bandar Lampung.
 
-First, run the development server:
+## Fitur Utama
 
+- **Peta Destinasi Interaktif**: Eksplorasi tempat wisata dengan filter kategori, rating, dan pencarian cepat.
+- **Sistem Favorit**: Simpan destinasi favorit Anda dengan integrasi `localStorage`.
+- **Perbandingan Destinasi**: Bandingkan hingga 3 destinasi wisata sekaligus.
+- **Mode Tema**: Dukungan antarmuka Gelap/Terang.
+- **Responsif**: Desain yang dioptimalkan untuk perangkat mobile dan desktop.
+
+## Teknologi
+
+- **Framework**: Next.js 15 (App Router)
+- **Bahasa**: TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: PostgreSQL (Prisma ORM)
+- **Komponen UI**: Lucide React Icons, SweetAlert2
+
+## Pengembangan
+
+### Prasyarat
+- Node.js 18+
+- npm/yarn/pnpm
+
+### Menjalankan Server
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) dengan browser Anda untuk melihat hasilnya.

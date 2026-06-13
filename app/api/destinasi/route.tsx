@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// ==========================================
-// 1. READ: Ambil Semua Data Destinasi (GET)
-// ==========================================
+/**
+ * Handles GET requests to retrieve all destinations.
+ * Data is ordered by ID in ascending order and includes associated comments.
+ * 
+ * @returns {Promise<NextResponse>} JSON response containing the list of destinations or an error message.
+ */
 export async function GET() {
   try {
     const destinasi = await prisma.destinasi.findMany({
@@ -17,9 +20,13 @@ export async function GET() {
   }
 }
 
-// ==========================================
-// 2. CREATE: Tambah Destinasi Baru (POST)
-// ==========================================
+/**
+ * Handles POST requests to create a new destination.
+ * Validates required fields (nama, lokasi, deskripsi).
+ * 
+ * @param {Request} request - The incoming HTTP request containing the destination data in the body.
+ * @returns {Promise<NextResponse>} JSON response containing the created destination or an error message.
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -48,9 +55,13 @@ export async function POST(request: Request) {
   }
 }
 
-// ==========================================
-// 3. UPDATE: Edit Data Destinasi (PUT)
-// ==========================================
+/**
+ * Handles PUT requests to update an existing destination.
+ * Requires the destination ID to be present in the request body.
+ * 
+ * @param {Request} request - The incoming HTTP request containing updated destination data and ID.
+ * @returns {Promise<NextResponse>} JSON response containing the updated destination or an error message.
+ */
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
@@ -80,9 +91,13 @@ export async function PUT(request: Request) {
   }
 }
 
-// ==========================================
-// 4. DELETE: Hapus Data Destinasi (DELETE)
-// ==========================================
+/**
+ * Handles DELETE requests to remove a destination from the database.
+ * Expects the destination ID as a query parameter (e.g., ?id=123).
+ * 
+ * @param {Request} request - The incoming HTTP request.
+ * @returns {Promise<NextResponse>} JSON response indicating success or an error message.
+ */
 export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);

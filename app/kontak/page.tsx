@@ -224,8 +224,8 @@ export default function KontakPage() {
 
       <Navbar />
 
-        {/* --- PAGE HEADER --- */}
-      <div className="max-w-7xl w-full mx-auto px-6 md:px-16 pt-36 pb-4 relative z-10 text-center space-y-4">
+      {/* --- PAGE HEADER --- */}
+      <header className="max-w-7xl w-full mx-auto px-6 md:px-16 pt-36 pb-4 relative z-10 text-center space-y-4">
         <link
           href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
           rel="stylesheet"
@@ -258,7 +258,7 @@ export default function KontakPage() {
         >
           Punya pertanyaan seputar pariwisata di Bandar Lampung? Atau ingin melakukan kerja sama dengan VisitBDL? Hubungi kami langsung atau isi form yang telah disediakan.
         </p>
-      </div>
+      </header>
 
       {/* --- LAYOUT GRID --- */}
       <div className="max-w-7xl w-full mx-auto px-6 md:px-16 pt-8 pb-16 relative z-10 my-auto">

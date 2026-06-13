@@ -101,7 +101,7 @@ export default function TravelPlannerPage() {
         <div className="text-[10px] font-black uppercase text-[#ffcc00] tracking-widest mb-1 opacity-80 animate-pulse">
           🌅 Ayo rencanakan agenda liburan terbaikmu!
         </div>
-        <div className={`flex flex-col md:items-start text-left gap-4 mb-14 border-b pb-12 ${
+        <header className={`flex flex-col md:items-start text-left gap-4 mb-14 border-b pb-12 ${
           isDarkMode ? 'border-white/5' : 'border-black/5'
         }`}>
           <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
@@ -115,7 +115,7 @@ export default function TravelPlannerPage() {
           <p className={`text-xs md:text-sm font-medium max-w-2xl leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
             Rencanakan petualangan terbaik Anda di Bandar Lampung dengan kalkulator anggaran interaktif, checklist barang bawaan otomatis, kuis destinasi ideal, dan konsultasi asisten pemandu wisata virtual.
           </p>
-        </div>
+        </header>
 
         {/* Weather Widget Component */}
         <div className={`p-6 mb-12 rounded-3xl border flex flex-col lg:flex-row items-center justify-between gap-6 text-left transition-all duration-500 ${
