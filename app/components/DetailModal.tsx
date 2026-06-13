@@ -140,14 +140,16 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
       navigator.clipboard.writeText(shareUrl)
         .then(() => {
           Swal.fire({
-            title: "Link Tersalin!",
-            text: `Link untuk "${item.nama}" telah disalin ke papan klip.`,
+            title: "Tersalin!",
+            text: "Link berhasil disalin ke papan klip.",
             icon: "success",
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
             background: isDarkMode ? "#111" : "#fff",
             color: isDarkMode ? "#fff" : "#000",
-            confirmButtonColor: "#ffcc00",
-            timer: 2000,
-            showConfirmButton: false
           });
         })
         .catch((err) => {
