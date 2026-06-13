@@ -3,12 +3,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 /**
- * Defines the structure of the theme context data.
+ * @typedef {Object} ThemeContextType
+ * @property {boolean} isDarkMode - Indicates if dark mode is active.
+ * @property {(value: boolean) => void} setIsDarkMode - Function to update the dark mode state.
+ */
+
+/**
+ * Interface for ThemeContext values.
  */
 interface ThemeContextType {
-  /** Whether the dark mode is currently active. */
   isDarkMode: boolean;
-  /** Function to update the dark mode state. */
   setIsDarkMode: (value: boolean) => void;
 }
 
@@ -18,16 +22,25 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 /**
+ * ThemeProvider component props.
+ * 
+ * @typedef {Object} ThemeProviderProps
+ * @property {React.ReactNode} children - Child components to be wrapped by the provider.
+ */
+interface ThemeProviderProps {
+  children: React.ReactNode;
+}
+
+/**
  * ThemeProvider Component
  * 
  * Wraps the application to provide theme state management. Handles hydration 
  * to ensure that initial server rendering matches client state (defaulting to dark).
  * 
- * @param {Object} props - Component properties.
- * @param {React.ReactNode} props.children - Child components to be rendered.
+ * @param {ThemeProviderProps} props - The component props.
  * @returns {JSX.Element} The theme context provider wrapper.
  */
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
   /** Local state for dark mode toggle. Defaults to true (dark). */
   const [isDarkMode, setIsDarkMode] = useState(true);
 
