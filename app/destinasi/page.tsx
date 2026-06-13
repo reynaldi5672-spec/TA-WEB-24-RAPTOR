@@ -43,6 +43,12 @@ export default function DestinasiPage() {
   const [compareList, setCompareList] = useState<Destinasi[]>([]);
   const [showCompareModal, setShowCompareModal] = useState(false);
 
+  /**
+   * Adds or removes a destination from the comparison list.
+   * Enforces a maximum limit of 3 items for comparison.
+   * 
+   * @param {Destinasi} item - The destination item to toggle.
+   */
   const toggleCompare = (item: Destinasi) => {
     if (compareList.some((c) => c.id === item.id)) {
       setCompareList(compareList.filter((c) => c.id !== item.id));
