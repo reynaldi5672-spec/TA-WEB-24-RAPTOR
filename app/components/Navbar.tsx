@@ -102,7 +102,7 @@ export default function Navbar() {
       </Link>
 
       <div className="flex items-center gap-10">
-        {/* Menu Navigasi */}
+        {/* Menu Navigasi Container */}
         <div className="hidden md:flex gap-10 text-[11px] font-bold tracking-[0.2em] uppercase text-gray-500">
           <Link 
             href="/" 
