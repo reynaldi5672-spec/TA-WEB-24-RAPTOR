@@ -86,7 +86,7 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   /** Indicates if the comments are currently being fetched. */
   const [isCommentsLoading, setIsCommentsLoading] = useState(true); 
 
-  /** Form state for submitting a new review. */
+  /** Form state for submitting a new review including user name, comment content, and rating. */
   const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 }); 
 
   /** Loading state during review submission. */
