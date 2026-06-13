@@ -92,8 +92,10 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   /** Indicates whether the review submission request is currently in progress. */
   const [isSubmittingReview, setIsSubmittingReview] = useState(false); 
 
-  // Social media share URLs and text.
+  /** Generated full URL for sharing the current destination. */
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/destinasi?id=${item.id}` : "";
+  
+  /** Text content for sharing. */
   const shareText = `Yuk kunjungi destinasi seru "${item.nama}" di ${item.lokasi}!`;
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
