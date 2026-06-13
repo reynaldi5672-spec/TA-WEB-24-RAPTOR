@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/app/context/ThemeContext';
-import { ShoppingBag, Plus, Trash2, RotateCcw, Check, Sparkles } from 'lucide-react';
+import { ShoppingBag, Plus, Trash2, RotateCcw, Check, Sparkles, Download } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 /**
  * Valid activity types for the packing list templates.
@@ -22,6 +23,39 @@ interface PackingItem {
   /** Flag indicating if the item was added manually by the user. */
   isCustom?: boolean;
 }
+
+const DEFAULT_ITEMS: Record<ActivityType, string[]> = {
+  bahari: [
+    "Baju Renang & Pakaian Ganti",
+    "Kacamata Hitam & Topi Pantai",
+    "Sunscreen / Tabir Surya (SPF 50+)",
+    "Sandal Jepit / Sandal Pantai",
+    "Handuk Cepat Kering",
+    "Kantong Plastik / Dry Bag (Tas Anti Air)",
+    "Kamera Aksi / Waterproof Case HP",
+    "Obat Anti Mabuk Laut / Plaster Luka"
+  ],
+  alam: [
+    "Jaket Gunung / Jaket Anti Angin",
+    "Sepatu Outdoor / Sandal Gunung",
+    "Kaus Kaki Tebal Cadangan",
+    "Jas Hujan Ringan / Ponco",
+    "Senter / Headlamp + Baterai Cadangan",
+    "Powerbank Kapasitas Besar",
+    "Botol Minum Isi Ulang (Tumbler)",
+    "Cemilan Tinggi Kalori (Cokelat/Kacang)"
+  ],
+  urban: [
+    "Pakaian Santai / Kasual",
+    "Sepatu Kets Nyaman untuk Berjalan",
+    "Uang Tunai Pecahan Kecil (untuk Jajanan Lokal)",
+    "Hand Sanitizer & Tisu Basah",
+    "Payung Lipat Kecil",
+    "Obat Lambung / Pencernaan (untuk Wisata Kuliner)",
+    "Tas Selempang Ringan (Sling Bag)",
+    "Charger HP & Kabel Data"
+  ]
+};
 
 /**
  * PackingList Component
@@ -135,9 +169,62 @@ export default function PackingList() {
    * Resets the current list to its default template after user confirmation.
    */
   const resetList = () => {
-    if (window.confirm("Apakah Anda yakin ingin mengatur ulang daftar barang bawaan ini ke bawaan pabrik?")) {
-      loadDefaults(activity);
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Daftar barang bawaan Anda saat ini akan diatur ulang ke templat bawaan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ffcc00",
+      cancelButtonColor: "#ef4444",
+      confirmButtonText: "Ya, Atur Ulang!",
+      cancelButtonText: "Batal",
+      background: isDarkMode ? "#0d0d0d" : "#fff",
+      color: isDarkMode ? "#fff" : "#1a1a1a",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        loadDefaults(activity);
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Daftar bawaan telah berhasil diatur ulang.",
+          icon: "success",
+          confirmButtonColor: "#ffcc00",
+          background: isDarkMode ? "#0d0d0d" : "#fff",
+          color: isDarkMode ? "#fff" : "#1a1a1a",
+        });
+      }
+    });
+  };
+
+  /**
+   * Downloads the current packing list as a formatted text file (.txt).
+   */
+  const downloadList = () => {
+    if (items.length === 0) {
+      Swal.fire({
+        title: "Daftar Kosong!",
+        text: "Tidak ada barang bawaan untuk diunduh.",
+        icon: "info",
+        confirmButtonColor: "#ffcc00",
+        background: isDarkMode ? "#0d0d0d" : "#fff",
+        color: isDarkMode ? "#fff" : "#1a1a1a",
+      });
+      return;
     }
+    const textContent = `DAFTAR BARANG BAWAAN WISATA - WISATA BANDAR LAMPUNG\n` +
+      `Kategori: ${activity.toUpperCase()}\n` +
+      `Tanggal Unduh: ${new Date().toLocaleDateString('id-ID')}\n` +
+      `Progress: ${packedItems}/${totalItems} (${progressPercent}%)\n` +
+      `=============================================\n\n` +
+      items.map(item => `[${item.packed ? 'X' : ' '}] ${item.name} ${item.isCustom ? '(Kustom)' : ''}`).join('\n') +
+      `\n\nSelamat berlibur di Bandar Lampung!`;
+
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `daftar-bawaan-${activity}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   if (!mounted) return null;
@@ -168,16 +255,28 @@ export default function PackingList() {
         </div>
 
         {/* Action Buttons */}
-        <button
-          onClick={resetList}
-          className={`px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
-            isDarkMode 
-              ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white' 
-              : 'bg-gray-100 border-black/5 hover:bg-gray-200 text-gray-700'
-          }`}
-        >
-          <RotateCcw size={12} /> Reset Template
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={downloadList}
+            className={`px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+              isDarkMode 
+                ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00] hover:bg-[#ffcc00]/10' 
+                : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#b38f00] hover:bg-[#ffcc00]/20'
+            }`}
+          >
+            <Download size={12} /> Unduh (.txt)
+          </button>
+          <button
+            onClick={resetList}
+            className={`px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+              isDarkMode 
+                ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white' 
+                : 'bg-gray-100 border-black/5 hover:bg-gray-200 text-gray-700'
+            }`}
+          >
+            <RotateCcw size={12} /> Reset Template
+          </button>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-12 gap-8 items-start">
@@ -238,7 +337,7 @@ export default function PackingList() {
           <form onSubmit={addItem} className="flex gap-2">
             <input
               type="text"
-              placeholder="Tambahkan barang bawaan kustom sendiri..."
+              placeholder="Tambahkan barang bawaan kustom sendiri (contoh: Kacamata Hitam)..."
               value={newItemText}
               onChange={(e) => setNewItemText(e.target.value)}
               className={`flex-1 py-3 px-5 rounded-xl border text-xs font-bold outline-none transition-all duration-300 ${

@@ -167,7 +167,7 @@ export default function Footer() {
 
             {/* Social Media Follow */}
             <div className="space-y-3">
-              <span className={`text-[10px] font-black uppercase tracking-wider block ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>Ikuti Media Sosial Kami</span>
+              <span className={`text-[10px] font-black uppercase tracking-wider block ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>Ikuti Media Sosial Resmi Kami</span>
               <div className="flex gap-3">
                 {[
                   { icon: <FaInstagram size={16} />, href: "https://instagram.com", label: "Instagram", color: "hover:bg-[#e1306c] hover:text-white" },

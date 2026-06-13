@@ -32,6 +32,8 @@ export default function DestinasiPage() {
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const POPULAR_SUGGESTIONS = ["Pantai", "Pahawang", "Puncak Mas", "Museum", "Lengkung Langit"];
   
   const [activeCategory, setActiveCategory] = useState<"all" | "terpopuler" | "pantai" | "pemandangan" | "favorit">("all");
   const [showOnlyViral, setShowOnlyViral] = useState(false);
@@ -193,7 +195,10 @@ export default function DestinasiPage() {
     const matchesSearch = item.nama?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           item.lokasi?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = activeCategory === "all" || 
-                            (activeCategory === "favorit" ? favorites.includes(item.id) : item.kategori === activeCategory);
+                            (activeCategory === "favorit" ? favorites.includes(item.id) : 
+                             activeCategory === "terpopuler" ? item.is_viral === true : 
+                             activeCategory === "pemandangan" ? (item.kategori === "wisata_alam" || item.kategori === "pemandangan") : 
+                             item.kategori === activeCategory);
     const matchesViral = !showOnlyViral || item.is_viral === true;
     return matchesSearch && matchesCategory && matchesViral;
   });
@@ -231,6 +236,7 @@ export default function DestinasiPage() {
 
       <div className="max-w-7xl mx-auto px-6 md:px-16 pt-10 pb-24 relative z-10">
         
+<<<<<<< HEAD
       <header className={`flex flex-col lg:flex-row lg:items-center justify-between gap-10 mb-14 border-b pb-12 text-left ${
         isDarkMode ? 'border-white/5' : 'border-black/5'
       }`}>
@@ -239,6 +245,110 @@ export default function DestinasiPage() {
             isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#e6b800]'
           }`}>
             <Compass size={11} className="animate-spin [animation-duration:15s]" /> Selamat Datang di WISATA BANDAR LAMPUNG
+=======
+        {/* --- WELCOME HERO BANNER & SEARCH BAR --- */}
+        <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-10 mb-14 border-b pb-12 text-left ${
+          isDarkMode ? 'border-white/5' : 'border-black/5'
+        }`}>
+          <div className="space-y-4 max-w-2xl">
+            <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
+              isDarkMode ? 'bg-[#ffcc00]/5 border-[#ffcc00]/20 text-[#ffcc00]' : 'bg-[#ffcc00]/10 border-[#ffcc00]/30 text-[#e6b800]'
+            }`}>
+              <Compass size={11} className="animate-spin [animation-duration:15s]" /> Selamat Datang di WISATA BANDAR LAMPUMNG
+            </div>
+            <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
+              Jelajahi <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.15)]">Destinasi Terbaik</span> Lampung
+            </h1>
+            <p className={`text-xs md:text-sm font-medium max-w-xl leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              Temukan surga tersembunyi, hamparan pantai pasir putih, hingga spot pemandangan paling hits. 
+              Saat ini mengelola <span className="text-[#ffcc00] font-bold">{totalWisata} lokasi wisata</span> aktif and <span className="text-red-500 font-bold">{totalViral} spot viral</span> terverifikasi.
+            </p>
+          </div>
+
+          {/* Search Input Card */}
+          <div className="relative w-full lg:w-96 flex flex-col gap-3 group text-left">
+            <div className="relative">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-hover:text-[#ffcc00] transition-colors" size={16} />
+              <input 
+                type="text"
+                placeholder="Cari pantai, bukit, kuliner..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSaveSearch(searchTerm);
+                  }
+                }}
+                className={`w-full py-4 pl-14 pr-6 rounded-2xl border transition-all duration-300 outline-none text-xs font-bold tracking-wider uppercase backdrop-blur-md ${
+                  isDarkMode 
+                  ? 'bg-white/[0.02] border-white/10 focus:border-[#ffcc00]/50 focus:bg-white/[0.04] text-white placeholder-gray-600 shadow-2xl' 
+                  : 'bg-white border-black/10 focus:border-[#ffcc00] text-black shadow-md placeholder-gray-400'
+                }`}
+              />
+
+              {/* Suggestions Box */}
+              {showSuggestions && (
+                <div 
+                  className={`absolute top-full left-0 w-full mt-2 p-4 rounded-2xl border backdrop-blur-md z-30 shadow-2xl animate-fadeIn ${
+                    isDarkMode ? 'bg-[#0d0d0d]/95 border-white/10 text-white shadow-black/80' : 'bg-white/95 border-black/5 text-black shadow-slate-200/80'
+                  }`}
+                >
+                  <div className="text-[8px] font-black uppercase tracking-wider text-gray-500 mb-2.5">Saran Pencarian Populer</div>
+                  <div className="flex flex-col gap-1.5">
+                    {POPULAR_SUGGESTIONS.map((sug, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onMouseDown={() => {
+                          setSearchTerm(sug);
+                          handleSaveSearch(sug);
+                          setShowSuggestions(false);
+                        }}
+                        className={`w-full text-left py-2 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          isDarkMode ? 'hover:bg-white/5 text-gray-300' : 'hover:bg-gray-100 text-gray-700'
+                        }`}
+                      >
+                        🔍 {sug}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Recent Searches Tags */}
+            {recentSearches.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1.5 px-1 animate-fadeIn">
+                <span className={`text-[8px] font-black uppercase tracking-wider ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  Riwayat:
+                </span>
+                {recentSearches.map((term, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setSearchTerm(term);
+                      handleSaveSearch(term);
+                    }}
+                    className={`px-2.5 py-1 rounded-md text-[8px] font-bold uppercase transition-all cursor-pointer ${
+                      isDarkMode 
+                        ? 'bg-white/5 border border-white/5 text-gray-400 hover:bg-white/10 hover:text-white' 
+                        : 'bg-white border border-black/5 text-gray-600 hover:bg-gray-50 hover:text-black'
+                    }`}
+                  >
+                    {term}
+                  </button>
+                ))}
+                <button
+                  onClick={handleClearSearches}
+                  className="text-[8px] font-black uppercase text-red-500 hover:text-red-400 transition-colors ml-1 cursor-pointer"
+                >
+                  Hapus
+                </button>
+              </div>
+            )}
+>>>>>>> origin/main
           </div>
           <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
             Jelajahi <span className="text-[#ffcc00] drop-shadow-[0_0_30px_rgba(255,204,0,0.15)]">Destinasi Terbaik</span> Lampung
@@ -307,11 +417,11 @@ export default function DestinasiPage() {
         }`}>
           <div className="flex flex-wrap gap-2.5">
             {[
-              { id: 'all', label: '✨ Semua' },
-              { id: 'terpopuler', label: '⭐ Terpopuler' },
-              { id: 'pantai', label: '🌊 Pantai' },
-              { id: 'pemandangan', label: '⛰️ Pemandangan' },
-              { id: 'favorit', label: '❤️ Favorit Saya' }
+              { id: 'all', label: '✨ Semua', count: destinasi.length },
+              { id: 'terpopuler', label: '⭐ Terpopuler', count: destinasi.filter(d => d.is_viral).length },
+              { id: 'pantai', label: '🌊 Pantai', count: destinasi.filter(d => d.kategori === 'pantai').length },
+              { id: 'pemandangan', label: '⛰️ Pemandangan', count: destinasi.filter(d => d.kategori === 'wisata_alam' || d.kategori === 'pemandangan').length },
+              { id: 'favorit', label: '❤️ Favorit Saya', count: favorites.length }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -322,7 +432,7 @@ export default function DestinasiPage() {
                     : (isDarkMode ? 'bg-white/[0.02] border border-white/5 text-gray-400 hover:text-white hover:border-white/20' : 'bg-white border border-black/5 text-gray-600 hover:bg-gray-50 hover:text-black')
                 }`}
               >
-                {tab.label}
+                {tab.label} ({tab.count})
               </button>
             ))}
           </div>
@@ -367,10 +477,10 @@ export default function DestinasiPage() {
             {sortedDestinasi.map((item) => (
               <div 
                 key={item.id}
-                className={`group rounded-[2.5rem] overflow-hidden border transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between ${
+                className={`group rounded-[2.5rem] overflow-hidden border transition-all duration-500 hover:-translate-y-2 hover:scale-[1.01] flex flex-col justify-between ${
                   isDarkMode 
-                    ? 'bg-[#0d0d0d] border-white/5 hover:border-white/10' 
-                    : 'bg-white border-black/[0.04] shadow-sm hover:shadow-xl'
+                    ? 'bg-[#0d0d0d] border-white/5 hover:border-[#ffcc00]/30 hover:shadow-[0_20px_40px_rgba(255,204,0,0.08)]' 
+                    : 'bg-white border-black/[0.04] shadow-sm hover:border-[#ffcc00]/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)]'
                 }`}
               >
                 <div className="h-72 w-full relative overflow-hidden bg-gray-900">
@@ -405,7 +515,7 @@ export default function DestinasiPage() {
                       e.stopPropagation();
                       handleShare(item);
                     }}
-                    className="absolute top-6 right-24 z-20 p-2.5 rounded-xl bg-black/50 text-white hover:bg-[#ffcc00] hover:text-black hover:scale-105 active:scale-95 transition-all backdrop-blur-sm cursor-pointer border border-white/10 shadow-lg"
+                    className="absolute top-6 right-24 z-20 p-2.5 rounded-xl bg-black/50 text-white hover:bg-[#ffcc00] hover:text-black hover:scale-110 active:scale-90 transition-all backdrop-blur-sm cursor-pointer border border-white/10 shadow-lg"
                     title="Bagikan"
                   >
                     <Share2 size={14} />

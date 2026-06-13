@@ -92,7 +92,7 @@ export default function Navbar() {
     }`}>
       
       {/* Logo */}
-      <Link href="/" onClick={handleHomeClick} className="flex items-center gap-2 group">
+      <Link href="/" onClick={handleHomeClick} className="flex items-center gap-2 group transition-transform duration-300 hover:scale-105">
         <div className="w-10 h-10 bg-[#ffcc00] rounded-xl flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(255,204,0,0.3)]">
           L
         </div>
@@ -173,15 +173,16 @@ export default function Navbar() {
           <button 
             onClick={() => setIsDarkMode(!isDarkMode)}
             aria-label={`Aktifkan mode ${isDarkMode ? 'terang' : 'gelap'}`}
-            className={`p-2 rounded-xl border transition-all duration-300 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#ffcc00] focus-visible:ring-offset-2 ${
+            className={`p-3 rounded-xl border transition-all duration-300 cursor-pointer ${
               isDarkMode 
-                ? 'bg-white/5 border-white/10 text-[#ffcc00] hover:bg-white/10 focus-visible:ring-offset-[#050505]' 
-                : 'bg-black/5 border-black/5 text-[#e6b800] hover:bg-black/10 focus-visible:ring-offset-white'
+                ? 'bg-white/5 border-white/10 text-[#ffcc00] hover:bg-white/10' 
+                : 'bg-black/5 border-black/5 text-[#e6b800] hover:bg-black/10'
             }`}
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
+      </div>
     </nav>
   );
 }

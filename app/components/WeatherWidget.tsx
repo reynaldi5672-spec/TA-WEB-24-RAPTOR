@@ -70,7 +70,7 @@ export default function WeatherWidget() {
     fetchWeather();
     
     // Refresh weather every 10 minutes
-    const interval = setInterval(fetchWeather, 10 * 60 * 1000); 
+    const interval = setInterval(fetchWeather, 5 * 60 * 1000); 
     return () => clearInterval(interval);
   }, []);
 

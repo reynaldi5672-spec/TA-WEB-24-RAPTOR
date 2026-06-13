@@ -17,8 +17,67 @@ export default function TravelPlannerPage() {
   const [activeTab, setActiveTab] = useState<TabType>("estimator");
   const [mounted, setMounted] = useState(false);
 
+  // Weather Widget Mock Data/State
+  const [weatherData, setWeatherData] = useState({
+    temp: 29,
+    condition: "Cerah Berawan",
+    humidity: "75%",
+    wind: "12 km/h",
+    recommendation: "Sangat cocok untuk berwisata pantai atau mendaki bukit hari ini!"
+  });
+
+  const fetchWeather = async () => {
+    try {
+      const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=-5.3971&longitude=105.2663&current=temperature_2m,relative_humidity_2m,weather_code");
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.current) {
+          const temp = Math.round(data.current.temperature_2m);
+          const code = data.current.weather_code;
+          const humidity = data.current.relative_humidity_2m;
+          
+          let condition = "Cerah Berawan";
+          let rec = "Sangat cocok untuk berwisata pantai atau mendaki bukit hari ini!";
+          if (code === 0) {
+            condition = "Cerah";
+            rec = "Cuaca sangat cerah! Waktu terbaik untuk berkunjung ke Pulau Pahawang atau Pantai Mutun.";
+          } else if (code >= 1 && code <= 3) {
+            condition = "Cerah Berawan";
+            rec = "Cuaca sejuk dan sedikit berawan, pas untuk jalan-jalan ke Puncak Mas atau Lengkung Langit.";
+          } else if (code === 45 || code === 48) {
+            condition = "Berkabut";
+            rec = "Cuaca berkabut. Harap berhati-hati dalam perjalanan berkendara ke daerah perbukitan.";
+          } else if (code >= 51 && code <= 55) {
+            condition = "Gerimis";
+            rec = "Ada potensi gerimis ringan. Persiapkan payung/jas hujan jika ingin menjelajahi tempat wisata terbuka.";
+          } else if (code >= 61 && code <= 67) {
+            condition = "Hujan";
+            rec = "Ada potensi hujan hari ini. Persiapkan payung/jas hujan, atau kunjungi Museum Lampung saja.";
+          } else if (code >= 80 && code <= 82) {
+            condition = "Hujan Deras";
+            rec = "Hujan deras diprakirakan turun. Sebaiknya pilih destinasi dalam ruangan (indoor) untuk keamanan.";
+          } else if (code >= 95) {
+            condition = "Badai Petir";
+            rec = "Waspada potensi badai petir. Hindari aktivitas di luar ruangan atau wilayah pantai.";
+          }
+          
+          setWeatherData({
+            temp,
+            condition,
+            humidity: `${humidity}%`,
+            wind: "Live API",
+            recommendation: rec
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Gagal memuat cuaca live, menggunakan fallback.", err);
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
+    fetchWeather();
   }, []);
 
   if (!mounted) return null;
@@ -39,7 +98,14 @@ export default function TravelPlannerPage() {
       <div className="max-w-7xl mx-auto px-6 md:px-16 pt-40 pb-24 relative z-10">
         
         {/* Welcome Header */}
+<<<<<<< HEAD
         <header className={`flex flex-col md:items-start text-left gap-4 mb-14 border-b pb-12 ${
+=======
+        <div className="text-[10px] font-black uppercase text-[#ffcc00] tracking-widest mb-1 opacity-80 animate-pulse">
+          🌅 Ayo rencanakan agenda liburan terbaikmu!
+        </div>
+        <div className={`flex flex-col md:items-start text-left gap-4 mb-14 border-b pb-12 ${
+>>>>>>> origin/main
           isDarkMode ? 'border-white/5' : 'border-black/5'
         }`}>
           <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.25em] backdrop-blur-md shadow-sm transition-all duration-500 ${
@@ -54,6 +120,58 @@ export default function TravelPlannerPage() {
             Rencanakan petualangan terbaik Anda di Bandar Lampung dengan kalkulator anggaran interaktif, checklist barang bawaan otomatis, kuis destinasi ideal, dan konsultasi asisten pemandu wisata virtual.
           </p>
         </header>
+
+        {/* Weather Widget Component */}
+        <div className={`p-6 mb-12 rounded-3xl border flex flex-col lg:flex-row items-center justify-between gap-6 text-left transition-all duration-500 ${
+          isDarkMode ? 'bg-white/[0.02] border-white/5' : 'bg-white border-black/[0.04] shadow-sm'
+        }`}>
+          <div className="flex items-center gap-4 flex-1">
+            <div className="text-4xl shrink-0">
+              {weatherData.condition === "Cerah" ? "☀️" : 
+               weatherData.condition === "Berawan" ? "☁️" : 
+               weatherData.condition === "Cerah Berawan" ? "⛅" : 
+               weatherData.condition === "Gerimis" ? "🌦️" : 
+               weatherData.condition === "Hujan" ? "🌧️" : 
+               weatherData.condition === "Hujan Deras" ? "🌧️" : 
+               weatherData.condition === "Badai Petir" ? "⛈️" : 
+               weatherData.condition === "Berkabut" ? "🌫️" : 
+               "⛅"}
+            </div>
+            <div>
+              <div className="text-[9px] text-[#ffcc00] font-black uppercase tracking-wider">Informasi Cuaca Hari Ini</div>
+              <h3 className="text-base font-black uppercase tracking-tight">Bandar Lampung, Indonesia</h3>
+              <p className={`text-xs mt-0.5 leading-relaxed font-semibold ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                {weatherData.recommendation}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-6 divide-x divide-gray-500/10 text-xs font-bold font-mono">
+            <div className="pl-4">
+              <span className="text-gray-500 block text-[8px] uppercase font-sans font-black">Temperatur</span>
+              <span className="text-lg font-black text-[#ffcc00]">{weatherData.temp}°C</span>
+            </div>
+            <div className="pl-4">
+              <span className="text-gray-500 block text-[8px] uppercase font-sans font-black">Kondisi</span>
+              <span className="text-lg font-black">{weatherData.condition}</span>
+            </div>
+            <div className="pl-4">
+              <span className="text-gray-500 block text-[8px] uppercase font-sans font-black">Kelembapan</span>
+              <span className="text-lg font-black">{weatherData.humidity}</span>
+            </div>
+            <div className="pl-4 flex items-center justify-center">
+              <button 
+                onClick={fetchWeather}
+                className={`px-3 py-2 rounded-xl border text-[9px] font-sans font-black uppercase tracking-widest transition-all cursor-pointer ${
+                  isDarkMode 
+                    ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20' 
+                    : 'bg-gray-100 border-black/5 hover:bg-gray-200 text-gray-700'
+                }`}
+              >
+                🔄 Segarkan
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Tab Switcher Navigation */}
         <div className="flex flex-wrap gap-2.5 mb-12 border-b pb-8 border-gray-500/10">

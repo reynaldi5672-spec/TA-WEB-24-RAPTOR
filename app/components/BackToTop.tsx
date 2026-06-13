@@ -52,7 +52,11 @@ export default function BackToTop() {
       }`}
       aria-label="Kembali ke atas"
     >
+<<<<<<< HEAD
       <ArrowUp size={18} className="animate-pulse" />
+=======
+      <ArrowUp size={18} className="animate-pulse group-hover:-translate-y-1 transition-transform" /> /* Pulse animate icon to draw user attention */
+>>>>>>> origin/main
     </button>
   );
 }

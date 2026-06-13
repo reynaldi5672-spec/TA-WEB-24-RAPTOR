@@ -20,6 +20,13 @@ interface Destinasi {
   kategori: string;
 }
 
+const FALLBACK_DESTINASI: Destinasi[] = [
+  { id: 1, nama: "Pulau Pahawang", lokasi: "Pesawaran", rating: 4.8, kategori: "bahari" },
+  { id: 2, nama: "Pantai Gigi Hiu", lokasi: "Tanggamus", rating: 4.7, kategori: "eksotis" },
+  { id: 3, nama: "Way Kambas", lokasi: "Lampung Timur", rating: 4.6, kategori: "konservasi" },
+  { id: 4, nama: "Puncak Mas", lokasi: "Bandar Lampung", rating: 4.5, kategori: "pemandangan" },
+];
+
 /**
  * CostEstimator Component
  * 
@@ -43,7 +50,7 @@ export default function CostEstimator() {
   const [travelers, setTravelers] = useState<number>(2);
 
   /** Duration of the trip in days. */
-  const [days, setDays] = useState<number>(3);
+  const [days, setDays] = useState<number>(2);
   
   /** Tier of accommodation selected (budget, mid, luxury). */
   const [accommodationTier, setAccommodationTier] = useState<"budget" | "mid" | "luxury">("mid");
@@ -118,6 +125,13 @@ export default function CostEstimator() {
     if (cat.includes("konservasi") || cat.includes("hiu")) return 75000 * travelers;
     return 15000 * travelers;
   };
+
+  // Calculate totals
+  const accommodationTotal = ACCOMMODATION_COSTS[accommodationTier] * Math.max(0, days - 1);
+  const transportTotal = TRANSPORT_COSTS[transportTier] * days;
+  const foodTotal = FOOD_COSTS[foodTier] * days * travelers;
+  const ticketTotal = getTicketPrice();
+  const grandTotal = accommodationTotal + transportTotal + foodTotal + ticketTotal;
 
   /**
    * Helper function to format numeric values into Indonesian Rupiah (IDR) currency strings.
@@ -381,6 +395,48 @@ export default function CostEstimator() {
               <div className="flex justify-between items-center">
                 <span className="text-gray-500">Estimasi Tiket & Masuk</span>
                 <span className={isDarkMode ? 'text-white' : 'text-black'}>{formatIDR(ticketTotal)}</span>
+              </div>
+
+              {/* Visual Breakdown Bar */}
+              <div className="mt-6 space-y-3">
+                <span className="text-[9px] text-gray-500 font-black uppercase tracking-widest block">Proporsi Pengeluaran</span>
+                <div className="h-3 w-full rounded-full overflow-hidden flex bg-gray-500/10">
+                  {accommodationTotal > 0 && (
+                    <div 
+                      style={{ width: `${(accommodationTotal / grandTotal) * 100}%` }} 
+                      className="h-full bg-blue-500 transition-all duration-500" 
+                      title={`Akomodasi: ${Math.round((accommodationTotal / grandTotal) * 100)}%`}
+                    />
+                  )}
+                  {transportTotal > 0 && (
+                    <div 
+                      style={{ width: `${(transportTotal / grandTotal) * 100}%` }} 
+                      className="h-full bg-[#ffcc00] transition-all duration-500" 
+                      title={`Transportasi: ${Math.round((transportTotal / grandTotal) * 100)}%`}
+                    />
+                  )}
+                  {foodTotal > 0 && (
+                    <div 
+                      style={{ width: `${(foodTotal / grandTotal) * 100}%` }} 
+                      className="h-full bg-emerald-500 transition-all duration-500" 
+                      title={`Konsumsi: ${Math.round((foodTotal / grandTotal) * 100)}%`}
+                    />
+                  )}
+                  {ticketTotal > 0 && (
+                    <div 
+                      style={{ width: `${(ticketTotal / grandTotal) * 100}%` }} 
+                      className="h-full bg-purple-500 transition-all duration-500" 
+                      title={`Tiket: ${Math.round((ticketTotal / grandTotal) * 100)}%`}
+                    />
+                  )}
+                </div>
+                {/* Legend */}
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-[8px] font-black uppercase tracking-wider text-gray-400">
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Akomodasi ({grandTotal > 0 ? Math.round((accommodationTotal / grandTotal) * 100) : 0}%)</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-[#ffcc00]" /> Transport ({grandTotal > 0 ? Math.round((transportTotal / grandTotal) * 100) : 0}%)</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Konsumsi ({grandTotal > 0 ? Math.round((foodTotal / grandTotal) * 100) : 0}%)</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-purple-500" /> Tiket ({grandTotal > 0 ? Math.round((ticketTotal / grandTotal) * 100) : 0}%)</div>
+                </div>
               </div>
 
               {/* Divider */}
