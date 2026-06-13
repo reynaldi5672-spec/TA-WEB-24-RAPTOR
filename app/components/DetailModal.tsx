@@ -83,7 +83,7 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   /** List of user comments fetched from the API. */
   const [listKomentar, setListKomentar] = useState<Komentar[]>([]); 
 
-  /** Loading state for the comments section. */
+  /** Indicates if the comments are currently being fetched. */
   const [isCommentsLoading, setIsCommentsLoading] = useState(true); 
 
   /** Form state for submitting a new review. */
