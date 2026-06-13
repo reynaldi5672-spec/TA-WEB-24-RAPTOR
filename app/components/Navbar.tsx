@@ -160,7 +160,7 @@ export default function Navbar() {
           <button 
             onClick={() => setCurrentLang(currentLang === 'ID' ? 'EN' : 'ID')}
             aria-label={`Ganti bahasa ke ${currentLang === 'ID' ? 'Inggris' : 'Indonesia'}`}
-            className={`px-3 py-1.5 rounded-lg border text-[10px] font-black transition-all duration-300 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#ffcc00] focus-visible:ring-offset-2 ${
+            className={`px-3 py-1.5 rounded-lg border text-[10px] font-black transition-all duration-300 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#ffcc00] focus-visible:ring-offset-2 ${
               isDarkMode 
                 ? 'bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20 focus-visible:ring-offset-[#050505]' 
                 : 'bg-black/5 border-black/5 text-[#1a1a1a] hover:bg-black/10 hover:border-black/20 focus-visible:ring-offset-white'
