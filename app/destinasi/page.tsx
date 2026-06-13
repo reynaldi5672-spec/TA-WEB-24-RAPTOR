@@ -68,6 +68,11 @@ export default function DestinasiPage() {
     }
   };
 
+  /**
+   * Removes a destination from the comparison list by its ID.
+   * 
+   * @param {number} id - The ID of the destination to remove.
+   */
   const removeFromCompare = (id: number) => {
     setCompareList(compareList.filter((c) => c.id !== id));
   };
