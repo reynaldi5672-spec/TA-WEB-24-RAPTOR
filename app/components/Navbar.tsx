@@ -155,6 +155,7 @@ export default function Navbar() {
           </Link>
         </div>
 
+        {/* Action buttons (Language & Theme) */}
         <div className="flex items-center gap-4">
           {/* Language Switcher */}
           <button 
