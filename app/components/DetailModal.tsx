@@ -89,7 +89,7 @@ export default function DetailModal({ item, onClose }: DetailModalProps) {
   /** Form state for submitting a new review including user name, comment content, and rating. */
   const [formReview, setFormReview] = useState({ nama_user: '', isi_komentar: '', rating: 5 }); 
 
-  /** Loading state during review submission. */
+  /** Indicates whether the review submission request is currently in progress. */
   const [isSubmittingReview, setIsSubmittingReview] = useState(false); 
 
   // Social media share URLs and text.
