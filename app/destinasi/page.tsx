@@ -77,6 +77,10 @@ export default function DestinasiPage() {
     setCompareList(compareList.filter((c) => c.id !== id));
   };
 
+  /**
+   * Fetches destination data from the backend API.
+   * Updates the state with the received data or logs an error.
+   */
   const fetchDestinasi = async () => {
     try {
       const response = await fetch('/api/destinasi');
