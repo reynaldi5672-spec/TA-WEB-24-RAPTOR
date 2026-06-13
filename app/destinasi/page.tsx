@@ -132,6 +132,12 @@ export default function DestinasiPage() {
     };
   }, []);
 
+  /**
+   * Toggles the favorite status of a destination.
+   * Updates localStorage and triggers a global update event.
+   * 
+   * @param {number} id - The ID of the destination to toggle.
+   */
   const toggleFavorite = (id: number) => {
     let updated: number[];
     if (favorites.includes(id)) {
