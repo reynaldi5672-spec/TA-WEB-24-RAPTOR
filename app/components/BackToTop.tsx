@@ -5,27 +5,30 @@ import { ArrowUp } from 'lucide-react';
 import { useTheme } from '@/app/context/ThemeContext';
 
 /**
+ * Custom hook to manage scroll visibility.
+ * @returns {boolean} Whether the component should be visible.
+ */
+function useScrollVisibility(threshold: number = 300) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsVisible(window.scrollY > threshold);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [threshold]);
+
+  return isVisible;
+}
+
+/**
  * BackToTop component displays an animated scroll to top arrow button.
  */
 export default function BackToTop() {
   const { isDarkMode } = useTheme();
-  const [isVisible, setIsVisible] = useState(false); // Controls button visibility trigger state
-
-  useEffect(() => {
-    /**
-   * Toggles visibility trigger state depending on current scroll position
-   */
-  const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', toggleVisibility); // Bind scroll toggle function
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
+  const isVisible = useScrollVisibility();
 
   /**
    * Performs smooth navigation back to the top of the body viewport
@@ -33,7 +36,7 @@ export default function BackToTop() {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth', // Seamless transition back to upper viewport
+      behavior: 'smooth',
     });
   };
 
@@ -47,9 +50,9 @@ export default function BackToTop() {
           ? 'bg-black/60 border-white/10 text-[#ffcc00] hover:bg-[#ffcc00] hover:text-black shadow-black/50'
           : 'bg-white/80 border-black/5 text-[#e6b800] hover:bg-[#ffcc00] hover:text-black shadow-slate-300/50'
       }`}
-      aria-label="Kembali ke atas" /* Screenreader support for accessibility */
+      aria-label="Kembali ke atas"
     >
-      <ArrowUp size={18} className="animate-pulse" /> /* Pulse animate icon to draw user attention */
+      <ArrowUp size={18} className="animate-pulse" />
     </button>
   );
 }
